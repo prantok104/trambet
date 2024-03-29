@@ -547,8 +547,8 @@ a.more-link {
   background: #23B260;
   border-radius: 50%;
   display: inline-block;
-  bottom: -50px;
-  right: 25px;
+  bottom: -52px;
+  right: 33px;
 }
 .kyc-verified{
   color: #23B260
@@ -583,4 +583,35 @@ a.more-link {
 .warning-icon{
   color:#090F1E;
   font-size: 35px
+}
+.card{
+  background: var(--shadow);
+  color:#ccc
+}
+.card-header{
+  font-size: 14px;
+  color: #ccc;
+  font-weight: 600
+}
+.form-control, .form-control:focus {
+    border: 1px solid  #4e5462;
+    background: transparent;
+    color: #ccc;
+    font-size: 12px;
+    border-radius: 3px;
+}
+.form-label{
+  color: #ccc;
+  font-size: 12px;
+  margin-bottom: 3px
+}
+input.form-control:-internal-autofill-previewed,input.form-control:-internal-autofill-selected {
+  background-color: transparent;
+}
+.form-control:disabled {
+    background-color: #3e4c76;
+    opacity: 1;
+}
+input.form-control::placeholder{
+  color: #888
 }
