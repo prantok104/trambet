@@ -1,27 +1,25 @@
 import React, {useState} from 'react'
 import Form from "react-bootstrap/Form";
-const InputField = ({label="", type="text", name="", value='', ...otherProps}) => {
-   const [data, setData] = useState(value);
-   const nams = name;
+import { useField } from "formik";
+const InputField = ({label="", ...props}) => {
+    const [field, meta] = useField(props);
   return (
     <Form.Group>
-      <Form.Label htmlFor={name}>
-        {label} {otherProps?.required ? "*" : ""}{" "}
-      </Form.Label>
+      {label ?? <Form.Label htmlFor={props.id || props.name}>
+        {label}
+        {props.required ? `*` : ""}
+      </Form.Label>}
       <Form.Control
-        type={type}
-        id={name}
-        value={data}
-        name={name}
-        onChange={(e) => setData(e.target.value)}
-        {...otherProps}
-         autoComplete={'off'}
-      //   isValid={otherProps?.touched.name && !otherProps?.errors.name}
-      //   isInvalid={otherProps?.errors.name}
+        id={props.id || props.name}
+        {...field}
+        {...props}
+        isInvalid={meta.touched && meta.error}
       />
-      {/* <Form.Control.Feedback type="invalid">
-        {otherProps?.errors.name}
-      </Form.Control.Feedback> */}
+      {meta.touched && meta.error ? (
+        <Form.Control.Feedback type="invalid">
+          {meta.error}
+        </Form.Control.Feedback>
+      ) : null}
     </Form.Group>
   );
 }

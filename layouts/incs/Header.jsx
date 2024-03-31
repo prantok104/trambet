@@ -19,6 +19,10 @@ import { setLocal } from "@/components/Helper";
 import { LanguageContext } from "@/components/Context/LanguageProvider";
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
+  const [registrationModal, setRegistrationModal] = useState(false);
+  const handleRegistrationButton = () => {
+    setRegistrationModal(true);
+  }
 
   // language
   const language = useContext(LanguageContext);
@@ -38,9 +42,7 @@ const Header = () => {
   const handleLoginPageModal = () => {
     setLoginModal(true);
   };
-  const handleLoginClose = () => {
-    setLoginModal(false);
-  };
+
 
   return (
     <>
@@ -97,6 +99,7 @@ const Header = () => {
                   <Clock />
                 </div>
 
+                {/* Notification area start */}
                 <ul className="droplist">
                   <li>
                     <div>
@@ -113,7 +116,7 @@ const Header = () => {
                         <span>Notifications</span> <span>2</span>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>
+                        <Link href={"/"}>
                           Congratulations! You have to got a new tramcard for
                           Life time
                         </Link>
@@ -121,7 +124,9 @@ const Header = () => {
                     </ul>
                   </li>
                 </ul>
+                {/* Notification area end */}
 
+                {/* User profile area start */}
                 <ul className="droplist">
                   <li>
                     <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -136,7 +141,7 @@ const Header = () => {
                       </li>
                       <li className="sticky-link">
                         <Link
-                          href={"/Profile"}
+                          href={"/"}
                           className="d-flex align-items-center justify-content-between"
                         >
                           Deposit{" "}
@@ -146,16 +151,18 @@ const Header = () => {
                         </Link>
                         <ul className="sticky-items">
                           <li>
-                            <Link href={"/Profile"}>Deposit Now</Link>
+                            <Link href={"/"}>Deposit Now</Link>
                           </li>
                           <li>
-                            <Link href={"/Profile"}>Deposit History</Link>
+                            <Link href={"/user/deposit/history"}>
+                              Deposit History
+                            </Link>
                           </li>
                         </ul>
                       </li>
                       <li className="sticky-link">
                         <Link
-                          href={"/Profile"}
+                          href={"/"}
                           className="d-flex align-items-center justify-content-between"
                         >
                           Withdraw{" "}
@@ -165,38 +172,40 @@ const Header = () => {
                         </Link>
                         <ul className="sticky-items">
                           <li>
-                            <Link href={"/Profile"}>Withdraw Now</Link>
+                            <Link href={"/"}>Withdraw Now</Link>
                           </li>
                           <li>
-                            <Link href={"/Profile"}>Withdraw History</Link>
+                            <Link href={"/"}>Withdraw History</Link>
                           </li>
                         </ul>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>Bet Slip</Link>
+                        <Link href={"/"}>Bet Slip</Link>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>Bet History</Link>
+                        <Link href={"/"}>Bet History</Link>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>Casino History</Link>
+                        <Link href={"/"}>Casino History</Link>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>Bonues</Link>
+                        <Link href={"/"}>Bonues</Link>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>Tramcard</Link>
+                        <Link href={"/"}>Tramcard</Link>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>Apply for Affiliate</Link>
+                        <Link href={"/"}>Apply for Affiliate</Link>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>Logout</Link>
+                        <Link href={"#"} onClick={() =>alert('ok')}>Logout</Link>
                       </li>
                     </ul>
                   </li>
                 </ul>
+                {/* User profile area end */}
 
+                {/* User settings area start */}
                 <ul className="droplist">
                   <li>
                     <span className="profile-look">
@@ -204,20 +213,20 @@ const Header = () => {
                     </span>
                     <ul className="dropdown-menus">
                       <li>
-                        <Link href={"/user/profile"}>Change Password</Link>
+                        <Link href={"/user/"}>Change Password</Link>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>2FA Verification</Link>
+                        <Link href={"/"}>2FA Verification</Link>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>Security and privacy</Link>
+                        <Link href={"/"}>Security and privacy</Link>
                       </li>
                       <li>
-                        <Link href={"/Profile"}>Support</Link>
+                        <Link href={"/"}>Support</Link>
                       </li>
                       <li className="sticky-link">
                         <Link
-                          href={"/Profile"}
+                          href={"/"}
                           className="d-flex align-items-center justify-content-between"
                         >
                           Referral{" "}
@@ -227,17 +236,19 @@ const Header = () => {
                         </Link>
                         <ul className="sticky-items">
                           <li>
-                            <Link href={"/Profile"}>Referred Link</Link>
+                            <Link href={"/"}>Referred Link</Link>
                           </li>
                           <li>
-                            <Link href={"/Profile"}>Referred Users</Link>
+                            <Link href={"/"}>Referred Users</Link>
                           </li>
                         </ul>
                       </li>
                     </ul>
                   </li>
                 </ul>
+                {/* User settings area end */}
 
+                {/* Language area start */}
                 <select
                   onChange={handleLanguageOnChange}
                   className="odds-selection"
@@ -249,6 +260,7 @@ const Header = () => {
                     Bangla
                   </option>
                 </select>
+                {/* Language area end */}
 
                 <button
                   class="df-btn bg-shadow login-btn"
@@ -256,7 +268,10 @@ const Header = () => {
                 >
                   Login
                 </button>
-                <button class="df-btn bg-shadow d-flex align-items-center gap-2 reg-btn">
+                <button
+                  class="df-btn bg-shadow d-flex align-items-center gap-2 reg-btn"
+                  onClick={handleRegistrationButton}
+                >
                   <span>
                     <FontAwesomeIcon icon={faPlus} />
                   </span>
@@ -277,7 +292,7 @@ const Header = () => {
       {/* Login page area start */}
       <Modal
         show={loginModal}
-        onHide={handleLoginClose}
+        onHide={() => setLoginModal(false)}
         backdrop="static"
         keyboard={false}
         className="login-page"
@@ -290,6 +305,28 @@ const Header = () => {
         </Modal.Body>
       </Modal>
       {/* Login page area end */}
+
+      {/* Registration modal area start */}
+      <Modal
+        show={registrationModal}
+        onHide={() => setRegistrationModal(false)}
+        backdrop="static"
+        keyboard={false}
+        className="login-page"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Registration process</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="d-flex align-items-center justify-content-around register-area">
+            <Link href="/auth/register" className="df-btn reg-btn">
+              Full Registration
+            </Link>
+            <Link href={'/auth/one-click'} className="df-btn reg-btn one-click">One click registration</Link>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* Registration modal area end */}
     </>
   );
 };

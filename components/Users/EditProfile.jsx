@@ -21,7 +21,7 @@ const formikRef = useRef();
     console.log(values);
   };
   return (
-    <Formik initialValues={initialValues}
+    <Formik innerRef={formikRef} initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize={true}
