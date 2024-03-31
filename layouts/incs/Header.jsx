@@ -151,7 +151,7 @@ const Header = () => {
                         </Link>
                         <ul className="sticky-items">
                           <li>
-                            <Link href={"/"}>Deposit Now</Link>
+                            <Link href={"/user/deposit/"}>Deposit Now</Link>
                           </li>
                           <li>
                             <Link href={"/user/deposit/history"}>
@@ -198,7 +198,9 @@ const Header = () => {
                         <Link href={"/"}>Apply for Affiliate</Link>
                       </li>
                       <li>
-                        <Link href={"#"} onClick={() =>alert('ok')}>Logout</Link>
+                        <Link href={"#"} onClick={() => alert("ok")}>
+                          Logout
+                        </Link>
                       </li>
                     </ul>
                   </li>
@@ -322,7 +324,9 @@ const Header = () => {
             <Link href="/auth/register" className="df-btn reg-btn">
               Full Registration
             </Link>
-            <Link href={'/auth/one-click'} className="df-btn reg-btn one-click">One click registration</Link>
+            <Link href={"/auth/one-click"} className="df-btn reg-btn one-click">
+              One click registration
+            </Link>
           </div>
         </Modal.Body>
       </Modal>

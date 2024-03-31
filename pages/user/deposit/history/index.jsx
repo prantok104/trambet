@@ -69,7 +69,7 @@ const History = () => {
     <div className="container-fluid">
       <Breadcrumb
         title="Deposit history"
-        path="user => deposit => deposit history"
+        path="Home => deposit => deposit history"
       />
       <div className="mt-2">
         
