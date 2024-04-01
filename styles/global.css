@@ -714,6 +714,13 @@ select.form-control option {
   );
   text-align:center
 }
+.single-providers-card:hover{
+  background: linear-gradient(
+    -326deg,
+    rgb(40, 54, 184) 0%,
+    rgb(136, 57, 255) 100%
+  );
+}
 .single-providers-card h6{
   padding: 10px;
   text-transform: uppercase
