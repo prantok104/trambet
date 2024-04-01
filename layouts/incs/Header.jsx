@@ -46,7 +46,7 @@ const Header = () => {
 
   return (
     <>
-      <div>
+      <div className="header">
         <div className="container-fluid">
           <div className="row d-flex align-items-center py-2">
             <div className="col-md-2">
@@ -138,6 +138,9 @@ const Header = () => {
                     <ul className="dropdown-menus">
                       <li>
                         <Link href={"/user/profile"}>My Profile</Link>
+                      </li>
+                      <li>
+                        <Link href={"/user/otp-verify"}>OTP Verify</Link>
                       </li>
                       <li className="sticky-link">
                         <Link

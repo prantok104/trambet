@@ -246,6 +246,14 @@ li.sticky-link:hover .sticky-items {
   font-weight: 600;
   border-radius: 20px;
 }
+.header{
+  position: sticky;
+  left: 0;
+  top : 0;
+  background: #090F1E;
+  width: 100%;
+  z-index: 999999
+}
 .header-timer {
   font-size: 10px;
   color: #ccc;
@@ -688,3 +696,124 @@ select.form-control option {
   background: #262f48;
   border: 1px solid #262F48
 }
+.all-providers-card{
+  display: flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content: center
+}
+.single-providers-card{
+  border: 1px solid #000000;
+  border-radius: 7px;
+  overflow:hidden;
+  cursor: pointer;
+  background: linear-gradient(
+    326deg,
+    rgb(40, 54, 184) 0%,
+    rgb(136, 57, 255) 100%
+  );
+  text-align:center
+}
+.single-providers-card h6{
+  padding: 10px;
+  text-transform: uppercase
+}
+
+
+/* Otp area start */
+.digitGroup {
+display: flex;
+gap: 10px;
+justify-content: center;
+margin-bottom: 20px;
+}
+
+.digitGroup input {
+ outline: 0 !important;
+ user-select: none !important;
+ width: 50px;
+ height: 50px;
+ background-color: #090F1E;
+ font-weight: bold !important;
+ border-radius: 5px;
+ border: none;
+ line-height: 50px;
+ text-align: center;
+ font-size: 24px;
+ color: #fff;
+ margin: 0;
+
+}
+
+.digitGroup input:focus {
+ border: 2px solid #23B260 !important;
+}
+
+.digitGroup input:active {
+ border: 2px solid #23B260 !important;
+}
+
+.digitGroup .splitter {
+ padding: 5px 0;
+ color: #23B260;
+ font-size: 25px;
+ margin: 0;
+}
+
+.prompt {
+ margin-bottom: 20px;
+ font-size: 20px;
+ color: white;
+}
+
+.formSection {
+ max-width: 500px;
+ margin: auto;
+ border-radius: 10px;
+ box-shadow: 0px 0px 8px #ddd;
+ padding: 20px;
+}
+
+.w-100 {
+ width: 100%;
+}
+.resend-otp{
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-weight: 800;
+  color: #23B260
+}
+.spin-loader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 9999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spin-loader:after {
+    content: '';
+    background: #000;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    opacity: 0.5;
+}
+/* Media query for mobile devices */
+@media (max-width: 480px) {
+ .digitGroup {
+  gap: 5px !important;
+ }
+ .digitGroup input {
+  width: 40px !important;
+ }
+ .digitGroup .splitter {
+  font-size: 25px !important;
+ }
+}
+/* Otp area end */

@@ -9,7 +9,12 @@ import PromoThree from "@/public/promo/3.png";
 import PromoFour from "@/public/promo/4.png";
 import Link from "next/link";
 import PromoCard from "@/components/PromoCard";
+import { useRouter } from 'next/router';
 const Home = () => {
+
+  const router = useRouter();
+  console.log(router.query)
+
   const images = [
     { name: "Slide one", src: FirstSlider },
     { name: "Slide two", src: SecondSlider },
