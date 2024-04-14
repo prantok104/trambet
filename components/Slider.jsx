@@ -4,7 +4,6 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Image from "next/image";
 const CustomSlider = ({ images = [], settings = {} }) => {
-  console.log(images);
   var defaultSettings = settings.hasOwnProperty("dots")
     ? settings
     : {
