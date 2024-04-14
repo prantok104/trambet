@@ -9,6 +9,8 @@ import PromoThree from "@/public/promo/3.png";
 import PromoFour from "@/public/promo/4.png";
 import Link from "next/link";
 import PromoCard from "@/components/PromoCard";
+import { useEffect, useState } from "react";
+import { fetchData } from "@/components/HTTPClient";
 const Home = () => {
   const images = [
     { name: "Slide one", src: FirstSlider },
@@ -24,7 +26,17 @@ const Home = () => {
     { title: "Crash", sub_title: "Free turnaments", href: "/", image: PromoFour },
     { title: "E-Sports", sub_title: "Over 250 sports", href: "/", image: PromoThree },
   ];
+  const [sliders, setSliders] = useState([]);
 
+  useEffect(() => {
+    async function fetchBannerData() {
+      const data = await fetchData('frontend/banner');
+      if (data) {
+          setSliders(data);
+      }
+  }
+    fetchBannerData();
+}, []);
   return (
     <>
       <div className="container-fluid">
@@ -32,7 +44,7 @@ const Home = () => {
         <div className="row">
           <div className="col-md-7">
             <div className="main-slider-area-start">
-              <Slider images={images} />
+              <Slider images={sliders} />
             </div>
           </div>
           <div className="col-md-5">
