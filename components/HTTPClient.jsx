@@ -16,3 +16,19 @@ export async function fetchData(endpoint) {
         return null;
     }
 }
+
+export async function getProfileDataFromToken() {
+    const baseUrl = ConstantData.API_BASE_URL;
+    try {
+        const res = await axios.post(`${baseUrl}/${endpoint}`, data, {
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+        });
+        return res.data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}

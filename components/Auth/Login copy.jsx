@@ -8,9 +8,18 @@ import axios from "axios";
 import ConstantData from "../ConstantData";
 import Swal from "sweetalert2";
 const LoginPage = () => {
+  const formikRef = useRef();
+  const validationSchema = Yup.object({
+    email: Yup.string().required("Bettor ID/ Email is required").max(100),
+    password: Yup.string().required("password is required"),
+  });
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState([]);
   const baseUrl = ConstantData.API_BASE_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +28,7 @@ const LoginPage = () => {
       password: password
     };
     axios.post(`${baseUrl}/login`, data).then((res) => {
+      // console.log(res.data.access_token);
       localStorage.setItem("token", res.data.access_token);
       Swal.fire({
         icon: "success",
@@ -27,21 +37,14 @@ const LoginPage = () => {
         showConfirmButton: false,
         timer: 1500,
       }).then(() => {
-        setUserName("");
-        setPassword("");
         window.location.reload();
       });
     }).catch((error) => {
+      console.log(error.response.status);
       if (error.response.status == 422) {
-        setError(error.response.data.errors);
+        
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Login Failed",
-          text: `${error.response.data.user_message}`,
-          showConfirmButton: false,
-          timer: 1500,
-        })
+        console.log(error);
       }
     });
   }
@@ -50,7 +53,7 @@ const LoginPage = () => {
       <Formik
         // innerRef={formikRef}
         // initialValues={initialValues}
-        // validationSchema={error}
+        // validationSchema={validationSchema}
         // onSubmit={handleSubmit}
         enableReinitialize={true}
         className="form-data"
@@ -63,9 +66,7 @@ const LoginPage = () => {
                 label="UserId or Email*" 
                 name="email" 
                 onChange={(e) => setUserName(e.target.value)}
-                value={username}
-                errorMessage={error.username ? error.username.join(' ') : null}
-                />
+                value={username}/>
             </div>
             
             <div className="col-md-12 mt-2">
@@ -75,7 +76,6 @@ const LoginPage = () => {
                 name="password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
-                errorMessage={error.password ? error.password.join(' ') : null}
               />
             </div>
             
@@ -113,7 +113,7 @@ const LoginPage = () => {
             </div>
           </div>
           </Form>
-         {/* )} */}
+        {/* )} */}
       </Formik>
     </div>
   );
