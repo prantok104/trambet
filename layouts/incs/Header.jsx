@@ -173,7 +173,7 @@ const Header = () => {
                 <ul className="droplist">
                   <li>
                     <div className="d-flex align-items-center gap-2 bettor-id-look">
-                      <span>ID: 12345678</span>
+                      <span>ID: {user.user_id}</span>
                       <span className="profile-look">
                         <FontAwesomeIcon icon={faUser} />
                       </span>

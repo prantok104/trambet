@@ -25,6 +25,7 @@ const LoginPage = () => {
       includeAuth: false,
       data: data,
     }).then((res) => {
+      // console.log(res);
         if (res.status == true) {
           localStorage.setItem("token", res.access_token);
           Swal.fire({
@@ -36,11 +37,20 @@ const LoginPage = () => {
           }).then(() => {
             setUserName("");
             setPassword("");
-            // window.location.reload();
+            setError([]);
+            window.location.reload();
           });
         }else if (res.response.status == 422) {
-          setError(error.data.errors);
-        }
+          setError(res.response.data.errors);
+        } else {
+            Swal.fire({
+              icon: "error",
+              title: "Login Failed",
+              text: `${res.response.data.user_message}`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
       }).catch((error) => {
         console.log(error);
         // if (error.response.status == 422) {
