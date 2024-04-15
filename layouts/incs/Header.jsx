@@ -17,7 +17,7 @@ import LoginPage from "@/components/Auth/Login";
 import Clock from "@/components/Clock";
 import { setLocal } from "@/components/Helper";
 import { LanguageContext } from "@/components/Context/LanguageProvider";
-import { HttpClientCall, getProfileDataFromToken } from "@/components/HTTPClient";
+import { HttpClientCall } from "@/components/HTTPClient";
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
@@ -43,23 +43,45 @@ const Header = () => {
   const handleLoginPageModal = () => {
     setLoginModal(true);
   };
-
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    async function getUserDetails() {
-      const userdata = await HttpClientCall({
-        endpoint: "my-profile",
-        method: "GET",
-        includeAuth: true,
-        data: [],
+  const [user, setUser] = useState(null);
+  const getUserDetails = async () => {
+    await HttpClientCall({
+      endpoint: "my-profile",
+      method: "GET",
+      includeAuth: true,
+      data: [],
+    })
+      .then((response) => {
+        if (response?.data) {
+          console.log(response.data[0]);
+          setUser(response.data[0]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      if (userdata) {
-        setUser(userdata.data[0]);
-      }
+  };
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getUserDetails();
     }
-    getUserDetails();
   }, []);
 
+  const handleLogout = () => {
+    HttpClientCall({
+      endpoint: "logout",
+      method: "POST",
+      includeAuth: true,
+      data: [],
+    })
+      .then((response) => {
+        setUser(null);
+        localStorage.removeItem("token");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <>
       <div>
@@ -118,6 +140,7 @@ const Header = () => {
                 </div>
 
                 {/* Notification area start */}
+                {user && (
                 <ul className="droplist">
                   <li>
                     <div>
@@ -142,9 +165,11 @@ const Header = () => {
                     </ul>
                   </li>
                 </ul>
+                )}
                 {/* Notification area end */}
 
                 {/* User profile area start */}
+                {user && (
                 <ul className="droplist">
                   <li>
                     <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -216,16 +241,22 @@ const Header = () => {
                         <Link href={"/"}>Apply for Affiliate</Link>
                       </li>
                       <li>
-                        <Link href={"#"} onClick={() => alert("ok")}>
+                        <Link
+                          href="javascript:void(0)"
+                          // type="submit"
+                          onClick={handleLogout}
+                        >
                           Logout
                         </Link>
                       </li>
                     </ul>
                   </li>
                 </ul>
+                )}
                 {/* User profile area end */}
 
                 {/* User settings area start */}
+                {user && (
                 <ul className="droplist">
                   <li>
                     <span className="profile-look">
@@ -266,6 +297,7 @@ const Header = () => {
                     </ul>
                   </li>
                 </ul>
+                )}
                 {/* User settings area end */}
 
                 {/* Language area start */}
@@ -282,21 +314,25 @@ const Header = () => {
                 </select>
                 {/* Language area end */}
 
-                <button
-                  className="df-btn bg-shadow login-btn"
-                  onClick={handleLoginPageModal}
-                >
-                  Login
-                </button>
-                <button
-                  className="df-btn bg-shadow d-flex align-items-center gap-2 reg-btn"
-                  onClick={handleRegistrationButton}
-                >
-                  <span>
-                    <FontAwesomeIcon icon={faPlus} />
-                  </span>
-                  Complete Registration
-                </button>
+                {!user && (
+                  <>
+                    <button
+                      className="df-btn bg-shadow login-btn"
+                      onClick={handleLoginPageModal}
+                    >
+                      Login
+                    </button>
+                    <button
+                      className="df-btn bg-shadow d-flex align-items-center gap-2 reg-btn"
+                      onClick={handleRegistrationButton}
+                    >
+                      <span>
+                        <FontAwesomeIcon icon={faPlus} />
+                      </span>
+                      Complete Registration
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
