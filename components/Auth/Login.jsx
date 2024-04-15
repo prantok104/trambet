@@ -7,6 +7,7 @@ import Link from 'next/link'
 import axios from "axios";
 import ConstantData from "../ConstantData";
 import Swal from "sweetalert2";
+import { HttpClientCall } from "../HTTPClient";
 const LoginPage = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +19,13 @@ const LoginPage = () => {
       username : username,
       password: password
     };
-    axios.post(`${baseUrl}/login`, data).then((res) => {
-      localStorage.setItem("token", res.data.access_token);
+    HttpClientCall({
+      method: "POST",
+      endpoint: "login",
+      includeAuth: false,
+      data: data,
+    }).then((res) => {
+      localStorage.setItem("token", res.access_token);
       Swal.fire({
         icon: "success",
         title: "Login Success",
@@ -29,16 +35,17 @@ const LoginPage = () => {
       }).then(() => {
         setUserName("");
         setPassword("");
-        window.location.reload();
+        // window.location.reload();
       });
     }).catch((error) => {
-      if (error.response.status == 422) {
-        setError(error.response.data.errors);
+      console.log(error);
+      if (error.status == 422) {
+        setError(error.data.errors);
       } else {
         Swal.fire({
           icon: "error",
           title: "Login Failed",
-          text: `${error.response.data.user_message}`,
+          text: `${error.data.user_message}`,
           showConfirmButton: false,
           timer: 1500,
         })

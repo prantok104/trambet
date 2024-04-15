@@ -10,7 +10,7 @@ import PromoFour from "@/public/promo/4.png";
 import Link from "next/link";
 import PromoCard from "@/components/PromoCard";
 import { useEffect, useState } from "react";
-import { fetchData } from "@/components/HTTPClient";
+import { HttpClientCall } from "@/components/HTTPClient";
 const Home = () => {
   const images = [
     { name: "Slide one", src: FirstSlider },
@@ -30,9 +30,15 @@ const Home = () => {
 
   useEffect(() => {
     async function fetchBannerData() {
-      const data = await fetchData('frontend/banner');
-      if (data) {
-          setSliders(data);
+      const banner = await HttpClientCall({
+          method: "GET",  
+          endpoint: "frontend/banner",
+          includeAuth: false,
+          data: [],
+      });
+      
+      if (banner) {
+          setSliders(banner.data);
       }
   }
     fetchBannerData();
