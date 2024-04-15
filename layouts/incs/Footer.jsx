@@ -78,8 +78,9 @@ const Footer = () => {
           <div className="row d-flex align-items-center py-4 media-link-area">
             <div className="col-md-3">
               <div className="social-media-link d-flex align-items-center gap-2">
-                {socialLinks?.map((item) => (
+                {socialLinks?.map((item, index) => (
                   <Link
+                    key={index}
                     href={item.href}
                     title={item?.name}
                     className={item?.name}

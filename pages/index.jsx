@@ -9,9 +9,9 @@ import PromoThree from "@/public/promo/3.png";
 import PromoFour from "@/public/promo/4.png";
 import Link from "next/link";
 import PromoCard from "@/components/PromoCard";
-import OddsButton from "@/components/Bets/OddsButton";
+import { useEffect, useState } from "react";
+import { HttpClientCall } from "@/components/HTTPClient";
 const Home = () => {
-
   const images = [
     { name: "Slide one", src: FirstSlider },
     { name: "Slide two", src: SecondSlider },
@@ -26,25 +26,34 @@ const Home = () => {
     { title: "Crash", sub_title: "Free turnaments", href: "/", image: PromoFour },
     { title: "E-Sports", sub_title: "Over 250 sports", href: "/", image: PromoThree },
   ];
+  const [sliders, setSliders] = useState([]);
 
-  const odds = [
-    {name: "Over", value: 102, odds: "2:10"},
-    {name: "Over", value: 102, odds: "3:15"},
-    {name: "Over", value: 102, odds: "20:100"},
-    {name: "Under", value: 102, odds: "20:100"},
-  ]
-
+  useEffect(() => {
+    async function fetchBannerData() {
+      const banner = await HttpClientCall({
+          method: "GET",  
+          endpoint: "frontend/banner",
+          includeAuth: false,
+          data: [],
+      });
+      
+      if (banner) {
+          setSliders(banner.data);
+      }
+  }
+    fetchBannerData();
+}, []);
   return (
     <>
       <div className="container-fluid">
         {/* Slider area start */}
         <div className="row">
-          <div className="col-md-9">
+          <div className="col-md-7">
             <div className="main-slider-area-start">
-              <Slider images={images} />
+              <Slider images={sliders} />
             </div>
           </div>
-          <div className="col-md-3">
+          <div className="col-md-5">
             <div className="d-flex align-items-center justify-content-between gap-4">
               <div
                 className="single-goal-section"
@@ -56,7 +65,7 @@ const Home = () => {
                 <h1>Cashback up to 30% on casinos</h1>
                 <Link href="/casino">Go to Casino</Link>
               </div>
-              {/* <div
+              <div
                 className="single-goal-section"
                 style={{
                   background: 'url("/gift.png") no-repeat center center/cover',
@@ -64,7 +73,7 @@ const Home = () => {
               >
                 <h1>Welcome bonus 300 BDT on registration</h1>
                 <Link href="/casino">Registration</Link>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
@@ -74,8 +83,9 @@ const Home = () => {
         <div className="row mt-2">
           <div className="col-md-12">
             <div className="all-promo-cards">
-              {promoCards?.map((item) => (
+              {promoCards?.map((item, index) => (
                 <PromoCard
+                  key={index}
                   title={item.title}
                   subTitle={item.sub_title}
                   href={item.href}
@@ -86,12 +96,6 @@ const Home = () => {
           </div>
         </div>
         {/* Promo card area end */}
-
-        {/* Bet slip area start */}
-        {odds?.map((item) => (
-          <OddsButton odds={item} />
-        ))}
-        {/* Bet slip area end */}
       </div>
     </>
   );

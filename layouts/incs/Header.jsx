@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Logo from "@/public/logo.png";
 import Link from "next/link";
 import Modal from "react-bootstrap/Modal";
@@ -17,12 +17,13 @@ import LoginPage from "@/components/Auth/Login";
 import Clock from "@/components/Clock";
 import { setLocal } from "@/components/Helper";
 import { LanguageContext } from "@/components/Context/LanguageProvider";
+import { HttpClientCall, getProfileDataFromToken } from "@/components/HTTPClient";
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
   const handleRegistrationButton = () => {
     setRegistrationModal(true);
-  }
+  };
 
   // language
   const language = useContext(LanguageContext);
@@ -42,6 +43,21 @@ const Header = () => {
     setLoginModal(true);
   };
 
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    async function getUserDetails() {
+      const userdata = await HttpClientCall({
+        endpoint: "my-profile",
+        method: "GET",
+        includeAuth: true,
+        data: [],
+      });
+      if (userdata) {
+        setUser(userdata.data[0]);
+      }
+    }
+    getUserDetails();
+  }, []);
 
   return (
     <>
@@ -69,30 +85,32 @@ const Header = () => {
                   <option value="a">American Odds</option>
                 </select>
 
-                <ul className="droplist">
-                  <li>
-                    <div className="d-flex align-items-center gap-2 bettor-id-look">
-                      <span>+ 000.00</span>
-                      <span className="profile-look">
-                        <span style={{ fontSize: 9 }}>BDT</span>
-                      </span>
-                    </div>
-                    <ul className="dropdown-menus">
-                      <li>
-                        <Link href={"/"}>Deposit: + 000.00</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Withdrawal: + 000.00</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Bonus: + 000.00</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Tramcard: + 000.00</Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                {user && (
+                  <ul className="droplist">
+                    <li>
+                      <div className="d-flex align-items-center gap-2 bettor-id-look">
+                        <span>+ {user.data}</span>
+                        <span className="profile-look">
+                          <span style={{ fontSize: 9 }}>BDT</span>
+                        </span>
+                      </div>
+                      <ul className="dropdown-menus">
+                        <li>
+                          <Link href={"/"}>Deposit: + {user.data}</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Withdrawal: + {user.data}</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Bonus: + {user.data}</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Tramcard: + {user.data}</Link>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                )}
 
                 <div className="header-timer">
                   <Clock />
@@ -267,13 +285,13 @@ const Header = () => {
                 {/* Language area end */}
 
                 <button
-                  class="df-btn bg-shadow login-btn"
+                  className="df-btn bg-shadow login-btn"
                   onClick={handleLoginPageModal}
                 >
                   Login
                 </button>
                 <button
-                  class="df-btn bg-shadow d-flex align-items-center gap-2 reg-btn"
+                  className="df-btn bg-shadow d-flex align-items-center gap-2 reg-btn"
                   onClick={handleRegistrationButton}
                 >
                   <span>
