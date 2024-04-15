@@ -31,7 +31,7 @@ const ProviderCard = ({providers}) => {
       if(values?.amount > 0) {
          const stateData = {amount:values?.amount};
 
-         navigate.push("/");
+         navigate.push(`/user/deposit/make-payment/${values?.amount}`);
       }
    };
 
@@ -46,8 +46,8 @@ const ProviderCard = ({providers}) => {
           <Image
             src={item.image}
             alt={item.name}
-            width={160}
-            height={90}
+            width={157}
+            height={70}
             style={{ objectFit: "cover" }}
             placeholder={"blur"}
           />

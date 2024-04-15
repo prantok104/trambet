@@ -722,7 +722,7 @@ select.form-control option {
   );
 }
 .single-providers-card h6{
-  padding: 10px;
+  padding: 7px 10px;
   text-transform: uppercase
 }
 
@@ -824,3 +824,69 @@ margin-bottom: 20px;
  }
 }
 /* Otp area end */
+
+.list-group .list-group-item{
+  background: #090F1E;
+  color: #ccc;
+  border-color: #1E263D
+}
+
+/* Betslip area start */
+.betslip-area-start {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,#233358,rgba(20,27,46,.6));
+    /* top: 5px; */
+    
+    z-index: 9999999;
+}
+
+.betslip-area-start h6 {
+    font-size: 11px;
+    font-weight: 300;
+    text-transform: uppercase;
+    background: linear-gradient(326deg,rgb(40, 54, 184) 0%,rgb(136, 57, 255) 100%);
+    padding: 7px 15px;
+    margin: 0
+}
+.bet-button{
+  background: #333E5D
+}
+.bet-types-button .form-check {
+    min-height: auto;
+    background: #323E5A;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 0;
+    border-radius: 4px;
+  }
+  .bet-types-button .form-check label {
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.bet-types-button .form-check .form-check-input{
+   background: #323E5A;
+   border-color: #323E5A;
+   display: none;
+}
+.bet-types-button .form-check .form-check-input:checked {
+    background: #323E5A;
+    border-color:#323E5A;
+}
+.bet-types-button .form-check .form-check-input:focus{
+    border-color: #323E5A;
+    outline: 0
+}
+.bet-types-button .form-check .form-check-input:checked + label {
+    background: linear-gradient(70deg, #31bc69 -8%, #089e4e 96%); /* Change to your desired background color */
+    border-color: linear-gradient(70deg, #31bc69 -8%, #089e4e 96%); /* Change to your desired border color */
+}
+.bet-types-button label{
+  width: 170px
+}
+.bet-types-button.bet-balance-buttons label{
+  width: auto
+}

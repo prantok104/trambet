@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoaderPage from "./LoaderPage";
 import { LanguageProvider } from "@/components/Context/LanguageProvider";
+import { BetslipProvider } from "@/components/Context/BetslipProvider";
 
 export default function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
@@ -33,9 +34,11 @@ export default function App({ Component, pageProps }) {
         <LoaderPage />
       ) : (
         <LanguageProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <BetslipProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </BetslipProvider>
         </LanguageProvider>
       )}
     </>

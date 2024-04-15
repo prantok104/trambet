@@ -16,6 +16,7 @@ import Itf from "@/public/casino/itf.svg";
 import Nhl from "@/public/casino/nhl.svg";
 import Ufc from "@/public/casino/ufc.svg";
 import Wta from "@/public/casino/wta.svg";
+import BetSlip from "@/components/Bets/BetSlip";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -164,6 +165,15 @@ const Footer = () => {
             </div>
           </div>
         </div>
+
+
+        {/* Bet slip area start */}
+        <div className="betslip-area-start">
+          <h6>Betslip</h6>
+          <BetSlip/>
+        </div>
+        {/* Bet slip area end */}
+
       </footer>
     </>
   );

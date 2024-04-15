@@ -9,11 +9,8 @@ import PromoThree from "@/public/promo/3.png";
 import PromoFour from "@/public/promo/4.png";
 import Link from "next/link";
 import PromoCard from "@/components/PromoCard";
-import { useRouter } from 'next/router';
+import OddsButton from "@/components/Bets/OddsButton";
 const Home = () => {
-
-  const router = useRouter();
-  console.log(router.query)
 
   const images = [
     { name: "Slide one", src: FirstSlider },
@@ -30,17 +27,24 @@ const Home = () => {
     { title: "E-Sports", sub_title: "Over 250 sports", href: "/", image: PromoThree },
   ];
 
+  const odds = [
+    {name: "Over", value: 102, odds: "2:10"},
+    {name: "Over", value: 102, odds: "3:15"},
+    {name: "Over", value: 102, odds: "20:100"},
+    {name: "Under", value: 102, odds: "20:100"},
+  ]
+
   return (
     <>
       <div className="container-fluid">
         {/* Slider area start */}
         <div className="row">
-          <div className="col-md-7">
+          <div className="col-md-9">
             <div className="main-slider-area-start">
               <Slider images={images} />
             </div>
           </div>
-          <div className="col-md-5">
+          <div className="col-md-3">
             <div className="d-flex align-items-center justify-content-between gap-4">
               <div
                 className="single-goal-section"
@@ -52,7 +56,7 @@ const Home = () => {
                 <h1>Cashback up to 30% on casinos</h1>
                 <Link href="/casino">Go to Casino</Link>
               </div>
-              <div
+              {/* <div
                 className="single-goal-section"
                 style={{
                   background: 'url("/gift.png") no-repeat center center/cover',
@@ -60,7 +64,7 @@ const Home = () => {
               >
                 <h1>Welcome bonus 300 BDT on registration</h1>
                 <Link href="/casino">Registration</Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -82,6 +86,12 @@ const Home = () => {
           </div>
         </div>
         {/* Promo card area end */}
+
+        {/* Bet slip area start */}
+        {odds?.map((item) => (
+          <OddsButton odds={item} />
+        ))}
+        {/* Bet slip area end */}
       </div>
     </>
   );

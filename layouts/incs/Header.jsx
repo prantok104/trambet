@@ -26,7 +26,6 @@ const Header = () => {
 
   // language
   const language = useContext(LanguageContext);
-  console.log(language);
 
   // Handle onChange data
   const handleOnChange = (event) => {

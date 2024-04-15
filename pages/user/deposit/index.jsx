@@ -35,7 +35,7 @@ const Deposit = () => {
 
       <div className="mt-2">
          <Card header="Payment system in your region">
-            <AlertCard message='Recommended payment method' style={{background: '#282F42'}} />
+            <AlertCard message='Recommended payment method'/>
             <div className="mt-2">
                <ProviderCard providers={providers} />
             </div>
