@@ -48,7 +48,7 @@ const Footer = () => {
                   <Link href="/">Home</Link>
                 </li>
                 <li>
-                  <Link href="/">News and Updates</Link>
+                  <Link href="/news">News and Updates</Link>
                 </li>
                 <li>
                   <Link href="/">Contacts</Link>
@@ -59,13 +59,13 @@ const Footer = () => {
               <h6>Company Policy</h6>
               <ul className="footer-menu">
                 <li>
-                  <Link href="/">Privacy Policy</Link>
+                  <Link href="/policy/privacy-policy" prefetch={true}>Privacy Policy</Link>
                 </li>
                 <li>
-                  <Link href="/">Terms of Service</Link>
+                  <Link href="/policy/terms-of-service">Terms of Service</Link>
                 </li>
                 <li>
-                  <Link href="/">Refund Policy</Link>
+                  <Link href="/policy/refund-policy">Refund Policy</Link>
                 </li>
               </ul>
             </div>
@@ -167,14 +167,12 @@ const Footer = () => {
           </div>
         </div>
 
-
         {/* Bet slip area start */}
         <div className="betslip-area-start">
           <h6>Betslip</h6>
-          <BetSlip/>
+          <BetSlip />
         </div>
         {/* Bet slip area end */}
-
       </footer>
     </>
   );

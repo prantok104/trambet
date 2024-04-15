@@ -831,6 +831,91 @@ margin-bottom: 20px;
   border-color: #1E263D
 }
 
+.image-with-title{
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-size: 35px;
+  color: #fff;
+  font-weight: 800;
+  display:flex;
+  align-items:center;
+  justify-content:center
+}
+.image-with-title:after{
+  position: absolute;
+  left: 0;
+  top: 0;
+  content: '';
+  right: 0;
+  bottom: 0;
+  background: #000;
+  z-index: -1;
+  opacity: 0.1
+}
+
+.policy-page-content h1,
+.policy-page-content h2,
+.policy-page-content h5,
+.policy-page-content h6 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+.policy-page-content h4,
+.policy-page-content h3{
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+ .policy-page-content ul{
+  margin-left: 15px
+ }
+.policy-page-content p, .policy-page-content li{
+  font-size: 12px
+}
+.policy-page-content li{
+  margin-bottom: 10px
+}
+
+/* News area */
+.news-card-area{
+  background:  #282F42;
+  border-radius: 7px;
+  overflow:hidden;
+  margin-bottom: 25px
+}
+.news-time {
+    color: #7a8cb7;
+}
+.news-time svg{
+  color: #7a8cb7
+}
+.news-content a{
+  text-decoration: none
+}
+a.news-title{
+  display:inline-block;
+  font-size: 16px;
+  margin: 8px 0;
+  color: #8039F9;
+  font-weight: 600
+}
+a.news-title:hover{
+  color: #23B260;
+}
+.news-just-content{
+  font-size: 16px
+}
+.news-read-more{
+  margin-top: 15px;
+  display:inline-block;
+  padding: 9px 25px;
+  color: #fff;
+  background: linear-gradient(326deg,rgb(40, 54, 184) 0%,rgb(136, 57, 255) 100%);
+  border-radius: 4px
+}
+.news-read-more:hover{
+  background: linear-gradient(-326deg,rgb(40, 54, 184) 0%,rgb(136, 57, 255) 100%);
+}
 /* Betslip area start */
 .betslip-area-start {
     position: fixed;
