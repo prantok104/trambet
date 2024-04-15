@@ -28,7 +28,7 @@ const LoginPage = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize={true}
-        class="form-data"
+        className="form-data"
       >
         {({ handleSubmit, handleChange, values, touched, focused, errors }) => (
           <Form noValidate onSubmit={handleSubmit}>

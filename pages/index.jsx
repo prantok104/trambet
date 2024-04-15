@@ -77,8 +77,9 @@ const Home = () => {
         <div className="row mt-2">
           <div className="col-md-12">
             <div className="all-promo-cards">
-              {promoCards?.map((item) => (
+              {promoCards?.map((item, index) => (
                 <PromoCard
+                  key={index}
                   title={item.title}
                   subTitle={item.sub_title}
                   href={item.href}

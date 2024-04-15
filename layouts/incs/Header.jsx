@@ -265,13 +265,13 @@ const Header = () => {
                 {/* Language area end */}
 
                 <button
-                  class="df-btn bg-shadow login-btn"
+                  className="df-btn bg-shadow login-btn"
                   onClick={handleLoginPageModal}
                 >
                   Login
                 </button>
                 <button
-                  class="df-btn bg-shadow d-flex align-items-center gap-2 reg-btn"
+                  className="df-btn bg-shadow d-flex align-items-center gap-2 reg-btn"
                   onClick={handleRegistrationButton}
                 >
                   <span>

@@ -1,7 +1,8 @@
 import axios from 'axios';
+import ConstantData from './ConstantData';
 
 export async function fetchData(endpoint) {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const baseUrl = ConstantData.API_BASE_URL;
     try {
         const res = await axios.get(`${baseUrl}/${endpoint}`, {
             headers: {
