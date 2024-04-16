@@ -18,7 +18,7 @@ const NewsCard = ({image="/placeholder.jpeg", time="2024-04-16 12:24 am", title=
          <div className='news-just-content'>
             {content}
          </div>
-            <Link className="news-read-more" href={link}>Read More</Link>
+         <Link className="news-read-more" href={link}>Read More</Link>
       </div>
       </div>
     </div>

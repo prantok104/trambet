@@ -1,6 +1,6 @@
 import React from 'react'
 import ImageTitle from '@/components/ImageTitle'
-import NewsCard from '@/components/NewsCard';
+import NewsCard from '@/components/News/NewsCard';
 const NewsPage = () => {
   return (
     <div className="news-page-content">

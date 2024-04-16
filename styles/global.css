@@ -916,6 +916,96 @@ a.news-title:hover{
 .news-read-more:hover{
   background: linear-gradient(-326deg,rgb(40, 54, 184) 0%,rgb(136, 57, 255) 100%);
 }
+.news-left-side h2{
+  font-size: 22px;
+  margin: 15px 0;
+  color: #fff;
+  font-weight: 600
+}
+.news-left-side p{
+  font-size: 14px;
+  margin-bottom: 25px;
+  color: #888
+}
+.news-social-share{
+  margin-top: 55px;
+  text-align:center
+}
+
+.share-like a{
+  display: inline-flex;
+  align-items:center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #1E263D;
+  font-size: 20px;
+  color: #fff;
+  margin-right: 5px;
+  border-radius: 4px;
+  background: linear-gradient(86.37deg, #d062ff 2.96%, #7bb0ff 99.68%),
+    linear-gradient(90deg, #ed6ea0 0%, #ec8c69 100%);
+  transition: all 0.3s ease-in-out
+}
+
+.share-like a:hover{
+   background: linear-gradient(-86.37deg, #d062ff 2.96%, #7bb0ff 99.68%),
+    linear-gradient(90deg, #ed6ea0 0%, #ec8c69 100%)
+}
+.recent-news-right-content a{
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  color: #8039F9
+}
+.recent-news-right-content a:hover{
+  color:#23B260
+}
+.recent-news-right-content span{
+  display: block;
+  font-size: 14px
+}
+.recent-news-content-area{
+  border: 1px solid #1E263D;
+  border-radius: 7px
+}
+.recent-news-area img{
+  border-radius: 4px
+}
+.recent-news-content-area .recent-news-area{
+  padding: 20px 10px;
+  border-bottom: 1px solid #1E263D
+}
+.recent-news-content-area .recent-news-area:last-child{
+  border: none
+}
+.recent-news-heading{
+  font-size: 18px;
+  border-bottom: 1px solid #1E263D;
+  padding: 10px 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Betslip area start */
 .betslip-area-start {
     position: fixed;
