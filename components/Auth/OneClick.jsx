@@ -32,7 +32,7 @@ const OneClickRegister = () => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
       enableReinitialize={true}
-      class="form-data"
+      className="form-data"
     >
       {({ values, touched, errors }) => (
         <FormikForm>

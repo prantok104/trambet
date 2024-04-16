@@ -2,8 +2,13 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['trambet.smshagor.com'],
-  },
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: 'trambet.smshagor.com',
+      }
+    ],
+},
 };
 
 export default nextConfig;

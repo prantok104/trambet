@@ -31,9 +31,9 @@ const Navbar = () => {
   return (
     <div className="bg-shadow nav-bar-area d-flex align-items-center justify-content-between">
       <ul className="main-menu-bar">
-        {navItems?.map((item) => {
+        {navItems?.map((item, index) => {
           return (
-            <li>
+            <li key={index}>
               <Link
                 href={`http://localhost:3000${item?.href}`}
                 className={router.pathname === item?.href ? "active" : ""}
