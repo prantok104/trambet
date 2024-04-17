@@ -231,7 +231,7 @@ const Header = () => {
                         <Link href={"/"}>Bet History</Link>
                       </li>
                       <li>
-                        <Link href={"/"}>Casino History</Link>
+                        <Link href={"/user/casino-history"}>Casino History</Link>
                       </li>
                       <li>
                         <Link href={"/"}>Bonues</Link>

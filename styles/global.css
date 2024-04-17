@@ -1026,13 +1026,18 @@ a.news-title:hover{
   font-size: 14px;
 }
 .tramcard-follow-rules ul li{
-  margin-bottom: 12px
+  margin-bottom: 7px
 }
 .tramcard-follow-rules .tramcard-follow-rule-completed{
   color: #7facff;
   list-style: square
 }
-
+.progress{
+  background: #090F1E;
+}
+.progress .bg-primary{
+ background-image: linear-gradient(-86.37deg, #d062ff 2.96%, #7bb0ff 99.68%),      linear-gradient(90deg, #ed6ea0 0%, #ec8c69 100%)
+}
 
 
 
