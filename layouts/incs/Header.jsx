@@ -237,7 +237,7 @@ const Header = () => {
                         <Link href={"/"}>Bonues</Link>
                       </li>
                       <li>
-                        <Link href={"/"}>Tramcard</Link>
+                        <Link href={"/user/tramcard"}>Tramcard</Link>
                       </li>
                       <li>
                         <Link href={"/"}>Apply for Affiliate</Link>

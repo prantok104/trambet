@@ -35,6 +35,9 @@ body {
 .df-radius{
   border-radius: 7px
 }
+.df-border{
+  border: 1px solid #1E263D
+}
 .form-label {
   font-weight: 600;
   font-size: 13px;
@@ -986,6 +989,62 @@ a.news-title:hover{
   padding: 10px 
 }
 
+/* Tramcard area css */
+.tramcard-rules-area{
+  background: #1E263D; 
+  min-height: 230px;
+  font-size: 14px
+}
+.tramcard-rules-area h5{
+  font-weight: 600;
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 20px
+}
+.tramcard-balance{
+  font-size: 18px;
+  font-weight: 600
+}
+.tramcard-valid-time{
+  font-size: 14px;
+  margin-bottom: 25px
+}
+.tramcard-claim-btn{
+  padding: 15px 25px;
+  color: #fff;
+  font-size: 16px;
+  background: linear-gradient(86.37deg, #d062ff 2.96%, #7bb0ff 99.68%),
+    linear-gradient(90deg, #ed6ea0 0%, #ec8c69 100%);
+    transition: all 0.3s ease-in-out
+  }
+  .tramcard-claim-btn:hover{
+    background: linear-gradient(-86.37deg, #d062ff 2.96%, #7bb0ff 99.68%),
+      linear-gradient(90deg, #ed6ea0 0%, #ec8c69 100%);
+}
+.tramcard-follow-rules {
+  color: #ff6293;
+  font-size: 14px;
+}
+.tramcard-follow-rules ul li{
+  margin-bottom: 12px
+}
+.tramcard-follow-rules .tramcard-follow-rule-completed{
+  color: #7facff;
+  list-style: square
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1013,8 +1072,8 @@ a.news-title:hover{
     bottom: 0;
     background: linear-gradient(135deg,#233358,rgba(20,27,46,.6));
     /* top: 5px; */
-    
     z-index: 9999999;
+    display: none;
 }
 
 .betslip-area-start h6 {
