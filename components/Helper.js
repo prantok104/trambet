@@ -1,3 +1,4 @@
+
 // Set local storage
 export const setLocal = (key, value) => {
   try {
@@ -25,8 +26,8 @@ export function rowIndex(rows) {
     return {
         name: '#',
         cell: (row, index) => (Number(rows?.current_page ?? 1) - 1) * Number(rows?.per_page ?? 10) + (index + 1),
-        maxWidth: '60px',
-        minWidth: '60px',
+        maxwidth: '60px',
+        minwidth: '60px',
     };
 }
 
