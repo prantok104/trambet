@@ -140,165 +140,176 @@ const Header = () => {
 
                 {/* Notification area start */}
                 {user && (
-                <ul className="droplist">
-                  <li>
-                    <div>
-                      <span className="profile-look notify-bell">
-                        <FontAwesomeIcon
-                          icon={faBell}
-                          style={{ fontSize: 16 }}
-                        />
-                        <span className="notify-counter">2</span>
-                      </span>
-                    </div>
-                    <ul className="dropdown-menus notifications-list">
-                      <li className="d-flex align-items-center justify-content-between notify-head">
-                        <span>Notifications</span> <span>2</span>
-                      </li>
-                      <li>
-                        <Link href={"/"}>
-                          Congratulations! You have to got a new tramcard for
-                          Life time
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                  <ul className="droplist">
+                    <li>
+                      <div>
+                        <span className="profile-look notify-bell">
+                          <FontAwesomeIcon
+                            icon={faBell}
+                            style={{ fontSize: 16 }}
+                          />
+                          <span className="notify-counter">
+                            {user.notifications.total}
+                          </span>
+                        </span>
+                      </div>
+                      <ul className="dropdown-menus notifications-list">
+                        <li className="d-flex align-items-center justify-content-between notify-head">
+                          <span>Notifications</span>{" "}
+                          <span>{user.notifications.total}</span>
+                        </li>
+                        <li>
+                          {user.notifications.latest &&
+                          user.notifications.latest.length > 0 ? (
+                            user.notifications.latest.map(
+                              (notification, index) => (
+                                <Link key={index} href={"/"}>
+                                  {notification}
+                                </Link>
+                              )
+                            )
+                          ) : (
+                            <Link href={"/"}>No new notifications</Link>
+                          )}
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 )}
                 {/* Notification area end */}
 
                 {/* User profile area start */}
                 {user && (
-                <ul className="droplist">
-                  <li>
-                    <div className="d-flex align-items-center gap-2 bettor-id-look">
-                      <span>ID: {user.user_id}</span>
-                      <span className="profile-look">
-                        <FontAwesomeIcon icon={faUser} />
-                      </span>
-                    </div>
-                    <ul className="dropdown-menus">
-                      <li>
-                        <Link href={"/user/profile"}>My Profile</Link>
-                      </li>
-                      <li>
-                        <Link href={"/user/otp-verify"}>OTP Verify</Link>
-                      </li>
-                      <li className="sticky-link">
-                        <Link
-                          href={"/"}
-                          className="d-flex align-items-center justify-content-between"
-                        >
-                          Deposit{" "}
-                          <span>
-                            <FontAwesomeIcon icon={faAngleDown} />
-                          </span>
-                        </Link>
-                        <ul className="sticky-items">
-                          <li>
-                            <Link href={"/user/deposit/"}>Deposit Now</Link>
-                          </li>
-                          <li>
-                            <Link href={"/user/deposit/history"}>
-                              Deposit History
-                            </Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li className="sticky-link">
-                        <Link
-                          href={"/"}
-                          className="d-flex align-items-center justify-content-between"
-                        >
-                          Withdraw{" "}
-                          <span>
-                            <FontAwesomeIcon icon={faAngleDown} />
-                          </span>
-                        </Link>
-                        <ul className="sticky-items">
-                          <li>
-                            <Link href={"/"}>Withdraw Now</Link>
-                          </li>
-                          <li>
-                            <Link href={"/"}>Withdraw History</Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Bet Slip</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Bet History</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Casino History</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Bonues</Link>
-                      </li>
-                      <li>
-                        <Link href={"/user/tramcard"}>Tramcard</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Apply for Affiliate</Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="javascript:void(0)"
-                          // type="submit"
-                          onClick={handleLogout}
-                        >
-                          Logout
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                  <ul className="droplist">
+                    <li>
+                      <div className="d-flex align-items-center gap-2 bettor-id-look">
+                        <span>ID: {user.user_id}</span>
+                        <span className="profile-look">
+                          <FontAwesomeIcon icon={faUser} />
+                        </span>
+                      </div>
+                      <ul className="dropdown-menus">
+                        <li>
+                          <Link href={"/user/profile"}>My Profile</Link>
+                        </li>
+                        <li>
+                          <Link href={"/user/otp-verify"}>OTP Verify</Link>
+                        </li>
+                        <li className="sticky-link">
+                          <Link
+                            href={"/"}
+                            className="d-flex align-items-center justify-content-between"
+                          >
+                            Deposit{" "}
+                            <span>
+                              <FontAwesomeIcon icon={faAngleDown} />
+                            </span>
+                          </Link>
+                          <ul className="sticky-items">
+                            <li>
+                              <Link href={"/user/deposit/"}>Deposit Now</Link>
+                            </li>
+                            <li>
+                              <Link href={"/user/deposit/history"}>
+                                Deposit History
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
+                        <li className="sticky-link">
+                          <Link
+                            href={"/"}
+                            className="d-flex align-items-center justify-content-between"
+                          >
+                            Withdraw{" "}
+                            <span>
+                              <FontAwesomeIcon icon={faAngleDown} />
+                            </span>
+                          </Link>
+                          <ul className="sticky-items">
+                            <li>
+                              <Link href={"/"}>Withdraw Now</Link>
+                            </li>
+                            <li>
+                              <Link href={"/"}>Withdraw History</Link>
+                            </li>
+                          </ul>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Bet Slip</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Bet History</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Casino History</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Bonues</Link>
+                        </li>
+                        <li>
+                          <Link href={"/user/tramcard"}>Tramcard</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Apply for Affiliate</Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="javascript:void(0)"
+                            // type="submit"
+                            onClick={handleLogout}
+                          >
+                            Logout
+                          </Link>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 )}
                 {/* User profile area end */}
 
                 {/* User settings area start */}
                 {user && (
-                <ul className="droplist">
-                  <li>
-                    <span className="profile-look">
-                      <FontAwesomeIcon icon={faGear} />
-                    </span>
-                    <ul className="dropdown-menus">
-                      <li>
-                        <Link href={"/user/"}>Change Password</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>2FA Verification</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Security and privacy</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Support</Link>
-                      </li>
-                      <li className="sticky-link">
-                        <Link
-                          href={"/"}
-                          className="d-flex align-items-center justify-content-between"
-                        >
-                          Referral{" "}
-                          <span>
-                            <FontAwesomeIcon icon={faAngleDown} />
-                          </span>
-                        </Link>
-                        <ul className="sticky-items">
-                          <li>
-                            <Link href={"/"}>Referred Link</Link>
-                          </li>
-                          <li>
-                            <Link href={"/"}>Referred Users</Link>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                  <ul className="droplist">
+                    <li>
+                      <span className="profile-look">
+                        <FontAwesomeIcon icon={faGear} />
+                      </span>
+                      <ul className="dropdown-menus">
+                        <li>
+                          <Link href={"/user/"}>Change Password</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>2FA Verification</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Security and privacy</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Support</Link>
+                        </li>
+                        <li className="sticky-link">
+                          <Link
+                            href={"/"}
+                            className="d-flex align-items-center justify-content-between"
+                          >
+                            Referral{" "}
+                            <span>
+                              <FontAwesomeIcon icon={faAngleDown} />
+                            </span>
+                          </Link>
+                          <ul className="sticky-items">
+                            <li>
+                              <Link href={"/"}>Referred Link</Link>
+                            </li>
+                            <li>
+                              <Link href={"/"}>Referred Users</Link>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 )}
                 {/* User settings area end */}
 
