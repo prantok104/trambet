@@ -27,7 +27,6 @@ const Header = () => {
 
   // language
   const language = useContext(LanguageContext);
-  console.log(language);
 
   // Handle onChange data
   const handleOnChange = (event) => {
@@ -84,7 +83,7 @@ const Header = () => {
   };
   return (
     <>
-      <div>
+      <div className="header">
         <div className="container-fluid">
           <div className="row d-flex align-items-center py-2">
             <div className="col-md-2">
@@ -182,6 +181,9 @@ const Header = () => {
                       <li>
                         <Link href={"/user/profile"}>My Profile</Link>
                       </li>
+                      <li>
+                        <Link href={"/user/otp-verify"}>OTP Verify</Link>
+                      </li>
                       <li className="sticky-link">
                         <Link
                           href={"/"}
@@ -235,7 +237,7 @@ const Header = () => {
                         <Link href={"/"}>Bonues</Link>
                       </li>
                       <li>
-                        <Link href={"/"}>Tramcard</Link>
+                        <Link href={"/user/tramcard"}>Tramcard</Link>
                       </li>
                       <li>
                         <Link href={"/"}>Apply for Affiliate</Link>
