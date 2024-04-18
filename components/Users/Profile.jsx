@@ -1,8 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faBug } from "@fortawesome/free-solid-svg-icons";
 import Image from 'react-bootstrap/Image'
+import { getUserDetailsData, userLogout } from '@/services/userAuthService';
 const ProfileCard = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getUserDetailsData().then((response) => {
+        setUser(response);
+      });
+    }
+  }, []);
+
+  const handleLogout = () => {
+    userLogout().then(() => {
+      setUser(null);
+    });
+  };
+
   return (
     <div className="user-profile-area text-center bg-shadow">
       <Image
@@ -41,7 +58,7 @@ const ProfileCard = () => {
           <strong>Tramcard: </strong> <span>0.00 BDT</span>
         </li>
       </ul>
-      <button className="logout-btn">Logout</button>
+      <button onClick={handleLogout} className="logout-btn">Logout</button>
     </div>
   );
 }

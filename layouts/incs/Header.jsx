@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import Logo from "@/public/logo.png";
 import Link from "next/link";
 import Modal from "react-bootstrap/Modal";
@@ -18,6 +18,7 @@ import Clock from "@/components/Clock";
 import { setLocal } from "@/components/Helper";
 import { LanguageContext } from "@/components/Context/LanguageProvider";
 import { HttpClientCall } from "@/components/HTTPClient";
+import { getUserDetailsData, userLogout } from "@/services/userAuthService";
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
@@ -42,44 +43,21 @@ const Header = () => {
   const handleLoginPageModal = () => {
     setLoginModal(true);
   };
+
   const [user, setUser] = useState(null);
-  const getUserDetails = async () => {
-    await HttpClientCall({
-      endpoint: "my-profile",
-      method: "GET",
-      includeAuth: true,
-      data: [],
-    })
-      .then((response) => {
-        if (response?.data) {
-          console.log(response.data[0]);
-          setUser(response.data[0]);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      getUserDetails();
+      getUserDetailsData().then((response) => {
+        setUser(response);
+      });
     }
   }, []);
 
   const handleLogout = () => {
-    HttpClientCall({
-      endpoint: "logout",
-      method: "POST",
-      includeAuth: true,
-      data: [],
-    })
-      .then((response) => {
-        setUser(null);
-        localStorage.removeItem("token");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    userLogout().then(() => {
+      setUser(null);
+      const LogoutContext = createContext(user)
+    });
   };
   return (
     <>
