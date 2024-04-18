@@ -3,7 +3,8 @@ import ImageTitle from '@/components/ImageTitle'
 import NewsCard from '@/components/News/NewsCard';
 import {getAllNews} from '@/services/news'
 const NewsPage = () => {
-console.log(getAllNews);
+  const get = getAllNews();
+console.log(get);
   return (
     <div className="news-page-content">
       <ImageTitle title="News and Updates" />
