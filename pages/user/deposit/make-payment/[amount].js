@@ -21,7 +21,7 @@ const MakeDepositPage = () => {
       trx_id: Yup.string().required("Transaction ID is required"),
    });
    const handleSubmit = (values) => {
-    notify("success", "Successfuly deposit completed")
+    notify("success", "Successfully deposit completed")
    }
   return (
     <>
