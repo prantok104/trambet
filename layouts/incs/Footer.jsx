@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebookF,
@@ -16,7 +16,7 @@ import Itf from "@/public/casino/itf.svg";
 import Nhl from "@/public/casino/nhl.svg";
 import Ufc from "@/public/casino/ufc.svg";
 import Wta from "@/public/casino/wta.svg";
-import BetSlip from "@/components/Bets/BetSlip";
+import TawkTo from "next-tawkto";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -26,6 +26,11 @@ const Footer = () => {
     { name: "linkedin", icon: faLinkedinIn, href: "/" },
     { name: "instagram", icon: faInstagram, href: "/" },
   ];
+
+  // Tawk to chat 
+  useEffect(() => {
+      var tawk = new TawkTo('65b49c278d261e1b5f587405', '1hl4o3ved')
+  }, [])
 
   return (
     <>
@@ -166,13 +171,6 @@ const Footer = () => {
             </div>
           </div>
         </div>
-
-        {/* Bet slip area start */}
-        <div className="betslip-area-start">
-          <h6>Betslip</h6>
-          <BetSlip />
-        </div>
-        {/* Bet slip area end */}
       </footer>
     </>
   );
