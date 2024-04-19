@@ -277,6 +277,9 @@ const Header = () => {
                       <li>
                         <Link href={"/"}>Support</Link>
                       </li>
+                      <li>
+                        <Link href={"/affiliate"}>Affiliate Profile</Link>
+                      </li>
                       <li className="sticky-link">
                         <Link
                           href={"/"}

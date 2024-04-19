@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useField } from "formik";
-const InputField = ({ label = "", ...props }) => {
-  
+
+const TextAreaField = ({ label = "", ...props }) => {
   const [field, meta] = useField(props);
   return (
     <Form.Group>
@@ -14,6 +14,7 @@ const InputField = ({ label = "", ...props }) => {
       )}
       <Form.Control
         id={props.id || props.name}
+        as="textarea"
         {...field}
         {...props}
         isInvalid={props.errorMessage && props.errorMessage}
@@ -27,4 +28,4 @@ const InputField = ({ label = "", ...props }) => {
   );
 };
 
-export default InputField;
+export default TextAreaField;

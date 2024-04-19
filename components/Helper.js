@@ -1,3 +1,4 @@
+
 // Set local storage
 export const setLocal = (key, value) => {
   try {
