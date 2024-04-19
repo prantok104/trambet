@@ -719,6 +719,11 @@ select.form-control option {
   flex-wrap:wrap;
   justify-content: center
 }
+.all-providers-card a{
+  text-transform: capitalize;
+  text-decoration: none;
+  color: #fff;
+}
 .single-providers-card{
   border: 1px solid #000000;
   border-radius: 7px;
@@ -1085,10 +1090,28 @@ a.news-title:hover{
     background: #0e8b43;
 }
 
-
-
-
-
+/* Agents list in deposit area */
+.show-agents-list{
+  height: 350px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.show-agents-list a.single-agent-for-deposit{
+  display: block;;
+  margin-top: 5px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #090F1E;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #6938E8;
+}
+.show-agents-list a.single-agent-for-deposit:hover{
+  background: #6938E8;
+}
+a.single-agent-for-deposit span{
+  display: block;
+}
 
 
 
