@@ -125,16 +125,16 @@ const SideNav = () => {
   };
 
   return (
-    <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-      <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-90">
+    <div className="col-md-3 col-xl-3">
+      <div className="d-flex flex-column align-items-center align-items-sm-start text-white min-vh-90 bg-shadow df-radius affiliat-sidebar">
         <ul
-          className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100"
+          className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100 affiliat-sidebar-menu"
           id="menu"
         >
           {menu.map((menuItem, idx) => (
             <div key={idx} className="w-100">
               {menuItem.submenu.length > 0 ? (
-                <li className="nav-item w-100">
+                <li className="affiliate-sidebar-order-one-item">
                   <button
                     className="nav-link align-items-center px-0 d-flex justify-content-between w-100"
                     type="button"
@@ -159,7 +159,7 @@ const SideNav = () => {
                     }`}
                     id="menuCollapse"
                   >
-                    <ul className="nav flex-column">
+                    <ul className="nav flex-column affiliate-sidebar-order-two-item">
                       {menuItem?.submenu?.length > 0 &&
                         menuItem?.submenu?.map((submenuItem, idx) => (
                           <li className="nav-item" key={idx}>
@@ -175,7 +175,7 @@ const SideNav = () => {
                   </div>
                 </li>
               ) : (
-                <li className="nav-item">
+                <li className="nav-item affiliate-sidebar-order-one-item">
                   <Link
                     href={menuItem?.link}
                     className="nav-link align-items-center px-0 d-flex"

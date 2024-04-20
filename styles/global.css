@@ -1255,6 +1255,45 @@ a.single-agent-for-deposit span{
 
 
 
+/* Affiliat sidebar css */
+.affiliat-sidebar{
+  overflow: hidden;
+  border: 2px solid #2c3b66;
+  border-bottom: 0;
+}
+.affiliat-sidebar-menu li {
+    border-bottom: 1px solid #2c3b66;
+}
+.affiliat-sidebar-menu li ul{
+  background: #090F1E
+}
+.affiliat-sidebar-menu li ul li:first-child a {
+    border-top: 1px solid #2c3b66;
+}
+.affiliat-sidebar-menu li ul li a {
+    padding-left: 45px;
+}
+
+.affiliat-sidebar-menu .nav-pills .nav-link {
+   border-radius: 0;
+}
+.affiliat-sidebar-menu li a{
+  padding: 7px 10px;
+  border-radius: 0;
+}
+.affiliat-sidebar-menu li a:hover{
+  background: linear-gradient(70deg, #31bc69 -8%, #089e4e 96%);
+}
+.affiliat-sidebar-menu li a>svg, .affiliat-sidebar-menu li svg {
+    font-size: 14px;
+    margin-right: 13px;
+    margin-left: 10px;
+}
+
+.affiliat-sidebar-menu ul li:last-child {
+    border: 0;
+}
+
 
 
 
