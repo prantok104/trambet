@@ -1,10 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import InputField from "../Form/InputField";
+import InputField from "../Form/InputField2";
 import CheckboxField from "../Form/CheckboxField";
 import Link from "next/link";
-import axios from "axios";
 import ConstantData from "../ConstantData";
 import Swal from "sweetalert2";
 import { HttpClientCall } from "../HTTPClient";
@@ -86,7 +85,7 @@ const LoginPage = () => {
                 name="email"
                 onChange={(e) => setUserName(e.target.value)}
                 value={username}
-                errorMessage={error.username ? error.username.join(" ") : null}
+                errormessage={error.username ? error.username.join(" ") : null}
               />
             </div>
 
@@ -97,7 +96,7 @@ const LoginPage = () => {
                 name="password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
-                errorMessage={error.password ? error.password.join(" ") : null}
+                errormessage={error.password ? error.password.join(" ") : null}
               />
             </div>
 
