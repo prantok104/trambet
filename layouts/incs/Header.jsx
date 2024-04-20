@@ -19,6 +19,7 @@ import { setLocal } from "@/components/Helper";
 import { LanguageContext } from "@/components/Context/LanguageProvider";
 import { HttpClientCall } from "@/components/HTTPClient";
 import { getUserDetailsData, userLogout } from "@/services/userAuthService";
+import BetSlip from "@/components/Bets/BetSlip";
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
@@ -220,7 +221,7 @@ const Header = () => {
                           <Link href={"/"}>Bet History</Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Casino History</Link>
+                          <Link href={"/user/casino-history"}>Casino History</Link>
                         </li>
                         <li>
                           <Link href={"/"}>Bonues</Link>
@@ -376,6 +377,15 @@ const Header = () => {
         </Modal.Body>
       </Modal>
       {/* Registration modal area end */}
+
+
+
+       {/* Bet slip area start */}
+        <div className="betslip-area-start">
+          <h6>Betslip</h6>
+          <BetSlip />
+        </div>
+        {/* Bet slip area end */}
     </>
   );
 };

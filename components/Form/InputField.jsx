@@ -15,11 +15,11 @@ const InputField = ({ label = "", ...props }) => {
         id={props.id || props.name}
         {...field}
         {...props}
-        isInvalid={props.errorMessage && props.errorMessage}
+        isInvalid={meta.touched && meta.error}
       />
-      {props.errorMessage && props.errorMessage ? (
+      {meta.touched && meta.error ? (
         <Form.Control.Feedback type="invalid">
-          {props.errorMessage}
+          {meta.error}
         </Form.Control.Feedback>
       ) : null}
     </Form.Group>
