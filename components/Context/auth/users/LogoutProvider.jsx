@@ -1,3 +1,4 @@
+import { userLogout } from "@/services/userAuthService";
 import { createContext, useState, useContext } from "react";
 
 const LogoutContext = createContext();
