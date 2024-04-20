@@ -719,6 +719,11 @@ select.form-control option {
   flex-wrap:wrap;
   justify-content: center
 }
+.all-providers-card a{
+  text-transform: capitalize;
+  text-decoration: none;
+  color: #fff;
+}
 .single-providers-card{
   border: 1px solid #000000;
   border-radius: 7px;
@@ -1085,16 +1090,209 @@ a.news-title:hover{
     background: #0e8b43;
 }
 
+/* Agents list in deposit area */
+.show-agents-list{
+  height: 350px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.show-agents-list a.single-agent-for-deposit{
+  display: block;;
+  margin-top: 5px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #090F1E;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #6938E8;
+}
+.show-agents-list a.single-agent-for-deposit:hover{
+  background: #6938E8;
+}
+a.single-agent-for-deposit span{
+  display: block;
+}
+
+/* Casino area start */
+ .casino-area {
+    background: #090F1E;
+    width: 100%;
+    height: auto;
+}
+
+.casino-menu {
+    width: 100%;
+    display: flex;
+    list-style: none;
+    align-content: center;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+    background: #2d3859;
+    color: #A3A3AA;
+    font-size: 11px;
+    overflow: hidden;
+    overflow-x: auto;
+    text-transform: capitalize;
+    font-weight: 700;
+}
+
+.casino-menu li {
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    min-width: 108px;
+    text-align: center;
+    padding: 7px 0;
+}
+
+.casino-menu li span {
+    display: block;
+    font-size: 10px;
+}
+
+.casino-menu li img {
+    width: 24px;
+    margin-bottom: 5px;
+}
+
+.casino-menu li:hover, .casino-menu li.active {
+    background: linear-gradient(
+    326deg,
+    rgb(40, 54, 184) 0%,
+    rgb(136, 57, 255) 100%
+  );
+}
+
+.casino-all-data {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.casino-item-data {
+    border-radius: 10px;
+    overflow: hidden;
+    flex: 0 1 calc(25% - 12px);
+    margin: 6px;
+    height: 236px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
+    z-index: 1;
+    text-align: center;
+    line-height: 1.3;
+    color: #fff;
+    font-size: 11px;
+    padding: 5px;
+}
+
+.casino-item-data:hover:after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    background: black;
+    opacity: 0.7;
+    z-index: -1;
+}
+
+.casino-item-data span {
+    display: block;
+    width: 100%;
+    visibility: hidden;
+}
+
+.casino-item-data button {
+    background: transparent;
+    border: 1px solid #ddd;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 5px 10px 3px;
+    border-radius: 4px;
+    visibility: hidden;
+}
+
+.casino-item-data button:first-child {
+    background: #8325EE;
+    border-color: #8325EE;
+}
+
+.casino-item-data:hover button,.casino-item-data:hover span {
+    visibility: visible;
+}
+
+.casino-item-data div {
+    display: flex;
+    gap: 5px;
+}
+
+.casino-item-data img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 767px) and (min-width: 320px) {
+    .casino-menu-area {
+        position: sticky;
+        top: 70px;
+        z-index: 999999;
+    }
+
+    .casino-all-data {
+        margin-top: 90px;
+    }
+
+    .casino-item-data {
+        flex: 0 1 calc(100% - 12px);
+    }
+}
 
 
 
 
+/* Affiliat sidebar css */
+.affiliat-sidebar{
+  overflow: hidden;
+  border: 2px solid #2c3b66;
+  border-bottom: 0;
+}
+.affiliat-sidebar-menu li {
+    border-bottom: 1px solid #2c3b66;
+}
+.affiliat-sidebar-menu li ul{
+  background: #090F1E
+}
+.affiliat-sidebar-menu li ul li:first-child a {
+    border-top: 1px solid #2c3b66;
+}
+.affiliat-sidebar-menu li ul li a {
+    padding-left: 45px;
+}
 
+.affiliat-sidebar-menu .nav-pills .nav-link {
+   border-radius: 0;
+}
+.affiliat-sidebar-menu li a{
+  padding: 7px 10px;
+  border-radius: 0;
+}
+.affiliat-sidebar-menu li a:hover{
+  background: linear-gradient(70deg, #31bc69 -8%, #089e4e 96%);
+}
+.affiliat-sidebar-menu li a>svg, .affiliat-sidebar-menu li svg {
+    font-size: 14px;
+    margin-right: 13px;
+    margin-left: 10px;
+}
 
-
-
-
-
+.affiliat-sidebar-menu ul li:last-child {
+    border: 0;
+}
 
 
 
