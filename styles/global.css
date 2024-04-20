@@ -1289,12 +1289,23 @@ a.single-agent-for-deposit span{
     margin-right: 13px;
     margin-left: 10px;
 }
-
 .affiliat-sidebar-menu ul li:last-child {
     border: 0;
 }
-
-
+.item-card-area{
+  border: 2px solid #2c3b66;
+}
+.item-card-area h4{
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.item-card-area span{
+  font-weight: 300;
+  color: #aaa;
+  font-size: 12px;
+}
 
 
 
