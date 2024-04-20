@@ -1274,8 +1274,8 @@ a.single-agent-for-deposit span{
     padding-left: 45px;
 }
 
-.affiliat-sidebar-menu .nav-pills .nav-link {
-   border-radius: 0;
+.affiliat-sidebar-menu .nav-link {
+   border-radius: 0!important;
 }
 .affiliat-sidebar-menu li a{
   padding: 7px 10px;
