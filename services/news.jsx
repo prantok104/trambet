@@ -2,7 +2,7 @@ import { HttpClientCall } from "@/components/HTTPClient";
 
 
 export async  function getAllNews() {
-    await HttpClientCall({
+    return await HttpClientCall({
       endpoint: "news/1",
       method: "GET",
       includeAuth: false,
@@ -16,3 +16,19 @@ export async  function getAllNews() {
         return [];
       });
   }
+
+export async  function getNewsDetails(id) {
+    return await HttpClientCall({
+        endpoint: `news-details/${id}`,
+        method: "GET",
+        includeAuth: false,
+        data: [],
+    })
+        .then((response) => {
+            return response;
+
+        })
+        .catch((error) => {
+            return [];
+        });
+}
