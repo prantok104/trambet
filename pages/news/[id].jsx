@@ -41,11 +41,13 @@ const SingleNews = () => {
     },
   ];
   const [newsData, setNewsData] = useState([]);
+  const [recentNewsData, setRecentNewsData] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      const data = await getNewsDetails(id);
-      console.log("Fetched data:", data); // Log the fetched data
-      setNewsData(data);
+      const response = await getNewsDetails(id);
+      console.log("Fetched data:", response); // Log the fetched data
+      setNewsData(response.data);
+      setRecentNewsData(response.recentNews);
     }
     fetchData();
   }, [id]);
@@ -58,8 +60,8 @@ const SingleNews = () => {
              <div className="col-md-8">
                <div className="news-left-side">
                   <Image
-                 src="/breadcrumb.jpg"
-                 alt="image name"
+                 src={newsData.image}
+                 alt={newsData.title}
                  width="400"
                  height="0"
                  quality="100"
@@ -70,29 +72,10 @@ const SingleNews = () => {
                    borderRadius: "7px",
                  }}
                />
-               <span className="news-times mt-2 d-block">24 Apr, 2024</span>
-               <h2 className="my-4">Donec orci lectus aliquam ut</h2>
-               <p>
-                 Suspendisse nisl elit, rhoncus eget, elementum ac, condimentum
-                 eget, diam. Class aptent taciti sociosqu ad litora torquent per
-                 conubia nostra, per inceptos hymenaeos. Nullam cursus lacinia
-                 erat. Phasellus a est. Praesent venenatis metus at tortor
-                 pulvinar varius.
-               </p>
-               <p>
-                 Suspendisse nisl elit, rhoncus eget, elementum ac, condimentum
-                 eget, diam. Class aptent taciti sociosqu ad litora torquent per
-                 conubia nostra, per inceptos hymenaeos. Nullam cursus lacinia
-                 erat. Phasellus a est. Praesent venenatis metus at tortor
-                 pulvinar varius.
-               </p>
-               <p>
-                 Suspendisse nisl elit, rhoncus eget, elementum ac, condimentum
-                 eget, diam. Class aptent taciti sociosqu ad litora torquent per
-                 conubia nostra, per inceptos hymenaeos. Nullam cursus lacinia
-                 erat. Phasellus a est. Praesent venenatis metus at tortor
-                 pulvinar varius.
-               </p>
+               <span className="news-times mt-2 d-block">{newsData.created_at}</span>
+               <h2 className="my-4">{newsData.title}</h2>
+               <p dangerouslySetInnerHTML={{ __html: newsData.details }}/>
+
 
                <div className="news-social-share">
                  <h2>Share This Post</h2>
