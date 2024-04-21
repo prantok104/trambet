@@ -2,6 +2,8 @@ import ImageTitle from '@/components/ImageTitle'
 import Image from 'next/image'
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getNewsDetails} from "@/services/news";
+import { useRouter } from 'next/router';
 import {
   faFacebookF,
   faTwitter,
@@ -10,8 +12,9 @@ import {
   faPinterest
 } from "@fortawesome/free-brands-svg-icons";
 import RecentNews from '@/components/News/RecentNews';
-const SingleNews = () => {
+import {useEffect, useState} from "react";
 
+const SingleNews = () => {
   const socialLinks = [
     {
       name: "facebook",
@@ -34,7 +37,20 @@ const SingleNews = () => {
       href: "http://pinterest.com/pin/create/button/?url=https%3A%2F%2Ftrambet.smshagor.com%2Fnews%2Fdonec-orci-lectus-aliquam-ut%2F34&amp;description=Donec orci lectus aliquam ut&amp;media=https://trambet.smshagor.com/assets/images/frontend/blog/64ab9caa6fc861688968362.jpg",
     },
   ];
-
+  const router = useRouter();
+  const { id } = router.query;
+  console.log('Fetching details for news ID: ',id);
+  const [newsData, setNewsData] = useState([]);
+  useEffect(() => {
+    if (id) { 
+      async function fetchData() {
+        const data = await getNewsDetails(id);
+        console.log("Fetched data:", data);
+        setNewsData(data);
+      }
+      fetchData();
+    }
+  }, [id]);
    return (
      <div className="single-news-content">
        <ImageTitle title="Read Full News" />

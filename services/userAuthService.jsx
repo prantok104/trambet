@@ -30,3 +30,18 @@ export async function getUserDetailsData() {
     localStorage.setItem('user', []);
   });
 }
+
+export async function oneClickRegister(){
+  return await HttpClientCall({
+    endpoint: "one-click-register",
+    method: "POST",
+    includeAuth: false,
+    data: [],
+  })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}

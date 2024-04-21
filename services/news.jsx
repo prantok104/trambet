@@ -1,19 +1,33 @@
 import { HttpClientCall } from "@/components/HTTPClient";
 
-export async function getAllNews(props) {
-    await HttpClientCall({
-      endpoint: "frontend/blog",
+export async  function getAllNews() {
+    return await HttpClientCall({
+      endpoint: "news/1",
       method: "GET",
       includeAuth: false,
       data: [],
     })
-      .then((response) => {console.log('ki');
-        if (response?.data) {
-          console.log(response.data[0]);
-          return response.data[0];
-        }
+      .then((response) => {
+         return response.data;
+
       })
       .catch((error) => {
-        console.log(error);
+        return [];
       });
-  };
+  }
+
+export async  function getNewsDetails(id) {
+    return await HttpClientCall({
+        endpoint: `news-details/${id}`,
+        method: "GET",
+        includeAuth: false,
+        data: [],
+    })
+        .then((response) => {
+            return response;
+
+        })
+        .catch((error) => {
+            return [];
+        });
+}

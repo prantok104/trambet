@@ -63,7 +63,7 @@ const OneClickRegister = () => {
               </div>
             </div>
             <div className="col-md-6 mt-2 mb-4">
-              <button className="df-btn df-radius reg-btn">
+              <button type="submit"  className="df-btn df-radius reg-btn">
                 Registration now
               </button>
             </div>
