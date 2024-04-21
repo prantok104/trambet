@@ -33,7 +33,7 @@ export async function getUserDetailsData() {
 
 export async function oneClickRegister(){
   return await HttpClientCall({
-    endpoint: "one-click-register",
+    endpoint: "oneclick-signup",
     method: "POST",
     includeAuth: false,
     data: [],

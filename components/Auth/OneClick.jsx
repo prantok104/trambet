@@ -19,6 +19,7 @@ const OneClickRegister = () => {
       values,
       { setErrors, setStatus, setSubmitting }
    ) => {
+      //write logic here
       console.log(values);
    };
 
