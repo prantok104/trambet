@@ -18,8 +18,10 @@ import Clock from "@/components/Clock";
 import { setLocal } from "@/components/Helper";
 import { LanguageContext } from "@/components/Context/LanguageProvider";
 import { HttpClientCall } from "@/components/HTTPClient";
-import { getUserDetailsData, userLogout } from "@/services/userAuthService";
+import { getUserDetailsData } from "@/services/userAuthService";
 import BetSlip from "@/components/Bets/BetSlip";
+import { useLogout } from "@/components/Context/Context/Users/LogoutContext";
+
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
@@ -46,20 +48,26 @@ const Header = () => {
   };
 
   const [user, setUser] = useState(null);
+  // const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      getUserDetailsData().then((response) => {
-        setUser(response);
-      });
-    }
+    const fetchUserDetails = async () => {
+      if (localStorage.getItem("token")) {
+        await getUserDetailsData();
+        setUser(JSON.parse(localStorage.getItem("user")));
+      }
+    };
+  
+    fetchUserDetails();
   }, []);
 
+  const logout = useLogout();
   const handleLogout = () => {
-    userLogout().then(() => {
-      setUser(null);
-      const LogoutContext = createContext(user)
-    });
+    setUser(null);
+    logout();
+    //use toster for notification
+    
   };
+
   return (
     <>
       <div className="header">

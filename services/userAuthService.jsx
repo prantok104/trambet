@@ -8,6 +8,7 @@ export async function userLogout() {
     data: [],
   })
     .then(() => {
+      localStorage.removeItem("user");
       localStorage.removeItem("token");
     })
     .catch((error) => {
@@ -23,10 +24,9 @@ export async function getUserDetailsData() {
     data: [],
   }).then((res) => {
     if (res?.data) {
-        return res.data[0];
-      }
-    })
-    .catch((error) => {
-      return error;
-    });
+      localStorage.setItem('user', JSON.stringify(res.data[0]));
+    }
+  }).catch((error) => {
+    localStorage.setItem('user', []);
+  });
 }
