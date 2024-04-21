@@ -49,23 +49,21 @@ const Header = () => {
 
   const [user, setUser] = useState([]);
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      if (localStorage.getItem("token")) {
-        await getUserDetailsData();
-        setUser(JSON.parse(localStorage.getItem("user")));
-      }
-    };
-  
-    fetchUserDetails();
+    if (localStorage.getItem("token")) {
+      getUserDetailsData().then((res) => {
+        setUser(res);
+      });
+      // const data = JSON.parse(localStorage.getItem("user"));
+      // console.log(data);
+      // setUser(data);
+    }
   }, []);
 
-  console.log(user);
   const logout = useLogout();
   const handleLogout = () => {
     setUser(null);
     logout();
     //use toster for notification
-    
   };
 
   return (
@@ -94,7 +92,7 @@ const Header = () => {
                   <option value="a">American Odds</option>
                 </select>
 
-                {user && (
+                {/* {user && (
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -119,7 +117,7 @@ const Header = () => {
                       </ul>
                     </li>
                   </ul>
-                )}
+                )} */}
 
                 <div className="header-timer">
                   <Clock />
@@ -229,7 +227,9 @@ const Header = () => {
                           <Link href={"/"}>Bet History</Link>
                         </li>
                         <li>
-                          <Link href={"/user/casino-history"}>Casino History</Link>
+                          <Link href={"/user/casino-history"}>
+                            Casino History
+                          </Link>
                         </li>
                         <li>
                           <Link href={"/"}>Bonues</Link>
@@ -386,14 +386,12 @@ const Header = () => {
       </Modal>
       {/* Registration modal area end */}
 
-
-
-       {/* Bet slip area start */}
-        <div className="betslip-area-start">
-          <h6>Betslip</h6>
-          <BetSlip />
-        </div>
-        {/* Bet slip area end */}
+      {/* Bet slip area start */}
+      <div className="betslip-area-start">
+        <h6>Betslip</h6>
+        <BetSlip />
+      </div>
+      {/* Bet slip area end */}
     </>
   );
 };
