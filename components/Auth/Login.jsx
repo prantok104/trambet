@@ -53,30 +53,14 @@ const LoginPage = () => {
           }
       }).catch((error) => {
         console.log(error);
-        // if (error.response.status == 422) {
-        //   setError(error.data.errors);
-        // } else {
-        //   Swal.fire({
-        //     icon: "error",
-        //     title: "Login Failed",
-        //     text: `${error.data.user_message}`,
-        //     showConfirmButton: false,
-        //     timer: 1500,
-        //   });
-        // }
       });
   };
   return (
     <div>
       <Formik
-        // innerRef={formikRef}
-        // initialValues={initialValues}
-        // validationSchema={error}
-        // onSubmit={handleSubmit}
         enableReinitialize={true}
         className="form-data"
       >
-        {/* {({ handleSubmit, handleChange, values, touched, focused, errors }) => ( */}
         <Form noValidate onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-md-12">
@@ -141,7 +125,6 @@ const LoginPage = () => {
             </div>
           </div>
         </Form>
-        {/* )} */}
       </Formik>
     </div>
   );

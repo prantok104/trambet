@@ -47,8 +47,7 @@ const Header = () => {
     setLoginModal(true);
   };
 
-  const [user, setUser] = useState(null);
-  // const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState([]);
   useEffect(() => {
     const fetchUserDetails = async () => {
       if (localStorage.getItem("token")) {
@@ -60,6 +59,7 @@ const Header = () => {
     fetchUserDetails();
   }, []);
 
+  console.log(user);
   const logout = useLogout();
   const handleLogout = () => {
     setUser(null);
@@ -136,19 +136,19 @@ const Header = () => {
                             style={{ fontSize: 16 }}
                           />
                           <span className="notify-counter">
-                            {user.notifications.total}
+                            {user.notifications?.total}
                           </span>
                         </span>
                       </div>
                       <ul className="dropdown-menus notifications-list">
                         <li className="d-flex align-items-center justify-content-between notify-head">
                           <span>Notifications</span>{" "}
-                          <span>{user.notifications.total}</span>
+                          <span>{user.notifications?.total}</span>
                         </li>
                         <li>
-                          {user.notifications.latest &&
-                          user.notifications.latest.length > 0 ? (
-                            user.notifications.latest.map(
+                          {user.notifications?.latest &&
+                          user.notifications?.latest.length > 0 ? (
+                            user.notifications?.latest.map(
                               (notification, index) => (
                                 <Link key={index} href={"/"}>
                                   {notification}

@@ -9,9 +9,10 @@ import { useEffect, useState } from "react";
 import LoaderPage from "./LoaderPage";
 import { LanguageProvider } from "@/components/Context/LanguageProvider";
 import { BetslipProvider } from "@/components/Context/BetslipProvider";
-import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { LogoutProvider } from "@/components/Context/Provider/Users/LogoutProvider";
+
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
@@ -36,7 +37,7 @@ export default function App({ Component, pageProps }) {
       {loading ? (
         <LoaderPage />
       ) : (
- <LanguageProvider>
+        <LanguageProvider>
           <BetslipProvider>
             <LogoutProvider> {/* Wrap with LogoutProvider */}
               <Layout>
