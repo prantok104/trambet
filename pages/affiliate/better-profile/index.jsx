@@ -1,8 +1,9 @@
 import React from 'react'
+import AffiliatLayout from '../layout'
 
 const BetterProfile = () => {
   return (
-    <div>BetterProfile</div>
+    <AffiliatLayout>BetterProfile</AffiliatLayout>
   )
 }
 
