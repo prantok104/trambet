@@ -23,8 +23,7 @@ export async  function getTermsOfService() {
         method: "GET",
         includeAuth: false,
         data: [],
-    })
-        .then((response) => {
+    }).then((response) => {
             return response.data;
 
         })
@@ -44,6 +43,34 @@ export async  function getRefundPolicy() {
 
         })
         .catch((error) => {
+            return [];
+        });
+}
+
+export async function getCountryList() {
+    return await HttpClientCall({
+        endpoint: "country",
+        method: "GET",
+        includeAuth: false,
+        data: [],
+    }).then((response) => {
+            return response.data;
+
+        }).catch((error) => {
+            return [];
+        });
+}
+
+export async function getCurrencyList() {
+    return await HttpClientCall({
+        endpoint: "currency",
+        method: "GET",
+        includeAuth: false,
+        data: [],
+    }).then((response) => {
+            return response.data;
+
+        }).catch((error) => {
             return [];
         });
 }
