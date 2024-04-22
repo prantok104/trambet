@@ -1,15 +1,15 @@
-import { Form as FormikForm, Formik } from 'formik'
-import * as Yup from 'yup';
-import React, { use, useEffect, useRef, useState } from 'react'
-import InputField from '../Form/InputField';
+import { Form as FormikForm, Formik } from "formik";
+import * as Yup from "yup";
+import React, { use, useEffect, useRef, useState } from "react";
+import InputField from "../Form/InputField";
 import CheckboxField from "../Form/CheckboxField";
 import SelectField from "../Form/SelectField2";
-import Link from 'next/link'
+import Link from "next/link";
 import { HttpClientCall } from "../HTTPClient";
-import { getCountryList, getCurrencyList } from '../../services/common';
-import { notify } from '../Helper';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+import { getCountryList, getCurrencyList } from "../../services/common";
+import { notify } from "../Helper";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const Register = () => {
   const validationSchema = Yup.object({
@@ -19,7 +19,9 @@ const Register = () => {
     currency: Yup.string().required("Currency is required").max(50),
     promo: Yup.string().max(50),
     password: Yup.string().required("Password is required").max(50),
-    confirm_password: Yup.string().required("Confirm password is required").max(50),
+    confirm_password: Yup.string()
+      .required("Confirm password is required")
+      .max(50),
     agree: Yup.boolean().required("Agree is required"),
   });
   const [email, setEmail] = useState("");
@@ -57,7 +59,10 @@ const Register = () => {
     currencyData();
   }, []);
   const router = useRouter();
-  const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
+  const handleSubmit = async (
+    values,
+    { setErrors, setStatus, setSubmitting }
+  ) => {
     const countryName = countryList.filter((item) => item.code === country);
     const data = {
       email: email,
@@ -69,7 +74,8 @@ const Register = () => {
       password: password,
       password_confirmation: confirmPassword,
       agree: agree,
-      country: countryName.length && countryName[0].name ? countryName[0].name : null,
+      country:
+        countryName.length && countryName[0].name ? countryName[0].name : null,
     };
 
     HttpClientCall({
@@ -80,11 +86,15 @@ const Register = () => {
     }).then((res) => {
       if (res.status === true) {
         localStorage.setItem("token", res.access_token);
-        console.log(res);
-        toast.success("Successfully Registration completed", {
-
-          // onClose: () => Router.push('/')
-        });
+        if (res.data.ev == 0) {
+          toast.success("Successfully Registration completed", {
+            onClose: () => router.push("/user/otp-verify"),
+          });
+        } else {
+          toast.success("Successfully Registration completed", {
+            onClose: () => router.push("/"),
+          });
+        }
       } else if (res.response.status === 422) {
         Object.keys(res.response.data.errors).forEach((field) => {
           res.response.data.errors[field].forEach((errorMessage) => {
@@ -92,9 +102,9 @@ const Register = () => {
           });
         });
       } else {
-        // notify("error", res.response.data.message);
+        notify("error", res.response.data.message);
       }
-    })
+    });
   };
 
   return (
@@ -110,11 +120,11 @@ const Register = () => {
         <FormikForm>
           <div className="row">
             <div className="col-md-6">
-              <InputField 
-              label="Email*" 
-              name="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              <InputField
+                label="Email*"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="col-md-6">
@@ -127,12 +137,12 @@ const Register = () => {
               />
             </div>
             <div className="col-md-6 mt-2">
-              <InputField 
-                label="Mobile*" 
-                name="mobile" 
+              <InputField
+                label="Mobile*"
+                name="mobile"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
-                />
+              />
             </div>
             <div className="col-md-6 mt-2">
               <SelectField
@@ -144,9 +154,9 @@ const Register = () => {
               />
             </div>
             <div className="col-md-12 mt-2">
-              <InputField 
-                label="Promo (Optional)" 
-                name="promo" 
+              <InputField
+                label="Promo (Optional)"
+                name="promo"
                 value={promo}
                 onChange={(e) => setPromo(e.target.value)}
               />
@@ -170,13 +180,13 @@ const Register = () => {
               />
             </div>
             <div className="col-md-12 mt-2 d-flex gap-2 align-items-center">
-            <input 
-              type="checkbox" 
-              name="agree" 
-              checked={agree}
-              onChange={(e) => setAgree(e.target.checked)}
-            />
-              <div className='bottom-register'>
+              <input
+                type="checkbox"
+                name="agree"
+                checked={agree}
+                onChange={(e) => setAgree(e.target.checked)}
+              />
+              <div className="bottom-register">
                 I agree with <Link href={"/"}>Privacy Policy</Link>,{" "}
                 <Link href={"/"}>Terms of Service</Link>,
                 <Link href={"/"}> Refund Policy</Link>
@@ -190,24 +200,20 @@ const Register = () => {
             <hr />
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                Are you want to quickly registration? <Link href={"/auth/one-click"}>Click here</Link>
+                Are you want to quickly registration?{" "}
+                <Link href={"/auth/one-click"}>Click here</Link>
               </h6>
             </div>
             <div className="col-md-12 mt-2 bottom-register">
               <h6 className="text-center">
                 {" "}
-                Already have an account? Please <Link href={"/auth/login"}>
-                  Login
-                </Link>{" "}
-                here.
+                Already have an account? Please{" "}
+                <Link href={"/auth/login"}>Login</Link> here.
               </h6>
             </div>
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-
-                <Link href={"/"}>
-                  Became an affiliate
-                </Link>
+                <Link href={"/"}>Became an affiliate</Link>
               </h6>
             </div>
           </div>
@@ -215,6 +221,6 @@ const Register = () => {
       )}
     </Formik>
   );
-}
+};
 
-export default Register
+export default Register;

@@ -32,13 +32,11 @@ const OTPInputGroup = () => {
   };
 
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const otp = Object.values(inputValues).join("");
-    if (otp === "123456") {
-      console.log("OTP is correct");
-    } else {
-      console.log("Incorrect OTP");
-    }
+    
+    
   };
 
 
