@@ -1,14 +1,14 @@
+"use client"
 import React, { useState, useRef } from "react";
+import AffiliatLayout from "../../layout";
+import WithdrawHistoryTable from "@/models/WithdrawHistoryTable";
 import Breadcrumb from "@/components/Breadcrumb";
 import Card from "@/components/Card";
 import InputField from "@/components/Form/InputField";
 import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
-import AffiliatLayout from "../layout";
-import Website from "@/models/Website";
 
-const Websites = () => {
-  
+const WithdrawHistory = () => {
   const innerRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState({
@@ -24,10 +24,7 @@ const Websites = () => {
   });
 
   const rows = {
-    data: [
-      { year: 40 },
-      { year: 20 },
-    ],
+    data: [{ year: 40 }, { year: 20 }],
     current_page: 1,
     per_page: 10,
     total: 11,
@@ -53,13 +50,17 @@ const Websites = () => {
   const handleAction = async (event, data) => {};
 
   const handleSubmit = (values) => {};
+
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  };
+
   return (
     <AffiliatLayout>
       <div className="container-fluid">
-        <Breadcrumb
-          title="Websites"
-          path="Home => affiliate => websites"
-        />
+        <Breadcrumb title="Withdraw History" path="Home => affiliate => withdraw => history" />
         <div className="mt-2">
           <Card
             header="Websites"
@@ -74,6 +75,9 @@ const Websites = () => {
                 >
                   {({ values }) => (
                     <FormikForm>
+                      <div>
+
+                      </div>
                       <div className="d-flex align-items-center gap-2 justify-content-end">
                         <InputField name="search" placeholder="Search" />
                         <button
@@ -89,7 +93,7 @@ const Websites = () => {
               </div>
             }
           >
-            <Website
+            <WithdrawHistoryTable
               isLoading={isLoading}
               rows={rows}
               handleAction={handleAction}
@@ -103,4 +107,4 @@ const Websites = () => {
   );
 };
 
-export default Websites;
+export default WithdrawHistory;

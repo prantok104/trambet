@@ -4,11 +4,11 @@ import Card from "@/components/Card";
 import InputField from "@/components/Form/InputField";
 import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
-import AffiliatLayout from "../layout";
-import Website from "@/models/Website";
+import AffiliatLayout from "../../layout";
+import AffiliateLinkTable from "@/models/AffiliateLinkTable";
+import FullReportTable from "@/models/FullReportTable";
 
-const Websites = () => {
-  
+const FullReport = () => {
   const innerRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState({
@@ -57,12 +57,12 @@ const Websites = () => {
     <AffiliatLayout>
       <div className="container-fluid">
         <Breadcrumb
-          title="Websites"
-          path="Home => affiliate => websites"
+          title="Full Report"
+          path="Home => affiliate => report => full report"
         />
         <div className="mt-2">
           <Card
-            header="Websites"
+            header=""
             filter={
               <div className="text-right">
                 <Formik
@@ -89,7 +89,7 @@ const Websites = () => {
               </div>
             }
           >
-            <Website
+            <FullReportTable
               isLoading={isLoading}
               rows={rows}
               handleAction={handleAction}
@@ -101,6 +101,6 @@ const Websites = () => {
       </div>
     </AffiliatLayout>
   );
-};
+}
 
-export default Websites;
+export default FullReport

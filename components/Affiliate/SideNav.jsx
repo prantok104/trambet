@@ -65,19 +65,19 @@ const menu = [
     submenu: [
       {
         name: "Affiliate Link",
-        link: "/",
+        link: "/affiliate/report/affiliate-link",
       },
       {
         name: "Full Reports",
-        link: "/",
+        link: "/affiliate/report/fullreport",
       },
       {
         name: "Player Reports",
-        link: "/",
+        link: "/affiliate/report/player-report",
       },
       {
         name: "Summery",
-        link: "/",
+        link: "//affiliate/report/summery",
       },
     ],
   },

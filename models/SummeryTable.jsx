@@ -1,42 +1,26 @@
-"use client"
+"use client";
 import DataTableComponent from "@/components/DataTableComponent";
 import React, { useMemo } from "react";
 import { rowIndex } from "@/components/Helper";
 
-const WithdrawHistoryTable = ({
+const SummeryTable = ({
   rows,
   isLoading,
   handlePageSizeChange,
   handlePageChange,
   page = {},
 }) => {
-  
   const columns = useMemo(
     () => [
       rowIndex(rows),
       {
-        name: "Currency",
+        name: "Views",
         selector: (row) => row?.year,
         sortable: true,
       },
       {
-        name: "Date",
+        name: "Clicks",
         selector: (row) => row?.year,
-        sortable: false,
-      },
-      {
-        name: "Payout",
-        selector: (row) => row?.year,
-        sortable: false,
-      },
-      {
-        name: "Revenue",
-        selector: (row) => row?.year,
-        sortable: false,
-      },
-      {
-        name: "Balance",
-        selector: (row) => <span class="badge bg-warning">Active</span>,
         sortable: false,
       },
     ],
@@ -62,4 +46,4 @@ const WithdrawHistoryTable = ({
   );
 };
 
-export default WithdrawHistoryTable;
+export default SummeryTable;
