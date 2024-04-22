@@ -9,22 +9,22 @@ import mycash from '@/public/providers/mycash.png';
 import ProviderCard from '@/components/Users/Deposit/ProviderCard';
 import { HttpClientCall } from '@/components/HTTPClient';
 import { notify } from '@/components/Helper';
+import { getPaymentMethods } from '@/services/transaction';
 const Deposit = () => {
 
 const [paymentMethod, setPaymentMethod] = useState([]);
+const paymentMethodData = async () => {
+  await getPaymentMethods().then((res) => {
+    if(res.status === true){
+      setPaymentMethod(res.data);
+     } else {
+       notify("error", res.response.data.message);
+     }
+  });
+ }
+
   useEffect(() => {
-    HttpClientCall({
-      method: "GET",
-      endpoint: "deposit/list",
-      includeAuth: true,
-      data:{},
-    }).then((res) => {
-      if (res.status === true) {
-        setPaymentMethod(res.data);
-      } else {
-        notify("error", res.message);
-      }
-    })
+    paymentMethodData();
   }, []);
 
   return (
