@@ -39,14 +39,12 @@ const SingleNews = () => {
   ];
   const router = useRouter();
   const { id } = router.query;
-  console.log('Fetching details for news ID: ', id);
   const [newsData, setNewsData] = useState([]);
   const [recentNewsData, setRecentNewsData] = useState([]);
   useEffect(() => {
     if (id) {
       async function fetchData() {
         const data = await getNewsDetails(id);
-        console.log(data);
         setNewsData(data.data);
         setRecentNewsData(data.recentNews);
       }
