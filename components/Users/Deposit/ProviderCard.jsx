@@ -47,13 +47,13 @@ const ProviderCard = ({providers}) => {
           onClick={() => handleProviderModal(item)}
         >
           <Image
-            src={"https://trambet.smshagor.com/core/public/storage/providers/" + item.file}
+            src={item.file}
             alt={item.name}
             width={157}
             height={70}
             style={{ objectFit: "cover" }}
             placeholder={"blur"}
-            blurDataURL={"https://trambet.smshagor.com/core/public/storage/providers/" + item.file}
+            blurDataURL={item.file}
           />
           <h6>{item?.name}</h6>
         </div>
@@ -74,7 +74,7 @@ const ProviderCard = ({providers}) => {
           <div>
             <div className="text-center bg-shadow py-2">
               <Image
-                src={"https://trambet.smshagor.com/core/public/storage/providers/" + provider?.file}
+                src={provider?.file}
                 alt={provider?.name}
                 width={130}
                 height={70}
