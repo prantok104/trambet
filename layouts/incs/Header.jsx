@@ -253,46 +253,49 @@ const Header = () => {
 
                 {/* User settings area start */}
                 {user && (
-                  <ul className="droplist">
-                    <li>
-                      <span className="profile-look">
-                        <FontAwesomeIcon icon={faGear} />
-                      </span>
-                      <ul className="dropdown-menus">
-                        <li>
-                          <Link href={"/user/"}>Change Password</Link>
-                        </li>
-                        <li>
-                          <Link href={"/"}>2FA Verification</Link>
-                        </li>
-                        <li>
-                          <Link href={"/"}>Security and privacy</Link>
-                        </li>
-                        <li>
-                          <Link href={"/"}>Support</Link>
-                        </li>
-                        <li className="sticky-link">
-                          <Link
-                            href={"/"}
-                            className="d-flex align-items-center justify-content-between"
-                          >
-                            Referral{" "}
-                            <span>
-                              <FontAwesomeIcon icon={faAngleDown} />
-                            </span>
-                          </Link>
-                          <ul className="sticky-items">
-                            <li>
-                              <Link href={"/"}>Referred Link</Link>
-                            </li>
-                            <li>
-                              <Link href={"/"}>Referred Users</Link>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                <ul className="droplist">
+                  <li>
+                    <span className="profile-look">
+                      <FontAwesomeIcon icon={faGear} />
+                    </span>
+                    <ul className="dropdown-menus">
+                      <li>
+                        <Link href={"/user/"}>Change Password</Link>
+                      </li>
+                      <li>
+                        <Link href={"/"}>2FA Verification</Link>
+                      </li>
+                      <li>
+                        <Link href={"/"}>Security and privacy</Link>
+                      </li>
+                      <li>
+                        <Link href={"/"}>Support</Link>
+                      </li>
+                      <li>
+                        <Link href={"/affiliate"}>Affiliate Profile</Link>
+                      </li>
+                      <li className="sticky-link">
+                        <Link
+                          href={"/"}
+                          className="d-flex align-items-center justify-content-between"
+                        >
+                          Referral{" "}
+                          <span>
+                            <FontAwesomeIcon icon={faAngleDown} />
+                          </span>
+                        </Link>
+                        <ul className="sticky-items">
+                          <li>
+                            <Link href={"/"}>Referred Link</Link>
+                          </li>
+                          <li>
+                            <Link href={"/"}>Referred Users</Link>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
                 )}
                 {/* User settings area end */}
 
