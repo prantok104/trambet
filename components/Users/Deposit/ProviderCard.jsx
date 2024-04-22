@@ -5,7 +5,9 @@ import { Form as FormikForm, Formik } from "formik";
 import InputField from "@/components/Form/InputField";
 import * as Yup from "yup";
 import { useRouter } from 'next/router';
+import ConstantData from "@/components/ConstantData";
 const ProviderCard = ({providers}) => {
+  console.log(providers);
    const formikRef = useRef();
    const navigate = useRouter();;
    const [modalView, setModalView] = useState(false);
@@ -13,6 +15,7 @@ const ProviderCard = ({providers}) => {
    const [amount, setAmount] = useState(0);
    const [maxAmount, setMaxAmount] = useState(0);
    const handleProviderModal = (item) => {
+    console.log(item);
       setProvider(item);
       setAmount(item?.min);
       setMaxAmount(item?.max);
@@ -37,19 +40,20 @@ const ProviderCard = ({providers}) => {
 
   return (
     <div className="all-providers-card">
-      {providers?.map((item, key) => (
+      {providers?.payment_method?.map((item, key) => (
         <div
           key={key}
           className="single-providers-card"
           onClick={() => handleProviderModal(item)}
         >
           <Image
-            src={item.image}
+            src={"https://trambet.smshagor.com/core/public/storage/providers/" + item.file}
             alt={item.name}
             width={157}
             height={70}
             style={{ objectFit: "cover" }}
             placeholder={"blur"}
+            blurDataURL={"https://trambet.smshagor.com/core/public/storage/providers/" + item.file}
           />
           <h6>{item?.name}</h6>
         </div>
@@ -70,7 +74,7 @@ const ProviderCard = ({providers}) => {
           <div>
             <div className="text-center bg-shadow py-2">
               <Image
-                src={provider?.image}
+                src={"https://trambet.smshagor.com/core/public/storage/providers/" + provider?.file}
                 alt={provider?.name}
                 width={130}
                 height={70}
@@ -84,7 +88,7 @@ const ProviderCard = ({providers}) => {
                   marginTop: "15px",
                 }}
               >
-                Amount minimum {provider?.min}BDT / maximum {provider?.max}BDT
+                Amount minimum {provider?.minimum_deposit_amount}BDT / maximum {provider?.maximum_deposit_amount}BDT
               </span>
             </div>
 
@@ -96,7 +100,7 @@ const ProviderCard = ({providers}) => {
                {({ values,touched, errors }) => (
                <FormikForm>
                   <InputField name="amount" label="amount*" />
-                     <button className="df-btn reg-btn mt-2" style={{ width: "100%" }}>
+                     <button type="submit" className="df-btn reg-btn mt-2" style={{ width: "100%" }}>
                         CONFIRM
                      </button>
                </FormikForm>
