@@ -47,18 +47,14 @@ const Header = () => {
     setLoginModal(true);
   };
 
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      getUserDetailsData().then((res) => {
-        setUser(res);
-      });
-      // const data = JSON.parse(localStorage.getItem("user"));
-      // console.log(data);
-      // setUser(data);
+      getUserDetailsData();
+      const data = JSON.parse(localStorage.getItem("userDetails"));
+      setUser(data);
     }
   }, []);
-
   const logout = useLogout();
   const handleLogout = () => {
     setUser(null);
@@ -92,24 +88,24 @@ const Header = () => {
                   <option value="a">American Odds</option>
                 </select>
 
-                {/* {user && (
+                {user && (
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
-                        <span>+ {user.data}</span>
+                        <span>+ {Number(user?.balance).toFixed(2)}</span>
                         <span className="profile-look">
                           <span style={{ fontSize: 9 }}>BDT</span>
                         </span>
                       </div>
                       <ul className="dropdown-menus">
                         <li>
-                          <Link href={"/"}>Deposit: + {user.data}</Link>
+                          <Link href={"/"}>Deposit: + {Number(user?.balance).toFixed(2)}</Link>
                         </li>
                         <li>
                           <Link href={"/"}>Withdrawal: + {user.data}</Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Bonus: + {user.data}</Link>
+                          <Link href={"/"}>Bonus: + {Number(user?.bonus_account).toFixed(2)}</Link>
                         </li>
                         <li>
                           <Link href={"/"}>Tramcard: + {user.data}</Link>
@@ -117,7 +113,7 @@ const Header = () => {
                       </ul>
                     </li>
                   </ul>
-                )} */}
+                )} 
 
                 <div className="header-timer">
                   <Clock />
@@ -148,8 +144,8 @@ const Header = () => {
                           user.notifications?.latest.length > 0 ? (
                             user.notifications?.latest.map(
                               (notification, index) => (
-                                <Link key={index} href={"/"}>
-                                  {notification}
+                                <Link key={index} href={notification.url}>
+                                  {notification.title}
                                 </Link>
                               )
                             )

@@ -8,7 +8,7 @@ const ProfileCard = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-      setUser(JSON.parse(localStorage.getItem("user")));
+      setUser(JSON.parse(localStorage.getItem("userDetails")));
   }, []);
 
   const logout = useLogout();

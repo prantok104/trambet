@@ -2,7 +2,7 @@ import ImageTitle from '@/components/ImageTitle'
 import Image from 'next/image'
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getNewsDetails} from "@/services/news";
+import { getNewsDetails } from "@/services/news";
 import { useRouter } from 'next/router';
 import {
   faFacebookF,
@@ -12,7 +12,7 @@ import {
   faPinterest
 } from "@fortawesome/free-brands-svg-icons";
 import RecentNews from '@/components/News/RecentNews';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 const SingleNews = () => {
   const socialLinks = [
@@ -39,71 +39,75 @@ const SingleNews = () => {
   ];
   const router = useRouter();
   const { id } = router.query;
-  console.log('Fetching details for news ID: ',id);
+  console.log('Fetching details for news ID: ', id);
   const [newsData, setNewsData] = useState([]);
   const [recentNewsData, setRecentNewsData] = useState([]);
   useEffect(() => {
-    if (id) { 
+    if (id) {
       async function fetchData() {
         const data = await getNewsDetails(id);
-        console.log("Fetched data:", data);
-        setNewsData(data);
+        console.log(data);
+        setNewsData(data.data);
+        setRecentNewsData(data.recentNews);
       }
       fetchData();
     }
   }, [id]);
-   return (
-     <div className="single-news-content">
-       <ImageTitle title="Read Full News" />
-       <div className="single-news-area py-5">
-         <div className="container">
-           <div className="row">
-             <div className="col-md-8">
-               <div className="news-left-side">
-                  <Image
-                 src={newsData.image}
-                 alt={newsData.title}
-                 width="400"
-                 height="0"
-                 quality="100"
-                 style={{
-                   height: "auto",
-                   objectFit: "cover",
-                   width: "100%",
-                   borderRadius: "7px",
-                 }}
-               />
-               <span className="news-times mt-2 d-block">{newsData.created_at}</span>
-               <h2 className="my-4">{newsData.title}</h2>
-               <p dangerouslySetInnerHTML={{ __html: newsData.details }}/>
+  return (
+    <div className="single-news-content">
+      <ImageTitle title="Read Full News" />
+      <div className="single-news-area py-5">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8">
+              <div className="news-left-side">
+                <Image
+                  src={newsData.image}
+                  alt={newsData.title}
+                  width="400"
+                  height="0"
+                  quality="100"
+                  style={{
+                    height: "auto",
+                    objectFit: "cover",
+                    width: "100%",
+                    borderRadius: "7px",
+                  }}
+                />
+                <span className="news-times mt-2 d-block">{newsData.created_at}</span>
+                <h2 className="my-4">{newsData.title}</h2>
+                <p dangerouslySetInnerHTML={{ __html: newsData.details }} />
 
 
-               <div className="news-social-share">
-                 <h2>Share This Post</h2>
-                 <div className="share-like">
-                   {socialLinks?.map((item, index) => (
-                     <Link title={item?.name} href={item?.href} target="_blank" key={`social-share${index}`}>
-                       <FontAwesomeIcon icon={item?.icon} />
-                     </Link>
-                   ))}
-                 </div>
-               </div>
-               </div>
-             </div>
-             <div className="col-md-4">
-               <div className="recent-news-content-area">
-                  <h2 className="recent-news-heading">Recent Updates</h2>
-                  <RecentNews image={'/breadcrumb.jpg'} title={'In ac felis quis tortor'} time={'28 Apr, 2024'} />
-                  <RecentNews image={'/breadcrumb.jpg'} title={'Nam pretium turpis et arcu'} time={'28 Apr, 2024'} />
-                  <RecentNews image={'/breadcrumb.jpg'} title={'Phasellus viverra nulla ut metus'} time={'28 Apr, 2024'} />
-                  <RecentNews image={'/breadcrumb.jpg'} title={'Phasellus viverra nulla ut metus'} time={'28 Apr, 2024'} />
-                  <RecentNews image={'/breadcrumb.jpg'} title={'Phasellus viverra nulla ut metus'} time={'28 Apr, 2024'} />
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
-   );
+                <div className="news-social-share">
+                  <h2>Share This Post</h2>
+                  <div className="share-like">
+                    {socialLinks?.map((item, index) => (
+                      <Link title={item?.name} href={item?.href} target="_blank" key={`social-share${index}`}>
+                        <FontAwesomeIcon icon={item?.icon} />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="recent-news-content-area">
+                <h2 className="recent-news-heading">Recent Updates</h2>
+                {recentNewsData.map((recent, index) => (
+                  <RecentNews
+                    key={index}
+                    image={recent.image}
+                    title={recent.title}
+                    time={recent.created_at}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 export default SingleNews
