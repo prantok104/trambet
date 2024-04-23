@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import Logo from "@/public/logo.png";
 import Link from "next/link";
 import Modal from "react-bootstrap/Modal";
@@ -18,7 +18,10 @@ import Clock from "@/components/Clock";
 import { setLocal } from "@/components/Helper";
 import { LanguageContext } from "@/components/Context/LanguageProvider";
 import { HttpClientCall } from "@/components/HTTPClient";
+import { getUserDetailsData } from "@/services/userAuthService";
 import BetSlip from "@/components/Bets/BetSlip";
+import { useLogout } from "@/components/Context/Context/Users/LogoutContext";
+
 const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
@@ -43,45 +46,22 @@ const Header = () => {
   const handleLoginPageModal = () => {
     setLoginModal(true);
   };
+
   const [user, setUser] = useState(null);
-  const getUserDetails = async () => {
-    await HttpClientCall({
-      endpoint: "my-profile",
-      method: "GET",
-      includeAuth: true,
-      data: [],
-    })
-      .then((response) => {
-        if (response?.data) {
-          console.log(response.data[0]);
-          setUser(response.data[0]);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      getUserDetails();
+      getUserDetailsData();
+      const data = JSON.parse(localStorage.getItem("userDetails"));
+      setUser(data);
     }
   }, []);
-
+  const logout = useLogout();
   const handleLogout = () => {
-    HttpClientCall({
-      endpoint: "logout",
-      method: "POST",
-      includeAuth: true,
-      data: [],
-    })
-      .then((response) => {
-        setUser(null);
-        localStorage.removeItem("token");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    setUser(null);
+    logout();
+    //use toster for notification
   };
+
   return (
     <>
       <div className="header">
@@ -112,20 +92,20 @@ const Header = () => {
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
-                        <span>+ {user.data}</span>
+                        <span>+ {Number(user?.balance).toFixed(2)}</span>
                         <span className="profile-look">
                           <span style={{ fontSize: 9 }}>BDT</span>
                         </span>
                       </div>
                       <ul className="dropdown-menus">
                         <li>
-                          <Link href={"/"}>Deposit: + {user.data}</Link>
+                          <Link href={"/"}>Deposit: + {Number(user?.balance).toFixed(2)}</Link>
                         </li>
                         <li>
                           <Link href={"/"}>Withdrawal: + {user.data}</Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Bonus: + {user.data}</Link>
+                          <Link href={"/"}>Bonus: + {Number(user?.bonus_account).toFixed(2)}</Link>
                         </li>
                         <li>
                           <Link href={"/"}>Tramcard: + {user.data}</Link>
@@ -133,7 +113,7 @@ const Header = () => {
                       </ul>
                     </li>
                   </ul>
-                )}
+                )} 
 
                 <div className="header-timer">
                   <Clock />
@@ -141,120 +121,133 @@ const Header = () => {
 
                 {/* Notification area start */}
                 {user && (
-                <ul className="droplist">
-                  <li>
-                    <div>
-                      <span className="profile-look notify-bell">
-                        <FontAwesomeIcon
-                          icon={faBell}
-                          style={{ fontSize: 16 }}
-                        />
-                        <span className="notify-counter">2</span>
-                      </span>
-                    </div>
-                    <ul className="dropdown-menus notifications-list">
-                      <li className="d-flex align-items-center justify-content-between notify-head">
-                        <span>Notifications</span> <span>2</span>
-                      </li>
-                      <li>
-                        <Link href={"/"}>
-                          Congratulations! You have to got a new tramcard for
-                          Life time
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                  <ul className="droplist">
+                    <li>
+                      <div>
+                        <span className="profile-look notify-bell">
+                          <FontAwesomeIcon
+                            icon={faBell}
+                            style={{ fontSize: 16 }}
+                          />
+                          <span className="notify-counter">
+                            {user.notifications?.total}
+                          </span>
+                        </span>
+                      </div>
+                      <ul className="dropdown-menus notifications-list">
+                        <li className="d-flex align-items-center justify-content-between notify-head">
+                          <span>Notifications</span>{" "}
+                          <span>{user.notifications?.total}</span>
+                        </li>
+                        <li>
+                          {user.notifications?.latest &&
+                          user.notifications?.latest.length > 0 ? (
+                            user.notifications?.latest.map(
+                              (notification, index) => (
+                                <Link key={index} href={notification.url}>
+                                  {notification.title}
+                                </Link>
+                              )
+                            )
+                          ) : (
+                            <Link href={"/"}>No new notifications</Link>
+                          )}
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 )}
                 {/* Notification area end */}
 
                 {/* User profile area start */}
                 {user && (
-                <ul className="droplist">
-                  <li>
-                    <div className="d-flex align-items-center gap-2 bettor-id-look">
-                      <span>ID: 12345678</span>
-                      <span className="profile-look">
-                        <FontAwesomeIcon icon={faUser} />
-                      </span>
-                    </div>
-                    <ul className="dropdown-menus">
-                      <li>
-                        <Link href={"/user/profile"}>My Profile</Link>
-                      </li>
-                      <li>
-                        <Link href={"/user/otp-verify"}>OTP Verify</Link>
-                      </li>
-                      <li className="sticky-link">
-                        <Link
-                          href={"/"}
-                          className="d-flex align-items-center justify-content-between"
-                        >
-                          Deposit{" "}
-                          <span>
-                            <FontAwesomeIcon icon={faAngleDown} />
-                          </span>
-                        </Link>
-                        <ul className="sticky-items">
-                          <li>
-                            <Link href={"/user/deposit/"}>Deposit Now</Link>
-                          </li>
-                          <li>
-                            <Link href={"/user/deposit/history"}>
-                              Deposit History
-                            </Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li className="sticky-link">
-                        <Link
-                          href={"/"}
-                          className="d-flex align-items-center justify-content-between"
-                        >
-                          Withdraw{" "}
-                          <span>
-                            <FontAwesomeIcon icon={faAngleDown} />
-                          </span>
-                        </Link>
-                        <ul className="sticky-items">
-                          <li>
-                            <Link href={"/"}>Withdraw Now</Link>
-                          </li>
-                          <li>
-                            <Link href={"/"}>Withdraw History</Link>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Bet Slip</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Bet History</Link>
-                      </li>
-                      <li>
-                        <Link href={"/user/casino-history"}>Casino History</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Bonues</Link>
-                      </li>
-                      <li>
-                        <Link href={"/user/tramcard"}>Tramcard</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Apply for Affiliate</Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="javascript:void(0)"
-                          // type="submit"
-                          onClick={handleLogout}
-                        >
-                          Logout
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                  <ul className="droplist">
+                    <li>
+                      <div className="d-flex align-items-center gap-2 bettor-id-look">
+                        <span>ID: {user.user_id}</span>
+                        <span className="profile-look">
+                          <FontAwesomeIcon icon={faUser} />
+                        </span>
+                      </div>
+                      <ul className="dropdown-menus">
+                        <li>
+                          <Link href={"/user/profile"}>My Profile</Link>
+                        </li>
+                        <li>
+                          <Link href={"/user/otp-verify"}>OTP Verify</Link>
+                        </li>
+                        <li className="sticky-link">
+                          <Link
+                            href={"/"}
+                            className="d-flex align-items-center justify-content-between"
+                          >
+                            Deposit{" "}
+                            <span>
+                              <FontAwesomeIcon icon={faAngleDown} />
+                            </span>
+                          </Link>
+                          <ul className="sticky-items">
+                            <li>
+                              <Link href={"/user/deposit/"}>Deposit Now</Link>
+                            </li>
+                            <li>
+                              <Link href={"/user/deposit/history"}>
+                                Deposit History
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
+                        <li className="sticky-link">
+                          <Link
+                            href={"/"}
+                            className="d-flex align-items-center justify-content-between"
+                          >
+                            Withdraw{" "}
+                            <span>
+                              <FontAwesomeIcon icon={faAngleDown} />
+                            </span>
+                          </Link>
+                          <ul className="sticky-items">
+                            <li>
+                              <Link href={"/"}>Withdraw Now</Link>
+                            </li>
+                            <li>
+                              <Link href={"/"}>Withdraw History</Link>
+                            </li>
+                          </ul>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Bet Slip</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Bet History</Link>
+                        </li>
+                        <li>
+                          <Link href={"/user/casino-history"}>
+                            Casino History
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Bonues</Link>
+                        </li>
+                        <li>
+                          <Link href={"/user/tramcard"}>Tramcard</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Apply for Affiliate</Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="javascript:void(0)"
+                            // type="submit"
+                            onClick={handleLogout}
+                          >
+                            Logout
+                          </Link>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 )}
                 {/* User profile area end */}
 
@@ -392,14 +385,12 @@ const Header = () => {
       </Modal>
       {/* Registration modal area end */}
 
-
-
-       {/* Bet slip area start */}
-        <div className="betslip-area-start">
-          <h6>Betslip</h6>
-          <BetSlip />
-        </div>
-        {/* Bet slip area end */}
+      {/* Bet slip area start */}
+      <div className="betslip-area-start">
+        <h6>Betslip</h6>
+        <BetSlip />
+      </div>
+      {/* Bet slip area end */}
     </>
   );
 };

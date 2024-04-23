@@ -1,27 +1,27 @@
 import ImageTitle from '@/components/ImageTitle'
-import React from 'react'
+import { useEffect, useState } from "react";
+import { getPrivacyPolicy } from "@/services/common";
 
 const privacyPolicy = () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [privacyData, setPrivacyData] = useState([]);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        async function fetchData() {
+            const data = await getPrivacyPolicy();
+            console.log("Fetched data:", data); // Log the fetched data
+            setPrivacyData(data);
+        }
+        fetchData();
+    }, []);
   return (
     <div class="policy-page-content">
-      <ImageTitle  title='Privacy Policy' />
+      <ImageTitle  title={privacyData.title} />
       <div className="p-5">
-         <div className="mb-5">
-            <h2>What information do we collect?</h2>
-         <p>We gather data from you when you register on our site, submit a request, buy any services, react to an overview, or round out a structure. At the point when requesting any assistance or enrolling on our site, as suitable, you might be approached to enter your: name, email address, or telephone number. You may, nonetheless, visit our site anonymously.</p>
-            </div>   
-         <div className="mb-5">
-            <h2>What information do we collect?</h2>
-         <p>We gather data from you when you register on our site, submit a request, buy any services, react to an overview, or round out a structure. At the point when requesting any assistance or enrolling on our site, as suitable, you might be approached to enter your: name, email address, or telephone number. You may, nonetheless, visit our site anonymously.</p>
-            </div>   
-         <div className="mb-5">
-            <h2>What information do we collect?</h2>
-         <p>We gather data from you when you register on our site, submit a request, buy any services, react to an overview, or round out a structure. At the point when requesting any assistance or enrolling on our site, as suitable, you might be approached to enter your: name, email address, or telephone number. You may, nonetheless, visit our site anonymously.</p>
-            </div>   
-         <div className="mb-5">
-            <h2>What information do we collect?</h2>
-         <p>We gather data from you when you register on our site, submit a request, buy any services, react to an overview, or round out a structure. At the point when requesting any assistance or enrolling on our site, as suitable, you might be approached to enter your: name, email address, or telephone number. You may, nonetheless, visit our site anonymously.</p>
-            </div>   
+          <div className="mb-5">
+              <h2>{privacyData.title}</h2>
+              <p dangerouslySetInnerHTML={{__html: privacyData.details}}/>
+          </div>
       </div>
     </div>
   )

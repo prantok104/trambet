@@ -1,10 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import InputField from "../Form/InputField";
+import InputField from "../Form/InputField2";
 import CheckboxField from "../Form/CheckboxField";
 import Link from "next/link";
-import axios from "axios";
 import ConstantData from "../ConstantData";
 import Swal from "sweetalert2";
 import { HttpClientCall } from "../HTTPClient";
@@ -19,12 +18,14 @@ const LoginPage = () => {
       username: username,
       password: password,
     };
+
     HttpClientCall({
       method: "POST",
       endpoint: "login",
       includeAuth: false,
       data: data,
     }).then((res) => {
+      // console.log(res);
         if (res.status == true) {
           localStorage.setItem("token", res.access_token);
           Swal.fire({
@@ -36,37 +37,30 @@ const LoginPage = () => {
           }).then(() => {
             setUserName("");
             setPassword("");
-            // window.location.reload();
+            setError([]);
+            window.location.reload();
           });
         }else if (res.response.status == 422) {
-          setError(error.data.errors);
-        }
+          setError(res.response.data.errors);
+        } else {
+            Swal.fire({
+              icon: "error",
+              title: "Login Failed",
+              text: `${res.response.data.user_message}`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
       }).catch((error) => {
         console.log(error);
-        // if (error.response.status == 422) {
-        //   setError(error.data.errors);
-        // } else {
-        //   Swal.fire({
-        //     icon: "error",
-        //     title: "Login Failed",
-        //     text: `${error.data.user_message}`,
-        //     showConfirmButton: false,
-        //     timer: 1500,
-        //   });
-        // }
       });
   };
   return (
     <div>
       <Formik
-        // innerRef={formikRef}
-        // initialValues={initialValues}
-        // validationSchema={error}
-        // onSubmit={handleSubmit}
         enableReinitialize={true}
         className="form-data"
       >
-        {/* {({ handleSubmit, handleChange, values, touched, focused, errors }) => ( */}
         <Form noValidate onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-md-12">
@@ -75,7 +69,7 @@ const LoginPage = () => {
                 name="email"
                 onChange={(e) => setUserName(e.target.value)}
                 value={username}
-                errorMessage={error.username ? error.username.join(" ") : null}
+                errormessage={error.username ? error.username.join(" ") : null}
               />
             </div>
 
@@ -86,7 +80,7 @@ const LoginPage = () => {
                 name="password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
-                errorMessage={error.password ? error.password.join(" ") : null}
+                errormessage={error.password ? error.password.join(" ") : null}
               />
             </div>
 
@@ -131,7 +125,6 @@ const LoginPage = () => {
             </div>
           </div>
         </Form>
-        {/* )} */}
       </Formik>
     </div>
   );

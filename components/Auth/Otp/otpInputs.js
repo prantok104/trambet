@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import Loader from '@/components/Loader';
+import { toast } from "react-toastify";
+import { notify } from "@/components/Helper";
+import { HttpClientCall } from "@/components/HTTPClient";
+import { useRouter } from "next/router";
 const OTPInputGroup = () => {
   const [resendLoader, setResendLoader] = useState(false)
   const [inputValues, setInputValues] = useState({
@@ -10,7 +14,7 @@ const OTPInputGroup = () => {
     input5: "",
     input6: "",
   });
-
+  const router = useRouter();
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -32,13 +36,26 @@ const OTPInputGroup = () => {
   };
 
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const otp = Object.values(inputValues).join("");
-    if (otp === "123456") {
-      console.log("OTP is correct");
-    } else {
-      console.log("Incorrect OTP");
-    }
+    const data = {
+      code : otp,
+    };
+    HttpClientCall({
+      method: "POST",
+      endpoint: "verify-email",
+      includeAuth: true,
+      data: data,
+    }).then((res) => {
+      if (res.status === true) {
+        toast.success("Successfully email verification done", {
+          onClose: () => router.push('/')
+      });
+      } else {
+        notify("error", res.response.data.message);
+      }
+    });
   };
 
 
