@@ -54,52 +54,47 @@ const Websites = () => {
 
   const handleSubmit = (values) => {};
   return (
-    <AffiliatLayout>
-      <div className="container-fluid">
-        <Breadcrumb
-          title="Websites"
-          path="Home => affiliate => websites"
-        />
-        <div className="mt-2">
-          <Card
-            header="Websites"
-            filter={
-              <div className="text-right">
-                <Formik
-                  innerRef={innerRef}
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={handleSubmit}
-                  enableReinitialize={true}
-                >
-                  {({ values }) => (
-                    <FormikForm>
-                      <div className="d-flex align-items-center gap-2 justify-content-end">
-                        <InputField name="search" placeholder="Search" />
-                        <button
-                          className="df-btn py-1 reg-btn text-uppercase"
-                          onClick={handleSubmit}
-                        >
-                          search
-                        </button>
-                      </div>
-                    </FormikForm>
-                  )}
-                </Formik>
-              </div>
-            }
-          >
-            <Website
-              isLoading={isLoading}
-              rows={rows}
-              handleAction={handleAction}
-              handlePageSizeChange={handlePageSizeChange}
-              handlePageChange={handlePageChange}
-            />
-          </Card>
-        </div>
+    <div className="container-fluid">
+      <Breadcrumb title="Websites" path="Home => affiliate => websites" />
+      <div className="mt-2">
+        <Card
+          header="Websites"
+          filter={
+            <div className="text-right">
+              <Formik
+                innerRef={innerRef}
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+                enableReinitialize={true}
+              >
+                {({ values }) => (
+                  <FormikForm>
+                    <div className="d-flex align-items-center gap-2 justify-content-end">
+                      <InputField name="search" placeholder="Search" />
+                      <button
+                        className="df-btn py-1 reg-btn text-uppercase"
+                        onClick={handleSubmit}
+                      >
+                        search
+                      </button>
+                    </div>
+                  </FormikForm>
+                )}
+              </Formik>
+            </div>
+          }
+        >
+          <Website
+            isLoading={isLoading}
+            rows={rows}
+            handleAction={handleAction}
+            handlePageSizeChange={handlePageSizeChange}
+            handlePageChange={handlePageChange}
+          />
+        </Card>
       </div>
-    </AffiliatLayout>
+    </div>
   );
 };
 
