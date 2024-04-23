@@ -1,14 +1,14 @@
 import React, { useState, useRef } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Card from "@/components/Card";
-import DepositHistory from "@/models/DepositHistory";
 import InputField from "@/components/Form/InputField";
 import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
-import AffiliatLayout from "../layout";
-import RegisterUser from "@/models/RegisterUser";
+import AffiliatLayout from "../../layout";
+import AffiliateLinkTable from "@/models/AffiliateLinkTable";
+import FullReportTable from "@/models/FullReportTable";
 
-const RegisterUsers = () => {
+const FullReport = () => {
   const innerRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState({
@@ -57,12 +57,12 @@ const RegisterUsers = () => {
     <AffiliatLayout>
       <div className="container-fluid">
         <Breadcrumb
-          title="Register Users"
-          path="Home => affiliate => register users"
+          title="Full Report"
+          path="Home => affiliate => report => full report"
         />
         <div className="mt-2">
           <Card
-            header="History"
+            header=""
             filter={
               <div className="text-right">
                 <Formik
@@ -89,7 +89,7 @@ const RegisterUsers = () => {
               </div>
             }
           >
-            <RegisterUser
+            <FullReportTable
               isLoading={isLoading}
               rows={rows}
               handleAction={handleAction}
@@ -101,6 +101,6 @@ const RegisterUsers = () => {
       </div>
     </AffiliatLayout>
   );
-};
+}
 
-export default RegisterUsers;
+export default FullReport

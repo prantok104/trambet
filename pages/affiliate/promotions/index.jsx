@@ -1,10 +1,13 @@
-import Promotion from '@/components/Affiliate/Promotions/Promotion'
-import React from 'react'
+import Promotion from "@/components/Affiliate/Promotions/Promotion";
+import React from "react";
+import AffiliatLayout from "../layout";
 
 const Promotions = () => {
   return (
-    <div><Promotion /></div>
-  )
-}
+    <AffiliatLayout>
+      <Promotion />
+    </AffiliatLayout>
+  );
+};
 
-export default Promotions
+export default Promotions;

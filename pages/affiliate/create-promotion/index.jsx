@@ -1,11 +1,12 @@
 import CreatePromotion from "@/components/Affiliate/CreatePromotion/CreatePromotion";
 import React from "react";
+import AffiliatLayout from "../layout";
 
 const CreatePromotionPage = () => {
   return (
-    <div>
+    <AffiliatLayout>
       <CreatePromotion />
-    </div>
+    </AffiliatLayout>
   );
 };
 

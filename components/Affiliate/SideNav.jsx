@@ -6,7 +6,7 @@ import { MdSettings } from "react-icons/md";
 const menu = [
   {
     name: "Dashboard",
-    link: "/",
+    link: "/affiliate",
     icon: <FaHome className="text-white" />,
     submenu: [],
   },
@@ -23,24 +23,24 @@ const menu = [
     submenu: [
       {
         name: "All Promo",
-        link: "/",
+        link: "/affiliate/promotions",
       },
       {
         name: " Create Promo",
-        link: "/",
+        link: "/affiliate/create-promotion",
       },
     ],
   },
   {
     name: "Register Users",
     icon: <MdSettings className="text-white" />,
-    link: "/",
+    link: "/affiliate/register-users",
     submenu: [],
   },
   {
     name: "Website",
     icon: <MdSettings className="text-white" />,
-    link: "/",
+    link: "/affiliate/websites",
     submenu: [],
   },
   {
@@ -54,7 +54,7 @@ const menu = [
       },
       {
         name: "Withdraw History",
-        link: "/",
+        link: "/affiliate/withdraw/history",
       },
     ],
   },
@@ -65,19 +65,19 @@ const menu = [
     submenu: [
       {
         name: "Affiliate Link",
-        link: "/",
+        link: "/affiliate/report/affiliate-link",
       },
       {
         name: "Full Reports",
-        link: "/",
+        link: "/affiliate/report/fullreport",
       },
       {
         name: "Player Reports",
-        link: "/",
+        link: "/affiliate/report/player-report",
       },
       {
         name: "Summery",
-        link: "/",
+        link: "//affiliate/report/summery",
       },
     ],
   },
