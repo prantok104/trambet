@@ -1,7 +1,8 @@
 import { Form as FormikForm, Formik } from 'formik'
-import React, {useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import InputField from '../Form/InputField';
 import * as Yup from 'yup';
+import { getUserDetailsData } from '@/services/userAuthService';
 
 
 const EditProfileForm = () => {
@@ -20,6 +21,19 @@ const formikRef = useRef();
   ) => {
     console.log(values);
   };
+
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+   if (localStorage.getItem("token")) {
+     getUserDetailsData();
+     const data = JSON.parse(localStorage.getItem("userDetails"));
+     setUser(data);
+   }
+ }, []);
+
+ const [firstname, setFirstname] = useState(user?.firstname);
+
+ console.log(user)
   return (
     <Formik innerRef={formikRef} initialValues={initialValues}
         validationSchema={validationSchema}
@@ -30,40 +44,40 @@ const formikRef = useRef();
         <FormikForm>
           <div className="row">
                <div className="col-md-6">
-                  <InputField label='First name*'  name='fname' />
+                  <InputField label='First name*' value={user?.firstname}  name='fname' />
                </div>
                <div className="col-md-6">
-                  <InputField label='Last name*'  name='lname'  />
+                  <InputField label='Last name*' value={user?.lastname}  name='lname'  />
                </div>
                <div className="col-md-4 mt-2">
-                  <InputField label='Email'  name='email' value="email@example.com" disabled  />
+                  <InputField label='Email'  name='email' value={user?.email} disabled={(user?.email) ? true : false}  />
                </div>
                <div className="col-md-4 mt-2">
-                  <InputField label='Phone'  name='mobile' value="+8801745474574" disabled  />
+                  <InputField label='Phone'  name='mobile' value={user?.mobile} disabled={(user?.mobile) ? true : false}  />
                </div>
                <div className="col-md-4 mt-2">
-                  <InputField label='Date of Birth' type='date'  name='dob' disabled  />
+                  <InputField label='Date of Birth' type='date'  name='dob' value={user?.dob} disabled={(user?.dob) ? true : false}  />
                </div>
                <div className="col-md-3 mt-2">
-                  <InputField label='Country'   name='country' disabled value="Bangladesh"  />
+                  <InputField label='Country'   name='country' disabled value={user?.address?.country}  />
                </div>
                <div className="col-md-3 mt-2">
-                  <InputField label='State*'   name='state'  />
+                  <InputField label='State*'   name='state' value={user?.address?.state}/>
                </div>
                <div className="col-md-3 mt-2">
-                  <InputField label='City*'   name='city'  />
+                  <InputField label='City*'   name='city' value={user?.address?.city}/>
                </div>
                <div className="col-md-3 mt-2">
-                  <InputField label='Zip*'   name='zip'  />
+                  <InputField label='Zip*'   name='zip' value={user?.address?.zip}/>
                </div>
                <div className="col-md-4 mt-2">
-                  <InputField label='Address*'  name='address'  />
+                  <InputField label='Address*'  name='address' value={user?.address?.address}/>
                </div>
                <div className="col-md-4 mt-2">
-                  <InputField label='Occupation'  name='occupation'  />
+                  <InputField label='Occupation'  name='occupation' />
                </div>
                <div className="col-md-4 mt-2">
-                  <InputField label='Image' type="file"  name='image'  />
+                  <InputField label='Image' type="file"  name='image' />
                </div>
                <div className="col-md-3">
                   <button type="submit" className="logout-btn">UPDATE</button>

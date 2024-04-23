@@ -1,32 +1,28 @@
 import AlertCard from '@/components/AlertCard';
 import Breadcrumb from '@/components/Breadcrumb';
 import Card from '@/components/Card';
-import React from 'react'
-import bKash from '@/public/providers/bkash.jpeg';
-import rocket from '@/public/providers/rocket.jpg';
-import ok from '@/public/providers/ok.png';
-import mycash from '@/public/providers/mycash.png';
+import React, { use, useEffect, useState } from 'react'
 import ProviderCard from '@/components/Users/Deposit/ProviderCard';
+import { notify } from '@/components/Helper';
+import { getPaymentMethods } from '@/services/transaction';
 import Image from 'next/image';
 import Link from 'next/link';
 const Deposit = () => {
 
+const [paymentMethod, setPaymentMethod] = useState([]);
+const paymentMethodData = async () => {
+  await getPaymentMethods().then((res) => {
+    if(res.status === true){
+      setPaymentMethod(res.data);
+     } else {
+       notify("error", res.response.data.message);
+     }
+  });
+ }
 
- const providers = [
-   { name: "bKash", image: bKash, min: 100, max: 2000 },
-   { name: "rocket", image: rocket, min: 300, max: 20000 },
-   { name: "ok", image: ok, min: 300, max: 20000 },
-   { name: "mycash", image: mycash, min: 300, max: 20000 },
-   { name: "bKash", image: bKash, min: 300, max: 20000 },
-   { name: "rocket", image: rocket, min: 300, max: 20000 },
-   { name: "ok", image: ok, min: 300, max: 20000 },
-   { name: "mycash", image: mycash, min: 300, max: 20000 },
-   { name: "bKash", image: bKash, min: 300, max: 20000 },
-   { name: "rocket", image: rocket, min: 300, max: 20000 },
-   { name: "ok", image: ok, min: 300, max: 20000 },
-   { name: "mycash", image: mycash, min: 300, max: 20000 },
-];
-
+  useEffect(() => {
+    paymentMethodData();
+  }, []);
 
   return (
     <div className="container-fluid">
@@ -36,7 +32,7 @@ const Deposit = () => {
         <Card header="Payment system in your region">
           <AlertCard message="Recommended payment method" />
           <div className="mt-2">
-            <ProviderCard providers={providers} />
+            <ProviderCard providers={paymentMethod} />
           </div>
           <div className="mob-cash-agent-method mt-4">
             <AlertCard message="Recommended Mob/Cash agent method" />
