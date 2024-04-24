@@ -212,7 +212,7 @@ const Header = () => {
                               <Link href={"/"}>Withdraw Now</Link>
                             </li>
                             <li>
-                              <Link href={"/"}>Withdraw History</Link>
+                              <Link href={"/user/withdraw/history"}>Withdraw History</Link>
                             </li>
                           </ul>
                         </li>

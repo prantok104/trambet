@@ -1,12 +1,14 @@
-import React,{useState,useRef} from 'react'
+import React,{useState,useRef, useEffect} from 'react'
 import Breadcrumb from '@/components/Breadcrumb'
 import Card from '@/components/Card'
 import DepositHistory from '@/models/DepositHistory'
 import InputField from '@/components/Form/InputField'
 import { Form as FormikForm, Formik } from 'formik'
 import * as Yup from 'yup';
+import WithdrawHistoryTable from '@/models/WithdrawHistoryTable'
+import { HttpClientCall } from '@/components/HTTPClient'
 const History = () => {
-  const innerRef = useRef()
+  // const innerRef = useRef()
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState({
     page:1,
@@ -37,6 +39,25 @@ const History = () => {
     per_page: 10,
     total: 11
   }
+
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    setIsLoading(true);
+   HttpClientCall({
+    endpoint: "withdraw/history/0",
+    method: "GET",
+    includeAuth: true,
+    data: [],
+   }).then((res) => {
+    if (res) {
+      setData(res);
+    }
+  }).then(() => {
+    setIsLoading(false);
+  });
+  } , [])
+
+  console.log(data)
 
   const handlePageSizeChange = (pageSize) => {
     setFilter((prevState) => {
@@ -75,7 +96,7 @@ const History = () => {
         
         <Card header="History" filter={<div className="text-right">
           <Formik
-            innerRef={innerRef}
+            // innerRef={innerRef}
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -91,9 +112,9 @@ const History = () => {
             )}
           </Formik>
         </div>}>
-          <DepositHistory
+          <WithdrawHistoryTable
             isLoading={isLoading}
-            rows={rows}
+            rows={data}
             handleAction={handleAction}
             handlePageSizeChange={handlePageSizeChange}
             handlePageChange={handlePageChange}

@@ -47,9 +47,7 @@ export default function DataTableComponent({ ...config }) {
           {...config}
           customStyles={customStyles}
           paginationRowsPerPageOptions={
-            config?.paginationRowsPerPageOptions ?? [
-              10, 15, 20, 25, 50, 75, 100, 200, 300, 400, 500,
-            ]
+            (config && config.paginationRowsPerPageOptions) ? config.paginationRowsPerPageOptions : [10, 15, 20, 25, 50, 75, 100, 200, 300, 400, 500]
           }
           theme={'dark'}
         />
