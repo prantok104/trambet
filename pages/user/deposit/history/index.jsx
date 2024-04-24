@@ -1,10 +1,11 @@
-import React,{useState,useRef} from 'react'
+import React,{useState,useRef, useEffect} from 'react'
 import Breadcrumb from '@/components/Breadcrumb'
 import Card from '@/components/Card'
 import DepositHistory from '@/models/DepositHistory'
 import InputField from '@/components/Form/InputField'
 import { Form as FormikForm, Formik } from 'formik'
 import * as Yup from 'yup';
+import { HttpClientCall } from "@/components/HTTPClient";
 const History = () => {
   const innerRef = useRef()
   const [isLoading, setIsLoading] = useState(false);
@@ -63,8 +64,26 @@ const History = () => {
     
   }
 
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    setIsLoading(true);
+    HttpClientCall({
+      endpoint: `deposit/history/${filter.page}`,
+      method: "GET",
+      includeAuth: true,
+      data: [],
+    })
+      .then((res) => {
+        if (res) {
+          setData(res);
+        }
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
-
+console.log(data)
   return (
     <div className="container-fluid">
       <Breadcrumb
@@ -93,7 +112,7 @@ const History = () => {
         </div>}>
           <DepositHistory
             isLoading={isLoading}
-            rows={rows}
+            rows={data}
             handleAction={handleAction}
             handlePageSizeChange={handlePageSizeChange}
             handlePageChange={handlePageChange}

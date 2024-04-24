@@ -1,117 +1,120 @@
-import React,{useState,useRef, useEffect} from 'react'
-import Breadcrumb from '@/components/Breadcrumb'
-import Card from '@/components/Card'
-import DepositHistory from '@/models/DepositHistory'
-import InputField from '@/components/Form/InputField'
-import { Form as FormikForm, Formik } from 'formik'
-import * as Yup from 'yup';
-import WithdrawHistoryTable from '@/models/WithdrawHistoryTable'
-import { HttpClientCall } from '@/components/HTTPClient'
+import React, { useState, useRef, useEffect } from "react";
+import Breadcrumb from "@/components/Breadcrumb";
+import Card from "@/components/Card";
+import DepositHistory from "@/models/DepositHistory";
+import InputField from "@/components/Form/InputField";
+import { Form as FormikForm, Formik } from "formik";
+import * as Yup from "yup";
+import WithdrawHistoryTable from "@/models/WithdrawHistoryTable";
+import { HttpClientCall } from "@/components/HTTPClient";
 const History = () => {
   // const innerRef = useRef()
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState({
-    page:1,
+    page: 1,
     per_page: 10,
-    order_by:'DESC'
+    order_by: "DESC",
   });
   const [initialValues, setInitialValues] = useState({
-    'search' : ''
-  })
+    search: "",
+  });
   const validationSchema = Yup.object({
-      search: Yup.string()
-   });
+    search: Yup.string(),
+  });
   const rows = {
     data: [
-      {year: 40},
-      {year: 20},
-      {year: 50},
-      {year: 50},
-      {year: 50},
-      {year: 50},
-      {year: 50},
-      {year: 50},
-      {year: 50},
-      {year: 50},
-      {year: 50},
-    ], 
+      { year: 40 },
+      { year: 20 },
+      { year: 50 },
+      { year: 50 },
+      { year: 50 },
+      { year: 50 },
+      { year: 50 },
+      { year: 50 },
+      { year: 50 },
+      { year: 50 },
+      { year: 50 },
+    ],
     current_page: 1,
     per_page: 10,
-    total: 11
-  }
+    total: 11,
+  };
 
   const [data, setData] = useState([]);
   useEffect(() => {
     setIsLoading(true);
-   HttpClientCall({
-    endpoint: "withdraw/history/0",
-    method: "GET",
-    includeAuth: true,
-    data: [],
-   }).then((res) => {
-    if (res) {
-      setData(res);
-    }
-  }).then(() => {
-    setIsLoading(false);
-  });
-  } , [])
-
-  console.log(data)
+    HttpClientCall({
+      endpoint: `withdraw/history/${filter.page}`,
+      method: "GET",
+      includeAuth: true,
+      data: [],
+    })
+      .then((res) => {
+        if (res) {
+          setData(res);
+        }
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   const handlePageSizeChange = (pageSize) => {
     setFilter((prevState) => {
       return {
         ...prevState,
-        per_page: pageSize
+        per_page: pageSize,
       };
     });
   };
   const handlePageChange = (page) => {
-        setFilter((prevState) => {
-            return {
-                ...prevState,
-                page: page
-            };
-        });
-    };
+    setFilter((prevState) => {
+      return {
+        ...prevState,
+        page: page,
+      };
+    });
+  };
 
-  const handleAction = async (event, data) => {
+  const handleAction = async (event, data) => {};
 
-  }
-
-  const handleSubmit =(values) => {
-    
-  }
-
-
+  const handleSubmit = (values) => {};
 
   return (
     <div className="container-fluid">
       <Breadcrumb
-        title="Deposit history"
-        path="Home => deposit => deposit history"
+        title="Withdraw history"
+        path="Home => withdraw => withdraw history"
       />
       <div className="mt-2">
-        
-        <Card header="History" filter={<div className="text-right">
-          <Formik
-            // innerRef={innerRef}
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-            enableReinitialize={true}
-          >
-            {({ values }) => (
-              <FormikForm>
-                <div className="d-flex align-items-center gap-2 justify-content-end">
-                  <InputField name="search" placeholder="Search" />
-                  <button className="df-btn py-1 reg-btn text-uppercase" onClick={handleSubmit}>search</button>
-                </div>
-              </FormikForm>
-            )}
-          </Formik>
-        </div>}>
+        <Card
+          header="History"
+          filter={
+            <div className="text-right">
+              <Formik
+                // innerRef={innerRef}
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+                enableReinitialize={true}
+              >
+                {({ values }) => (
+                  <FormikForm>
+                    <div className="d-flex align-items-center gap-2 justify-content-end">
+                      <InputField name="search" placeholder="Search" />
+                      <button
+                        className="df-btn py-1 reg-btn text-uppercase"
+                        onClick={handleSubmit}
+                      >
+                        search
+                      </button>
+                    </div>
+                  </FormikForm>
+                )}
+              </Formik>
+            </div>
+          }
+        >
           <WithdrawHistoryTable
             isLoading={isLoading}
             rows={data}
@@ -123,6 +126,6 @@ const History = () => {
       </div>
     </div>
   );
-}
+};
 
-export default History
+export default History;

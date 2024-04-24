@@ -41,7 +41,7 @@ const WithdrawHistoryTable = ({
       },
       {
         name: "Status",
-        selector: (row) => <span dangerouslySetInnerHTML={{ __html: row?.status }} />,
+        selector: (row) => <span dangerouslySetInnerHTML={{ __html: row?.status }} ></span>,
         sortable: false,
       },
     ],
