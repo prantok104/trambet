@@ -8,7 +8,7 @@ import { getPaymentMethods } from '@/services/transaction';
 import Image from 'next/image';
 import Link from 'next/link';
 const Deposit = () => {
-
+  const [isLoading, setIsLoading] = useState(false);
 const [paymentMethod, setPaymentMethod] = useState([]);
 const paymentMethodData = async () => {
   await getPaymentMethods().then((res) => {
@@ -21,7 +21,10 @@ const paymentMethodData = async () => {
  }
 
   useEffect(() => {
-    paymentMethodData();
+    setIsLoading(true);
+    paymentMethodData().then(() => {
+      setIsLoading(false);
+    });
   }, []);
 
   return (
