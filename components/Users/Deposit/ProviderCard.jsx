@@ -7,7 +7,6 @@ import * as Yup from "yup";
 import { useRouter } from 'next/router';
 import ConstantData from "@/components/ConstantData";
 const ProviderCard = ({providers}) => {
-  console.log(providers);
    const formikRef = useRef();
    const navigate = useRouter();;
    const [modalView, setModalView] = useState(false);
@@ -15,7 +14,6 @@ const ProviderCard = ({providers}) => {
    const [amount, setAmount] = useState(0);
    const [maxAmount, setMaxAmount] = useState(0);
    const handleProviderModal = (item) => {
-    console.log(item);
       setProvider(item);
       setAmount(item?.min);
       setMaxAmount(item?.max);
