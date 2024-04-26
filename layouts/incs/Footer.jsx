@@ -64,7 +64,7 @@ const Footer = () => {
               <h6>Company Policy</h6>
               <ul className="footer-menu">
                 <li>
-                  <Link href="/policy/privacy-policy" prefetch={true}>Privacy Policy</Link>
+                  <Link href="/policy/privacy-policy" >Privacy Policy</Link>
                 </li>
                 <li>
                   <Link href="/policy/terms-of-service">Terms of Service</Link>
