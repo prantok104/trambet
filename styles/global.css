@@ -1308,10 +1308,71 @@ a.single-agent-for-deposit span{
 }
 
 
+/* Sport page area css */
+ul.sports-categories {
+    background: #0f1423;
+    overflow: hidden;
+    overflow-x: auto;
+    border-radius: 45px;
+}
 
+ul.sports-categories li {
+    padding: 10px 15px;
+    cursor: pointer;
+    text-align: center;
+    background: linear-gradient(135deg, #090F1E, #1E263D);
+    position: relative;
+    font-weight: 800;
+}
+ul.sports-categories li:last-child {
+    border: 0
+}
 
-
-
+ul.sports-categories li svg {
+    color: #fff;
+    font-size: 14px;
+}
+ul.sports-categories li:hover,ul.sports-categories li.active {
+    background: linear-gradient(326deg, #4a5c8f, #36518f)
+}
+.games-count{
+  position: absolute;
+  right: 7px;
+  top: 5px;
+  display: inline-block;
+  width: 18px;
+  background: #23B260;
+  border-radius: 7px;
+  font-size: 8px;
+  text-align: center;
+}
+.sports-sub-category{
+  list-style-type: none;
+  background-color: #1E263D;
+  min-height: 80vh;
+  margin-top: 15px;
+  border-radius: 14px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.sports-sub-category li{
+  position: relative;
+  border-bottom: 1px solid #2C3B66;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.sports-sub-category li:hover, .sports-sub-category li.active{
+  background: linear-gradient(326deg, #4a5c8f, #36518f)
+}
+.sports-sub-category li img{
+  border-radius: 50%;
+}
+.sports-sub-category .games-count{
+  position: relative;
+  right: auto;
+  top: auto;
+}
 
 
 
