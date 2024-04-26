@@ -85,7 +85,7 @@ const Header = () => {
                 <select
                   onChange={handleOnChange}
                   className="odds-selection"
-                  value="d"
+                  defaultValue="d"
                 >
                   <option value="d">Decimal Odds</option>
                   <option value="f">Fraction Odds</option>
