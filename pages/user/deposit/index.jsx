@@ -1,24 +1,24 @@
-import AlertCard from '@/components/AlertCard';
-import Breadcrumb from '@/components/Breadcrumb';
-import Card from '@/components/Card';
-import React, { use, useEffect, useState } from 'react'
-import ProviderCard from '@/components/Users/Deposit/ProviderCard';
-import { notify } from '@/components/Helper';
-import { getPaymentMethods } from '@/services/transaction';
-import Image from 'next/image';
-import Link from 'next/link';
+import AlertCard from "@/components/AlertCard";
+import Breadcrumb from "@/components/Breadcrumb";
+import Card from "@/components/Card";
+import React, { useEffect, useState } from "react";
+import ProviderCard from "@/components/Users/Deposit/ProviderCard";
+import { notify } from "@/components/Helper";
+import { getPaymentMethods } from "@/services/transaction";
+import Image from "next/image";
+import Link from "next/link";
 const Deposit = () => {
   const [isLoading, setIsLoading] = useState(false);
-const [paymentMethod, setPaymentMethod] = useState([]);
-const paymentMethodData = async () => {
-  await getPaymentMethods().then((res) => {
-    if(res.status === true){
-      setPaymentMethod(res.data);
-     } else {
-       notify("error", res.response.data.message);
-     }
-  });
- }
+  const [paymentMethod, setPaymentMethod] = useState([]);
+  const paymentMethodData = async () => {
+    await getPaymentMethods().then((res) => {
+      if (res.status === true) {
+        setPaymentMethod(res.data);
+      } else {
+        notify("error", res.response.data.message);
+      }
+    });
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -47,7 +47,7 @@ const paymentMethodData = async () => {
                     alt={"Mobcash agent provider"}
                     width={250}
                     height={170}
-                    style={{ objectFit: "cover", objectPosition: 'center' }}
+                    style={{ objectFit: "cover", objectPosition: "center" }}
                   />
                   <h6>Mob cash</h6>
                 </div>
@@ -58,7 +58,6 @@ const paymentMethodData = async () => {
       </div>
     </div>
   );
-}
+};
 
-
-export default Deposit
+export default Deposit;

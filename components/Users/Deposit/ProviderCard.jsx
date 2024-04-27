@@ -4,37 +4,40 @@ import Modal from "react-bootstrap/Modal";
 import { Form as FormikForm, Formik } from "formik";
 import InputField from "@/components/Form/InputField";
 import * as Yup from "yup";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import ConstantData from "@/components/ConstantData";
-const ProviderCard = ({providers}) => {
-   const formikRef = useRef();
-   const navigate = useRouter();;
-   const [modalView, setModalView] = useState(false);
-   const [provider, setProvider] = useState({});
-   const [amount, setAmount] = useState(0);
-   const [maxAmount, setMaxAmount] = useState(0);
-   const handleProviderModal = (item) => {
-      setProvider(item);
-      setAmount(item?.min);
-      setMaxAmount(item?.max);
-      setModalView(true);
-   }
-   
-   const validationSchema = Yup.object({
-      amount: Yup.number().required("First name required").min(amount).max(maxAmount),
-   });
-   const initialValues = {
-      amount: amount,
-   };
-   const handleSubmit = async (
-      values
-   ) => {
-      if(values?.amount > 0) {
-         const stateData = {amount:values?.amount};
+const ProviderCard = ({ providers }) => {
+  // console.log(providers);
+  const formikRef = useRef();
+  const navigate = useRouter();
+  const [modalView, setModalView] = useState(false);
+  const [provider, setProvider] = useState({});
+  const [amount, setAmount] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(0);
+  const handleProviderModal = (item) => {
+    setProvider(item);
+    setAmount(item?.minimum_deposit_amount);
+    setMaxAmount(item?.maximum_deposit_amount);
+    setModalView(true);
+  };
 
-         navigate.push(`/user/deposit/make-payment/${values?.amount}`);
-      }
-   };
+  const validationSchema = Yup.object({
+    amount: Yup.number()
+      .required("Amount is required")
+      .min(amount)
+      .max(maxAmount),
+  });
+  const initialValues = {
+    amount: amount,
+    provider: provider,
+  };
+  const handleSubmit = async (values) => {
+    if (values?.amount > 0) {
+      const stateData = { amount: values?.amount };
+      localStorage.setItem("deposit_payment", JSON.stringify(values));
+      navigate.push(`/user/deposit/now`);
+    }
+  };
 
   return (
     <div className="all-providers-card">
@@ -86,30 +89,38 @@ const ProviderCard = ({providers}) => {
                   marginTop: "15px",
                 }}
               >
-                Amount minimum {provider?.minimum_deposit_amount}BDT / maximum {provider?.maximum_deposit_amount}BDT
+                Amount minimum {provider?.minimum_deposit_amount}BDT / maximum{" "}
+                {provider?.maximum_deposit_amount}BDT
               </span>
             </div>
 
-            <Formik innerRef={formikRef} initialValues={initialValues}
-               validationSchema={validationSchema}
-               onSubmit={handleSubmit}
-               enableReinitialize={true}
-               class="form-data">
-               {({ values,touched, errors }) => (
-               <FormikForm>
+            <Formik
+              innerRef={formikRef}
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+              enableReinitialize={true}
+              class="form-data"
+            >
+              {({ values, touched, errors }) => (
+                <FormikForm>
                   <InputField name="amount" label="amount*" />
-                     <button type="submit" className="df-btn reg-btn mt-2" style={{ width: "100%" }}>
-                        CONFIRM
-                     </button>
-               </FormikForm>
-               )}
-               </Formik>
+                  <button
+                    type="submit"
+                    className="df-btn reg-btn mt-2"
+                    style={{ width: "100%" }}
+                  >
+                    CONFIRM
+                  </button>
+                </FormikForm>
+              )}
+            </Formik>
           </div>
         </Modal.Body>
       </Modal>
       {/* Promocard modal area end */}
     </div>
   );
-}
+};
 
-export default ProviderCard
+export default ProviderCard;
