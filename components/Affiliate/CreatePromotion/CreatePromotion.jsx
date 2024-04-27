@@ -9,10 +9,9 @@ import * as Yup from "yup";
 const CreatePromotion = () => {
   const formikRef = useRef();
 
-  const countries = [
-    { label: "---Select country---", value: "" },
-    { label: "Bangladesh", value: "bn" },
-    { label: "India", value: "in" },
+  const status = [
+    { label: "Active", value: 1 },
+    { label: "Inactive", value: 0 },
   ];
 
   const validationSchema = Yup.object({
@@ -22,18 +21,24 @@ const CreatePromotion = () => {
     status: Yup.string().required("Last name required").max(50),
     description: Yup.string().required("Last name required").max(50),
   });
+  const promocode = Math.random().toString(36).substring(2, 8).toUpperCase();
   const initialValues = {
     title: "",
-    promocode: "",
+    promocode: promocode,
     attachments: "",
     status: "",
     description: "",
   };
-  const handleSubmit = async (
-    values,
-    { setErrors, setStatus, setSubmitting }
-  ) => {
+  const handleSubmit = async (values) => {
     console.log(values);
+    const payload = {
+      title: values?.title,
+      promo_code: promocode,
+      details : values?.description,
+      status: values?.status,
+      attachments: values?.attachments,
+    };
+    console.log(payload);
   };
   return (
     <Card>
@@ -43,7 +48,7 @@ const CreatePromotion = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize={true}
-        className="form-data"
+        // className="form-data"
       >
         {({ values, touched, errors }) => (
           <FormikForm>
@@ -61,7 +66,7 @@ const CreatePromotion = () => {
                 <SelectField
                   label="Status*"
                   name="country"
-                  options={countries}
+                  options={status}
                 />
               </div>
               <div className="col-md-12 mt-2">
