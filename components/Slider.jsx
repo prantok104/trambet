@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Image from "next/image";
 import ConstantData from "./ConstantData";
+import Loader from "./Loader";
 const CustomSlider = ({ images = [], settings = {} }) => {
   var defaultSettings = settings.hasOwnProperty("dots")
     ? settings
@@ -17,7 +18,8 @@ const CustomSlider = ({ images = [], settings = {} }) => {
 
   const imageUrl = ConstantData.IMAGE_BASE_URL;
   return (
-    <Slider {...defaultSettings}>
+    <>
+      {images?.length > 0  ? (<Slider {...defaultSettings}>
       {images?.map((item, index) => (
         <div className="single-slide-image" key={index}>
           <div style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -35,7 +37,8 @@ const CustomSlider = ({ images = [], settings = {} }) => {
           </div>
         </div>
       ))}
-    </Slider>
+    </Slider>) : <Loader />}
+    </>
   );
 };
 
