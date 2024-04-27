@@ -15,7 +15,7 @@ const History = () => {
     order_by:'DESC'
   });
   const [initialValues, setInitialValues] = useState({
-    'search' : ''
+    search : ''
   })
   const validationSchema = Yup.object({
       search: Yup.string()

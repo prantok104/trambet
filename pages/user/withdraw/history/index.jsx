@@ -48,8 +48,7 @@ const History = () => {
       method: "GET",
       includeAuth: true,
       data: [],
-    })
-      .then((res) => {
+    }).then((res) => {
         if (res) {
           setData(res);
         }
