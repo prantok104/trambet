@@ -121,7 +121,7 @@ img.logo {
   display: inline-flex;
   padding: 0 15px 0 0;
 }
-.promotion span {
+.promotion div {
   background-image: linear-gradient(86.37deg, #d062ff 2.96%, #7bb0ff 99.68%),
     linear-gradient(90deg, #ed6ea0 0%, #ec8c69 100%);
   color: #fff;
@@ -1384,6 +1384,25 @@ ul.sports-categories li:hover,ul.sports-categories li.active {
   right: auto;
   top: auto;
 }
+.password-eye{
+  background: #1E263D;
+  border: 1px solid #4e5462;
+  border-left: 0;
+  border-radius: 0;
+  height: 32px;
+}
+.text-copy-btn{
+  border-radius: 0;
+}
+.form-label {
+    color: #fff;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 0;
+    color: #ccc;
+}
+
+
 
 /* Betslip area start */
 .betslip-area-start {
@@ -1458,42 +1477,61 @@ ul.sports-categories li:hover,ul.sports-categories li.active {
 }
 
 /* contact style */
-.contact_container {
-  background-size: cover;
-  background-position: center bottom;
-  background-repeat: no-repeat;
+.contact-container{
+  background-position: center center;
+  min-height: 70vh;
   position: relative;
-  isolation: isolate;
-  height: 90vh;
-  background-color: red;
+  z-index: 1;
 }
-
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.contact-container:after{
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: hsl(230  89%  65%);
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  mix-blend-mode: multiply;
 }
-
-.contact-card {
+.contact-card{
+  background-color: #1E263D;
+}
+.contact-card-icon{
+  border: 1px solid #23B260;
+  padding: 5px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 15px;
-  border-radius: 5px;
-  background: white;
-  position: relative;
+  justify-content: center;
+  font-size: 17px;
+  color: #fff;
+  background-color: transparent;
+  border-radius: 50%;
+  position:relative;
+  z-index: 1;
+  margin-left: -40px;
+}
+.contact-card-icon::after{
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  left: 4px;
+  top: 4px;
+  content: '';
+  background: #23B260;
+  z-index: -1;
+  border-radius: 50%;
 }
 
-.contact-card__icon {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background: #5671f5;
-  color: white;
+.contact-card h6{
+  color: #fff;
+  font-weight: 800;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+.contact-card-conent{
+  color: #ccc;
+  font-size: 12px;
 }

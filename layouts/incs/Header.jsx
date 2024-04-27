@@ -74,15 +74,19 @@ const Header = () => {
             </div>
             <div className="col-md-2">
               <Link href={"/promotions"} className="promotion">
-                <span>
+                <div>
                   <FontAwesomeIcon icon={faGift} />
-                </span>
+                </div>
                 Promotion and Bonuses
               </Link>
             </div>
             <div className="col-md-8">
               <div className="d-flex align-items-center gap-2 justify-content-end">
-                <select onChange={handleOnChange} className="odds-selection">
+                <select
+                  onChange={handleOnChange}
+                  className="odds-selection"
+                  defaultValue="d"
+                >
                   <option value="d">Decimal Odds</option>
                   <option value="f">Fraction Odds</option>
                   <option value="a">American Odds</option>
@@ -92,20 +96,24 @@ const Header = () => {
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
-                        <span>+ {Number(user?.balance).toFixed(2)}</span>
-                        <span className="profile-look">
-                          <span style={{ fontSize: 9 }}>BDT</span>
-                        </span>
+                        <div>+ {Number(user?.balance).toFixed(2)}</div>
+                        <div className="profile-look">
+                          <div style={{ fontSize: 9 }}>BDT</div>
+                        </div>
                       </div>
                       <ul className="dropdown-menus">
                         <li>
-                          <Link href={"/"}>Deposit: + {Number(user?.balance).toFixed(2)}</Link>
+                          <Link href={"/"}>
+                            Deposit: + {Number(user?.balance).toFixed(2)}
+                          </Link>
                         </li>
                         <li>
                           <Link href={"/"}>Withdrawal: + {user.data}</Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Bonus: + {Number(user?.bonus_account).toFixed(2)}</Link>
+                          <Link href={"/"}>
+                            Bonus: + {Number(user?.bonus_account).toFixed(2)}
+                          </Link>
                         </li>
                         <li>
                           <Link href={"/"}>Tramcard: + {user.data}</Link>
@@ -113,7 +121,7 @@ const Header = () => {
                       </ul>
                     </li>
                   </ul>
-                )} 
+                )}
 
                 <div className="header-timer">
                   <Clock />
@@ -124,20 +132,20 @@ const Header = () => {
                   <ul className="droplist">
                     <li>
                       <div>
-                        <span className="profile-look notify-bell">
+                        <div className="profile-look notify-bell">
                           <FontAwesomeIcon
                             icon={faBell}
                             style={{ fontSize: 16 }}
                           />
-                          <span className="notify-counter">
+                          <div className="notify-counter">
                             {user.notifications?.total}
-                          </span>
-                        </span>
+                          </div>
+                        </div>
                       </div>
                       <ul className="dropdown-menus notifications-list">
                         <li className="d-flex align-items-center justify-content-between notify-head">
-                          <span>Notifications</span>{" "}
-                          <span>{user.notifications?.total}</span>
+                          <div>Notifications</div>{" "}
+                          <div>{user.notifications?.total}</div>
                         </li>
                         <li>
                           {user.notifications?.latest &&
@@ -164,10 +172,10 @@ const Header = () => {
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
-                        <span>ID: {user.user_id}</span>
-                        <span className="profile-look">
+                        <div>ID: {user.user_id}</div>
+                        <div className="profile-look">
                           <FontAwesomeIcon icon={faUser} />
-                        </span>
+                        </div>
                       </div>
                       <ul className="dropdown-menus">
                         <li>
@@ -182,9 +190,9 @@ const Header = () => {
                             className="d-flex align-items-center justify-content-between"
                           >
                             Deposit{" "}
-                            <span>
+                            <div>
                               <FontAwesomeIcon icon={faAngleDown} />
-                            </span>
+                            </div>
                           </Link>
                           <ul className="sticky-items">
                             <li>
@@ -203,9 +211,9 @@ const Header = () => {
                             className="d-flex align-items-center justify-content-between"
                           >
                             Withdraw{" "}
-                            <span>
+                            <div>
                               <FontAwesomeIcon icon={faAngleDown} />
-                            </span>
+                            </div>
                           </Link>
                           <ul className="sticky-items">
                             <li>
@@ -234,7 +242,9 @@ const Header = () => {
                           <Link href={"/user/tramcard"}>Tramcard</Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Apply for Affiliate</Link>
+                          <Link href={"/user/affiliate/applications-list"}>
+                            Apply for Affiliate
+                          </Link>
                         </li>
                         <li>
                           <Link
@@ -253,49 +263,53 @@ const Header = () => {
 
                 {/* User settings area start */}
                 {user && (
-                <ul className="droplist">
-                  <li>
-                    <span className="profile-look">
-                      <FontAwesomeIcon icon={faGear} />
-                    </span>
-                    <ul className="dropdown-menus">
-                      <li>
-                        <Link href={"/user/"}>Change Password</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>2FA Verification</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Security and privacy</Link>
-                      </li>
-                      <li>
-                        <Link href={"/"}>Support</Link>
-                      </li>
-                      <li>
-                        <Link href={"/affiliate"}>Affiliate Profile</Link>
-                      </li>
-                      <li className="sticky-link">
-                        <Link
-                          href={"/"}
-                          className="d-flex align-items-center justify-content-between"
-                        >
-                          Referral{" "}
-                          <span>
-                            <FontAwesomeIcon icon={faAngleDown} />
-                          </span>
-                        </Link>
-                        <ul className="sticky-items">
-                          <li>
-                            <Link href={"/"}>Referred Link</Link>
-                          </li>
-                          <li>
-                            <Link href={"/"}>Referred Users</Link>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                  <ul className="droplist">
+                    <li>
+                      <div className="profile-look">
+                        <FontAwesomeIcon icon={faGear} />
+                      </div>
+                      <ul className="dropdown-menus">
+                        <li>
+                          <Link href={"/user/change-password"}>
+                            Change Password
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>2FA Verification</Link>
+                        </li>
+                        <li>
+                          <Link href={"/"}>Security and privacy</Link>
+                        </li>
+                        <li>
+                          <Link href={"/user/support"}>Support</Link>
+                        </li>
+                        <li>
+                          <Link href={"/affiliate"}>Affiliate Profile</Link>
+                        </li>
+                        <li className="sticky-link">
+                          <Link
+                            href={"/"}
+                            className="d-flex align-items-center justify-content-between"
+                          >
+                            Referral{" "}
+                            <div>
+                              <FontAwesomeIcon icon={faAngleDown} />
+                            </div>
+                          </Link>
+                          <ul className="sticky-items">
+                            <li>
+                              <Link href={"/user/referred/my-ref-link"}>
+                                Referred Link
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href={"/"}>Referred Users</Link>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 )}
                 {/* User settings area end */}
 
@@ -303,6 +317,7 @@ const Header = () => {
                 <select
                   onChange={handleLanguageOnChange}
                   className="odds-selection"
+                  defaultValue={language}
                 >
                   <option value="en" selected={language === "en"}>
                     English
@@ -325,9 +340,9 @@ const Header = () => {
                       className="df-btn bg-shadow d-flex align-items-center gap-2 reg-btn"
                       onClick={handleRegistrationButton}
                     >
-                      <span>
+                      <div>
                         <FontAwesomeIcon icon={faPlus} />
-                      </span>
+                      </div>
                       Complete Registration
                     </button>
                   </>

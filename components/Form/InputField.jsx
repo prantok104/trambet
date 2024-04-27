@@ -4,7 +4,7 @@ import { useField } from "formik";
 const InputField = ({ label = "", ...props }) => {
   const [field, meta] = useField(props);
   return (
-    <Form.Group>
+    <Form.Group style={{ width: "100%" }}>
       {label ?? (
         <Form.Label htmlFor={props.id || props.name}>
           {label}
@@ -15,9 +15,9 @@ const InputField = ({ label = "", ...props }) => {
         id={props.id || props.name}
         {...field}
         {...props}
-        isInvalid={meta.touched && meta.error}
+        isInvalid={meta.error}
       />
-      {meta.touched && meta.error ? (
+      {meta.touched || meta.error ? (
         <Form.Control.Feedback type="invalid">
           {meta.error}
         </Form.Control.Feedback>
