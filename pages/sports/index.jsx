@@ -1,5 +1,7 @@
+import { HttpClientCall } from '@/components/HTTPClient';
+import CustomSlider from '@/components/Slider';
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FaFootballBall, FaBasketballBall } from 'react-icons/fa';
 
 
@@ -114,6 +116,7 @@ const Sports = () => {
    const [filterCategory, setFilterCategory] = useState(sports_categories[0])
    const [activeCategory, setActiveCategory] = useState("american_football");
    const [activeSubCategory, setActiveSubCategory] = useState("");
+   const [sliders, setSliders] = useState([]);
    
    const handleCategory = (slug) => {
       setActiveCategory(slug);
@@ -125,6 +128,24 @@ const Sports = () => {
    const handleSubCategory = (slug) => {
      setActiveSubCategory(slug);
    };
+
+   const sliderEffect = useCallback(async() => {
+    await fetchSlider();
+   }, []);
+
+   const fetchSlider = async () => {
+      const banner = await HttpClientCall({
+        method: "GET",
+        endpoint: "frontend/banner",
+        includeAuth: false,
+        data: [],
+      });
+      setSliders(banner?.data);
+   }
+
+   useEffect(() => {
+     sliderEffect();
+   }, [sliderEffect]);
 
   return (
     <div className="container-fluid">
@@ -150,6 +171,7 @@ const Sports = () => {
           </div>
         </div>
         {/* Sports category area end */}
+
         {/* Spotrs sub category area start */}
         <div className="col-md-3 col-lg-2">
           <div className="sport-sub-categories">
@@ -176,6 +198,16 @@ const Sports = () => {
           </div>
         </div>
         {/* Spotrs sub category area end */}
+
+        {/* Sport data area start */}
+        <div className="col-md-9 col-lg-10">
+          <div className="sport-contents-area ">
+            <div className="main-slider-area-start mt-3">
+              <CustomSlider images={sliders} />
+            </div>
+          </div>
+        </div>
+        {/* Sport data area end */}
       </div>
     </div>
   );
