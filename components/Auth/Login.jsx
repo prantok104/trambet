@@ -90,7 +90,7 @@ const LoginPage = () => {
                 Remember me?
               </div>
               <div className="bottom-register">
-                <Link href={"/"}>Forgot password?</Link>
+                <Link href={"/user/reset-password"}>Forgot password?</Link>
               </div>
             </div>
             <div className="col-md-12 mt-2 mb-4">
