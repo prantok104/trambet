@@ -74,6 +74,7 @@ const History = () => {
       data: [],
     })
       .then((res) => {
+        console.log(res);
         if (res) {
           setData(res);
         }

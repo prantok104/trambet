@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Card from "@/components/Card";
 import InputField from "@/components/Form/InputField";
@@ -6,6 +6,7 @@ import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
 import AffiliatLayout from "../layout";
 import Website from "@/models/Website";
+import { HttpClientCall } from "@/components/HTTPClient";
 
 const Websites = () => {
   
@@ -53,6 +54,22 @@ const Websites = () => {
   const handleAction = async (event, data) => {};
 
   const handleSubmit = (values) => {};
+
+
+  const [website, setWebsite] = useState([]);
+  useEffect(() => {
+    setIsLoading(true);
+    HttpClientCall({
+      endpoint: `affiliate/websites/${filter.page}`,
+      method: "GET",
+      includeAuth: true,
+      data: {},
+    }).then((response) => {
+      console.log(response);
+      setWebsite(response);
+    });
+    setIsLoading(false);
+  } , []);
   return (
     <div className="container-fluid">
       <Breadcrumb title="Websites" path="Home => affiliate => websites" />
@@ -87,7 +104,7 @@ const Websites = () => {
         >
           <Website
             isLoading={isLoading}
-            rows={rows}
+            rows={website}
             handleAction={handleAction}
             handlePageSizeChange={handlePageSizeChange}
             handlePageChange={handlePageChange}

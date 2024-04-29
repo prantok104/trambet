@@ -15,22 +15,26 @@ const Website = ({
       rowIndex(rows),
       {
         name: "Website Id",
-        selector: (row) => row?.year,
+        selector: (row) => row?.websiteId,
         sortable: true,
       },
       {
         name: "Website",
-        selector: (row) => row?.year,
+        selector: (row) => row?.website,
         sortable: false,
       },
       {
         name: "Status",
-        selector: (row) => <span class="badge bg-success">Active</span>,
+        selector: (row) => <span class={`badge ${row?.status == 1 ? 'bg-success' : 'bg-danger'}`}>{row?.status == 1 ? 'Active' : 'Inactive'}</span>,
         sortable: false,
       },
       {
         name: "Create At",
-        selector: (row) => row?.year,
+        selector: (row) => `${new Date(row.created_at).toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: 'long',
+          day: '2-digit'
+        })}`,
         sortable: false,
       },
       {
