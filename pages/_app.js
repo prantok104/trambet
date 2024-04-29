@@ -13,6 +13,8 @@ import { ToastContainer } from "react-toastify";
 import { LogoutProvider } from "@/components/Context/Provider/Users/LogoutProvider";
 
 import "react-toastify/dist/ReactToastify.css";
+import { Provider as ReduxProvider } from "react-redux";
+import store from "@/store";
 
 export default function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
@@ -37,16 +39,20 @@ export default function App({ Component, pageProps }) {
       {loading ? (
         <LoaderPage />
       ) : (
-        <LanguageProvider>
-          <BetslipProvider>
-            <LogoutProvider> {/* Wrap with LogoutProvider */}
-              <Layout>
-                <ToastContainer />
-                <Component {...pageProps} />
-              </Layout>
-            </LogoutProvider>
-          </BetslipProvider>
-        </LanguageProvider>
+        <ReduxProvider store={store}>
+          <LanguageProvider>
+            <BetslipProvider>
+              <LogoutProvider>
+                {" "}
+                {/* Wrap with LogoutProvider */}
+                <Layout>
+                  <ToastContainer />
+                  <Component {...pageProps} />
+                </Layout>
+              </LogoutProvider>
+            </BetslipProvider>
+          </LanguageProvider>
+        </ReduxProvider>
       )}
     </>
   );

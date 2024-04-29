@@ -18,7 +18,6 @@ export const BetslipProvider = ({children}) => {
       updatedBets.splice(index, 1);
       setSelectedBets(updatedBets);
    }
-   console.log(selectedBets);
    return (
       <BetslipContext.Provider value={{ selectedBets, addBetToSlip, removeBetFromSlip }}>
          {children}

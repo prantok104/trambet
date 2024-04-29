@@ -1,15 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useBetSlip } from '../Context/BetslipProvider'
 const OddsButton = ({odds}) => {
-  const {addBetToSlip} = useBetSlip();
+  const { addBetToSlip, removeBetFromSlip, selectedBets } = useBetSlip();
+  const [isClicked, setIsClicked] = useState(false);
 
-  const handleAddToBetSlip = () => {
-      addBetToSlip(odds);
-      console.log(odds);
+  const handleAddToBetSlip = (event) => {
+      event.preventDefault();
+      setIsClicked((prevState) => !prevState)
   }
 
+  useEffect(() => {
+    if (isClicked) {
+      addBetToSlip(odds);
+    } else {
+      removeBetFromSlip(0);
+    }
+  }, [isClicked])
+
   return (
-    <button onClick={handleAddToBetSlip}>{odds?.value}</button>
+    <button className={`bet-odds-button ${isClicked ? 'active-odds-button' : ''}`} onClick={handleAddToBetSlip}>{odds?.value}</button>
   )
 }
 

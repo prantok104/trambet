@@ -1,3 +1,4 @@
+import BetCard from '@/components/Bets/BetCard';
 import { HttpClientCall } from '@/components/HTTPClient';
 import CustomSlider from '@/components/Slider';
 import Image from 'next/image';
@@ -147,6 +148,9 @@ const Sports = () => {
      sliderEffect();
    }, [sliderEffect]);
 
+  
+   const testLoop = ['1','2','3','4','5','6','7','8','9']
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -205,6 +209,34 @@ const Sports = () => {
             <div className="main-slider-area-start mt-3">
               <CustomSlider images={sliders} />
             </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="d-flex align-items-center gap-2 mb-3">
+                <Image
+                  src={"https://placehold.co/60x60"}
+                  width={40}
+                  height={40}
+                  alt="Caregory/ Sub category name"
+                  unoptimized
+                  style={{
+                    borderRadius: "50%",
+                    padding: "5px",
+                    background: "#1E263D",
+                  }}
+                />
+                <h6 style={{ fontSize: "14px" }}>
+                  Category Name/ sub category name
+                </h6>
+              </div>
+            </div>
+            <>
+              {testLoop?.map((item, index) => (
+                <div className="col-md-4 mb-4" key={`bet_card_${index}`}>
+                  <BetCard />
+                </div>
+              ))}
+            </>
           </div>
         </div>
         {/* Sport data area end */}
