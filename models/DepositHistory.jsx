@@ -60,6 +60,8 @@ const DepositHistory = ({
     ],
     [rows]
   );
+
+  // console.log(rows?.paginationData?.totalItems);
   return (
     <div>
       <div>
@@ -70,7 +72,7 @@ const DepositHistory = ({
             data={rows?.data}
             pagination
             paginationServer
-            paginationTotalRows={rows?.total}
+            paginationTotalRows={rows?.paginationData?.totalItems}
             onChangeRowsPerPage={handlePageSizeChange}
             onChangePage={handlePageChange}
         />

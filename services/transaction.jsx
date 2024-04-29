@@ -44,3 +44,18 @@ export async function makeDeposit(payload) {
       return [];
     });
 }
+
+export async function getDepositHistory(page, perPage) {
+  return await HttpClientCall({
+    endpoint: `deposit/history/${page}/${perPage}`,
+    method: "GET",
+    includeAuth: true,
+    data: [],
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
