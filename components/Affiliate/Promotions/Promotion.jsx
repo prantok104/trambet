@@ -1,26 +1,8 @@
-import { HttpClientCall } from "@/components/HTTPClient";
-import { notify } from "@/components/Helper";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import NewsCard from "@/components/News/NewsCard";
 
-const Promotion = () => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    HttpClientCall({
-      endpoint: `affiliate/promotions/1`,
-      method: "GET",
-      includeAuth: true,
-      data: [],
-    }).then((res) => {
-      if (res.status === true) {
-        setData(res?.data?.promotions);
-      } else {
-        notify("error", res.response.data.message);
-      }
-    });
-  }, []);
-
-  console.log(data);
-
+const Promotion = ({ promotions = [], promo = [] }) => {
+  console.log("promotions data :", promotions);
   return (
     <div>
       <table className="table table-dark table-striped">
@@ -37,25 +19,40 @@ const Promotion = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {promotions?.map((promotionItem, index) => (
             <tr key={index}>
-              <th scope="row">{++index}</th>
-              <td>{item.title}</td>
-              <td>{item.promo_code}</td>
-              <td>{item.promo_percentage}%</td>
-              <td>{new Date(item.created_at).toLocaleDateString('en-GB')}</td>
+              <th scope="row">{index + 1}</th>
+              <td>{promotionItem.title}</td>
+              <td>{promotionItem.promo_code}</td>
+              <td>{promotionItem.promo_percentage}%</td>
+              <td>{promotionItem.created_at}</td>
               <td>
-                {item.is_admin_approved == 1 ? (
+                {promotionItem.is_admin_approved == 0 && (
+                  <span className="badge bg-info">Pending</span>
+                )}
+                {promotionItem.is_admin_approved == 1 && (
                   <span className="badge bg-success">Approved</span>
-                ) : (
-                  <span className="badge bg-warning">Pending</span>
+                )}
+                {promotionItem.is_admin_approved == 2 && (
+                  <span className="badge bg-danger">Rejected</span>
                 )}
               </td>
               <td>
-                {item.admin_comment ? item.admin_comment : "No comment"}
+                <span
+                  className={
+                    promotionItem.admin_comment ? "" : "badge bg-warning"
+                  }
+                >
+                  {promotionItem.admin_comment || "No Comment"}
+                </span>
               </td>
               <td>
-                <span className="badge bg-success">Active</span>
+                <span
+                  className={`badge ${
+                    promotionItem.status == 1 ? "bg-success" : "bg-warning"
+                  }`} >
+                  {promotionItem.status == 1 ? "Active" : "Inactive"}
+                </span>
               </td>
             </tr>
           ))}

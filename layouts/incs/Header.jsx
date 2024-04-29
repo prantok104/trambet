@@ -278,7 +278,10 @@ const Header = () => {
                           <Link href={"/"}>2FA Verification</Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Security and privacy</Link>
+                          <Link href={"/user/kyc-verification"}>KYC Verification</Link>
+                        </li>
+                        <li>
+                          <Link href={"/policy/privacy-policy"}>Security and privacy</Link>
                         </li>
                         <li>
                           <Link href={"/user/support"}>Support</Link>
