@@ -6,7 +6,6 @@ import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
 import AffiliatLayout from "../layout";
 import Website from "@/models/Website";
-import { HttpClientCall } from "@/components/HTTPClient";
 import { getWebsites } from "@/services/affiliate";
 const Websites = () => {
   
