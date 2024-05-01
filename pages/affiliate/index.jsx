@@ -58,7 +58,7 @@ const Affiliate = () => {
           </div>
         </div>
 
-        <Websites />
+        {/* <Websites /> */}
       </AffiliatLayout>
     </>
   );
