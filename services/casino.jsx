@@ -17,7 +17,7 @@ export async  function getLiveCasinoData() {
   }
 export async  function getLiveCasinoOpenData(data) {
     return await HttpClientCall({
-        endpoint: "casino/game/open/",
+        endpoint: "casino/game/open",
         method: "GET",
         includeAuth: true,
         data: data,
