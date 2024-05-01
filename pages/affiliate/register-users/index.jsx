@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Card from "@/components/Card";
 import DepositHistory from "@/models/DepositHistory";
@@ -7,10 +7,14 @@ import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
 import AffiliatLayout from "../layout";
 import RegisterUser from "@/models/RegisterUser";
+import { getRegisterUser } from "@/services/affiliate";
 
 const RegisterUsers = () => {
   const innerRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [totalRows, setTotalRows] = useState(0);
+  const [perPage, setPerPage] = useState(10);
   const [filter, setFilter] = useState({
     page: 1,
     per_page: 10,
@@ -23,23 +27,36 @@ const RegisterUsers = () => {
     search: Yup.string(),
   });
 
-  const rows = {
-    data: [
-      { year: 40 },
-      { year: 20 },
-    ],
-    current_page: 1,
-    per_page: 10,
-    total: 11,
+  const fetchData = async (page) => {
+    setIsLoading(true);
+    await getRegisterUser(page, perPage).then((res) => {
+      if (res) {
+        setData(res);
+        setTotalRows(res?.paginationData?.totalItems);
+      }
+    }).then(() => {
+      setIsLoading(false);
+    });
   };
 
-  const handlePageSizeChange = (pageSize) => {
-    setFilter((prevState) => {
-      return {
-        ...prevState,
-        per_page: pageSize,
-      };
+  const handlePageSizeChange = async (newPerPage, page) => {
+    // setFilter((prevState) => {
+    //   return {
+    //     ...prevState,
+    //     per_page: pageSize,
+    //   };
+    // });
+
+    setIsLoading(true);
+    await getRegisterUser(page, newPerPage).then((res) => {
+      if (res) {
+        setData(res);
+        setTotalRows(res?.paginationData?.totalItems);
+      }
+    }).then(() => {
+      setIsLoading(false);
     });
+    
   };
   const handlePageChange = (page) => {
     setFilter((prevState) => {
@@ -48,11 +65,16 @@ const RegisterUsers = () => {
         page: page,
       };
     });
+    fetchData(page);
   };
 
   const handleAction = async (event, data) => {};
 
   const handleSubmit = (values) => {};
+
+  useEffect(() => {
+    fetchData(1);
+  }, []);
   return (
     <AffiliatLayout>
       <div className="container-fluid">
@@ -91,7 +113,7 @@ const RegisterUsers = () => {
           >
             <RegisterUser
               isLoading={isLoading}
-              rows={rows}
+              rows={data}
               handleAction={handleAction}
               handlePageSizeChange={handlePageSizeChange}
               handlePageChange={handlePageChange}

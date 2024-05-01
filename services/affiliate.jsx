@@ -36,10 +36,26 @@ export async function getWithdrawHistory(page, perPage,searchData) {
         includeAuth: true,
         data: searchData,
     })
-        .then((response) => {
-            return response;
-        })
-        .catch((error) => {
-            return [];
-        });
-}
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return [];
+      });
+  }
+
+  export async function getRegisterUser(page, perPage) {
+    return await HttpClientCall({
+      endpoint: `affiliate/promo_user/${page}/${perPage}`,
+      method: "GET",
+      includeAuth: true,
+      data: [],
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return [];
+      });
+  }
+
