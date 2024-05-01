@@ -42,6 +42,7 @@ const Websites = () => {
   const fetchData = async (page) => {
     setIsLoading(true);
     await getWebsites(page, perPage,searchData).then((res) => {
+      console.log(res);
       if (res) {
         setData(res);
         setTotalRows(res?.paginationData?.totalItems);

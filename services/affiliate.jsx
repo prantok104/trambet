@@ -65,7 +65,7 @@ export async function getAffiliateSummery() {
         data: [],
     })
         .then((response) => {
-            return response.data.summery;
+            return response;
         })
         .catch((error) => {
             return [];
