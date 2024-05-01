@@ -29,3 +29,17 @@ export async function getWebsites(page, perPage,searchData) {
             return [];
         });
 }
+export async function getWithdrawHistory(page, perPage,searchData) {
+    return await HttpClientCall({
+        endpoint: `withdraw/history/${page}/${perPage}`,
+        method: "GET",
+        includeAuth: true,
+        data: searchData,
+    })
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            return [];
+        });
+}
