@@ -49,7 +49,7 @@ useEffect(() => {
         const response = await getLiveCasinoOpenData({ id: id,demo: demo });
         if (response) {
             const queryParamString = new URLSearchParams(response.game.url).toString();
-            router.push(`casino/play?${queryParamString}`);
+            router.push(`/casino/play?${queryParamString}`);
         }
 
     }
