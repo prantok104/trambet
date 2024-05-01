@@ -1,6 +1,6 @@
 import { HttpClientCall } from "@/components/HTTPClient";
 
-export async function getAllPromotions() {
+export async  function getAllPromotions() {
     return await HttpClientCall({
       endpoint: "affiliate/promotions",
       method: "GET",
@@ -15,7 +15,6 @@ export async function getAllPromotions() {
         return [];
       });
   }
-
 export async function getWebsites(page, perPage,searchData) {
     return await HttpClientCall({
         endpoint: `affiliate/websites/${page}/${perPage}`,
@@ -30,14 +29,12 @@ export async function getWebsites(page, perPage,searchData) {
             return [];
         });
 }
-
-  
-  export async function createPromoCode(data) {
+export async function getWithdrawHistory(page, perPage,searchData) {
     return await HttpClientCall({
-      endpoint: "affiliate/promo/create",
-      method: "POST",
-      includeAuth: true,
-      data: data,
+        endpoint: `withdraw/history/${page}/${perPage}`,
+        method: "GET",
+        includeAuth: true,
+        data: searchData,
     })
       .then((response) => {
         return response;
@@ -46,7 +43,34 @@ export async function getWebsites(page, perPage,searchData) {
         return [];
       });
   }
-
+export async function getAffiliateLink(page, perPage,searchData) {
+    return await HttpClientCall({
+        endpoint: `affiliate/report/links/${page}/${perPage}`,
+        method: "GET",
+        includeAuth: true,
+        data: searchData,
+    })
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            return [];
+        });
+}
+export async function getAffiliateSummery() {
+    return await HttpClientCall({
+        endpoint: `affiliate/report/summery`,
+        method: "GET",
+        includeAuth: true,
+        data: [],
+    })
+        .then((response) => {
+            return response.data.summery;
+        })
+        .catch((error) => {
+            return [];
+        });
+}
   export async function getRegisterUser(page, perPage) {
     return await HttpClientCall({
       endpoint: `affiliate/promo_user/${page}/${perPage}`,
@@ -61,3 +85,4 @@ export async function getWebsites(page, perPage,searchData) {
         return [];
       });
   }
+

@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useRef } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import AffiliatLayout from "../../layout";
 import WithdrawHistoryTable from "@/models/WithdrawHistoryTable";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -7,6 +7,7 @@ import Card from "@/components/Card";
 import InputField from "@/components/Form/InputField";
 import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
+import { getWithdrawHistory} from "@/services/affiliate";
 
 const WithdrawHistory = () => {
   const innerRef = useRef();
@@ -29,14 +30,36 @@ const WithdrawHistory = () => {
     per_page: 10,
     total: 11,
   };
+  const handleAction = async (event, data) => {};
+  const [data, setData] = useState([]);
+  const [totalRows, setTotalRows] = useState(0);
+  const [perPage, setPerPage] = useState(10);
+  const [searchTransaction, setSearchTransaction] = useState('');
+  const [searchDate, setSearchDate] = useState('');
+  const searchData = {
+    search: searchTransaction,
+    dates: searchDate
+  };
 
-  const handlePageSizeChange = (pageSize) => {
-    setFilter((prevState) => {
-      return {
-        ...prevState,
-        per_page: pageSize,
-      };
+  const fetchData = async (page) => {
+    setIsLoading(true);
+    await getWithdrawHistory(page, perPage,searchData).then((res) => {
+      if (res) {
+        setData(res);
+        setTotalRows(res?.paginationData?.totalItems);
+      }
+    }).then(() => {
+      setIsLoading(false);
     });
+  };
+  const handleSubmit = (values) => {
+    if(values.search != null){
+      setSearchTransaction(values.search );
+    }
+    if(values.daterange != null){
+      setSearchDate(values.daterange );
+    }
+    fetchData(1);
   };
   const handlePageChange = (page) => {
     setFilter((prevState) => {
@@ -45,11 +68,24 @@ const WithdrawHistory = () => {
         page: page,
       };
     });
+    fetchData(page);
   };
 
-  const handleAction = async (event, data) => {};
+  const handlePageSizeChange = async (newPerPage, page) => {
+    setIsLoading(true);
+    await getWithdrawHistory(page, newPerPage).then((res) => {
+      if (res) {
+        setData(res);
+        setTotalRows(res?.paginationData?.totalItems);
+      }
+    }).then(() => {
+      setIsLoading(false);
+    });
+  };
 
-  const handleSubmit = (values) => {};
+  useEffect(() => {
+    fetchData(1);
+  }, []);
 
   const selectionRange = {
     startDate: new Date(),
@@ -63,9 +99,10 @@ const WithdrawHistory = () => {
         <Breadcrumb title="Withdraw History" path="Home => affiliate => withdraw => history" />
         <div className="mt-2">
           <Card
-            header="Websites"
+            header="Withdraw"
             filter={
               <div className="text-right">
+
                 <Formik
                   innerRef={innerRef}
                   initialValues={initialValues}
@@ -79,7 +116,8 @@ const WithdrawHistory = () => {
 
                       </div>
                       <div className="d-flex align-items-center gap-2 justify-content-end">
-                        <InputField name="search" placeholder="Search" />
+                        <InputField name="search" placeholder="Search by Transaction" />
+                        <InputField name="daterange" placeholder="Search by Date" />
                         <button
                           className="df-btn py-1 reg-btn text-uppercase"
                           onClick={handleSubmit}
@@ -95,7 +133,7 @@ const WithdrawHistory = () => {
           >
             <WithdrawHistoryTable
               isLoading={isLoading}
-              rows={rows}
+              rows={data}
               handleAction={handleAction}
               handlePageSizeChange={handlePageSizeChange}
               handlePageChange={handlePageChange}
