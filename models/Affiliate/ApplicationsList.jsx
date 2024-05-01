@@ -28,6 +28,11 @@ const ApplicationsList = ({
         selector: (row) => row?.description,
         sortable: false,
       },
+      {
+        name: "Website",
+        selector: (row) => row?.website,
+        sortable: false,
+      },
 
       {
         name: "Status",
