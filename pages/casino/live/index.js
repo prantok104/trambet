@@ -4,6 +4,7 @@ import Image from "next/image";
 import WarningCard from "@/components/Warning";
 import Loader from "@/components/Loader";
 import {getLiveCasinoData,getLiveCasinoOpenData} from "@/services/casino";
+import { redirect } from 'next/navigation'
 export default function LiveCasino(){
  let filterTimeout;
 const [casinoData, setCasinoData] = useState();
@@ -44,11 +45,13 @@ useEffect(() => {
       }, 1500);
   }
     const handelPlayButtonClick=async(id,demo)=>{
-        const response = await getLiveCasinoOpenData({ id: id,demo: demo })
-        console.log('play data',response);
-        //setData(endpointData)
-    }
+        const response = await getLiveCasinoOpenData({ id: id,demo: demo });
+        if (response) {
+            const queryParamString = new URLSearchParams(response.game.url).toString();
+            return redirect(`casino/play?${queryParamString}`);
+        }
 
+    }
   return (
     <>
       <ImageTitle title="Live Casino" />
