@@ -28,6 +28,7 @@ const SelectField = ({ label, options, ...props }) => {
       </label>
       <Select
         className="custom-field"
+        defaultValue={options[0]}
         options={options}
         {...field}
         {...props}
