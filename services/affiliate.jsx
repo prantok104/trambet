@@ -30,3 +30,18 @@ export async function getAllPromotions() {
         return [];
       });
   }
+
+  export async function getRegisterUser(page, perPage) {
+    return await HttpClientCall({
+      endpoint: `affiliate/promo_user/${page}/${perPage}`,
+      method: "GET",
+      includeAuth: true,
+      data: [],
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return [];
+      });
+  }
