@@ -58,6 +58,7 @@ const Register = () => {
     countryData();
     currencyData();
   }, []);
+  
   const router = useRouter();
   const handleSubmit = async (
     values,

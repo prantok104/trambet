@@ -21,26 +21,6 @@ const History = () => {
   const validationSchema = Yup.object({
     search: Yup.string(),
   });
-  const rows = {
-    data: [
-      { year: 40 },
-      { year: 20 },
-      { year: 50 },
-      { year: 50 },
-      { year: 50 },
-      { year: 50 },
-      { year: 50 },
-      { year: 50 },
-      { year: 50 },
-      { year: 50 },
-      { year: 50 },
-    ],
-    current_page: 1,
-    per_page: 10,
-    total: 11,
-  };
-
-
 
   const handleAction = async (event, data) => {};
 

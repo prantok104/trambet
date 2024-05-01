@@ -77,7 +77,7 @@ const menu = [
       },
       {
         name: "Summery",
-        link: "//affiliate/report/summery",
+        link: "/affiliate/report/summery",
       },
     ],
   },
