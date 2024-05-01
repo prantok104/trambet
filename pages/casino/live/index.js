@@ -48,8 +48,7 @@ useEffect(() => {
     const handelPlayButtonClick=async(id,demo)=>{
         const response = await getLiveCasinoOpenData({ id: id,demo: demo });
         if (response) {
-            const queryParamString = new URLSearchParams(response.game.url).toString();
-            router.push(`/casino/play?${queryParamString}`);
+            router.push(`/casino/play?url=${response.game.url}`);
         }
 
     }
