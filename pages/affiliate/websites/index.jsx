@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import AffiliatLayout from "../layout";
 import Website from "@/models/Website";
 import { HttpClientCall } from "@/components/HTTPClient";
-
+import { getWebsites } from "@/services/affiliate";
 const Websites = () => {
   
   const innerRef = useRef();
@@ -34,13 +34,28 @@ const Websites = () => {
     total: 11,
   };
 
-  const handlePageSizeChange = (pageSize) => {
-    setFilter((prevState) => {
-      return {
-        ...prevState,
-        per_page: pageSize,
-      };
+  const handleAction = async (event, data) => {};
+  const [data, setData] = useState([]);
+  const [totalRows, setTotalRows] = useState(0);
+  const [perPage, setPerPage] = useState(10);
+  const [searchData, setSearchData] = useState('');
+
+  const fetchData = async (page) => {
+    setIsLoading(true);
+    await getWebsites(page, perPage,searchData).then((res) => {
+      if (res) {
+        setData(res);
+        setTotalRows(res?.paginationData?.totalItems);
+      }
+    }).then(() => {
+      setIsLoading(false);
     });
+  };
+  const handleSubmit = (values) => {
+    if(values.search != null){
+      setSearchData({ search: values.search });
+      fetchData(1);
+    }
   };
   const handlePageChange = (page) => {
     setFilter((prevState) => {
@@ -49,69 +64,70 @@ const Websites = () => {
         page: page,
       };
     });
+    fetchData(page);
   };
 
-  const handleAction = async (event, data) => {};
-
-  const handleSubmit = (values) => {};
-
-
-  const [website, setWebsite] = useState([]);
-  useEffect(() => {
+  const handlePageSizeChange = async (newPerPage, page) => {
     setIsLoading(true);
-    HttpClientCall({
-      endpoint: `affiliate/websites/${filter.page}`,
-      method: "GET",
-      includeAuth: true,
-      data: {},
-    }).then((response) => {
-      console.log(response);
-      setWebsite(response);
+    await getWebsites(page, newPerPage).then((res) => {
+      if (res) {
+        setData(res);
+        setTotalRows(res?.paginationData?.totalItems);
+      }
+    }).then(() => {
+      setIsLoading(false);
     });
-    setIsLoading(false);
-  } , []);
+  };
+
+  useEffect(() => {
+    fetchData(1);
+  }, []);
+
   return (
-    <div className="container-fluid">
-      <Breadcrumb title="Websites" path="Home => affiliate => websites" />
-      <div className="mt-2">
-        <Card
-          header="Websites"
-          filter={
-            <div className="text-right">
-              <Formik
-                innerRef={innerRef}
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-                enableReinitialize={true}
-              >
-                {({ values }) => (
-                  <FormikForm>
-                    <div className="d-flex align-items-center gap-2 justify-content-end">
-                      <InputField name="search" placeholder="Search" />
-                      <button
-                        className="df-btn py-1 reg-btn text-uppercase"
-                        onClick={handleSubmit}
-                      >
-                        search
-                      </button>
-                    </div>
-                  </FormikForm>
-                )}
-              </Formik>
-            </div>
-          }
-        >
-          <Website
-            isLoading={isLoading}
-            rows={website}
-            handleAction={handleAction}
-            handlePageSizeChange={handlePageSizeChange}
-            handlePageChange={handlePageChange}
-          />
-        </Card>
-      </div>
-    </div>
+      <AffiliatLayout>
+        <div className="container-fluid">
+          <Breadcrumb title="Websites" path="Home => affiliate => websites"/>
+          <div className="mt-2">
+            <Card
+                header="Websites"
+                filter={
+                  <div className="text-right">
+                    <Formik
+                        innerRef={innerRef}
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={handleSubmit}
+                        enableReinitialize={true}
+                    >
+                      {({values}) => (
+                          <FormikForm>
+                            <div className="d-flex align-items-center gap-2 justify-content-end">
+                              <InputField name="search" placeholder="Search"/>
+                              <button
+                                  className="df-btn py-1 reg-btn text-uppercase"
+                                  onClick={handleSubmit}
+                              >
+                                search
+                              </button>
+                            </div>
+                          </FormikForm>
+                      )}
+                    </Formik>
+                  </div>
+                }
+            >
+              <Website
+                  isLoading={isLoading}
+                  rows={data}
+                  handleAction={handleAction}
+                  handlePageSizeChange={handlePageSizeChange}
+                  handlePageChange={handlePageChange}
+              />
+            </Card>
+          </div>
+        </div>
+      </AffiliatLayout>
+
   );
 };
 
