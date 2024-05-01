@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }) {
       ) : (
         <LanguageProvider>
           <BetslipProvider>
-            <LogoutProvider> {/* Wrap with LogoutProvider */}
+            <LogoutProvider> 
               <Layout>
                 <ToastContainer />
                 <Component {...pageProps} />
