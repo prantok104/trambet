@@ -5,10 +5,10 @@ import InputField from "@/components/Form/InputField";
 import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
 import AffiliatLayout from "../../layout";
-import AffiliateLinkTable from "@/models/AffiliateLinkTable";
+import AffiliateLink from "@/models/AffiliateLink";
 import {getAffiliateLink} from "@/services/affiliate";
 
-const AffiliateLink = () => {
+const AffiliateLinks = () => {
     const innerRef = useRef();
     const [isLoading, setIsLoading] = useState(false);
     const [filter, setFilter] = useState({
@@ -42,7 +42,7 @@ const AffiliateLink = () => {
         setIsLoading(true);
         await getAffiliateLink(page, perPage,searchData).then((res) => {
             if (res) {
-                setData(res);
+                setData(res.websiteList);
                 setTotalRows(res?.paginationData?.totalItems);
             }
         }).then(() => {
@@ -69,7 +69,7 @@ const AffiliateLink = () => {
         setIsLoading(true);
         await getAffiliateLink(page, newPerPage).then((res) => {
             if (res) {
-                setData(res);
+                setData(res.websiteList);
                 setTotalRows(res?.paginationData?.totalItems);
             }
         }).then(() => {
@@ -116,12 +116,12 @@ const AffiliateLink = () => {
                 </div>
               }
             >
-              <AffiliateLinkTable
-                isLoading={isLoading}
-                rows={data}
-                handleAction={handleAction}
-                handlePageSizeChange={handlePageSizeChange}
-                handlePageChange={handlePageChange}
+              <AffiliateLink
+                  isLoading={isLoading}
+                  rows={data}
+                  handleAction={handleAction}
+                  handlePageSizeChange={handlePageSizeChange}
+                  handlePageChange={handlePageChange}
               />
             </Card>
           </div>
@@ -130,4 +130,4 @@ const AffiliateLink = () => {
     );
 }
 
-export default AffiliateLink
+export default AffiliateLinks
