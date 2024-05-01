@@ -25,12 +25,15 @@ const Summery = () => {
     });
     useEffect(() => {
         async function fetchData() {
-            const data = await getAffiliateSummery();
-            setSummeryData(data);
-            console.log('summery data',summeryData);
+            await getAffiliateSummery().then((res) => {
+                if (res.status === true) {
+                    setSummeryData(res.data.summery);
+                }
+            });
         }
         fetchData();
     }, []);
+    console.log(summeryData);
     const handleSubmit = (values) => {
         if(values.search != null){
             setSearchData({ search: values.search });
@@ -79,71 +82,71 @@ const Summery = () => {
                           <tbody>
                           <tr className="table-dark">
                               <td>Views</td>
-                              <td></td>
+                              <td>{summeryData.view}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Clicks</td>
-                              <td>0</td>
+                              <td>{summeryData.view}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Driect links</td>
-                              <td>0</td>
+                              <td>{summeryData.web_count}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Click/Views</td>
-                              <td>0</td>
+                              <td>{summeryData.view !== 0 ? (summeryData.view / summeryData.view) * 100 : 0} %</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Registrations</td>
-                              <td>0</td>
+                              <td>{summeryData.registration}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Registrations/Click ratio</td>
-                              <td>0</td>
+                              <td>{summeryData.view !== 0 ? ((summeryData.registration / summeryData.view) * 100).toFixed(2) : 0}%</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Registrations with deposit</td>
-                              <td>0</td>
+                              <td>{summeryData.new_depositor}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Registrations with deposit/Registration ratio</td>
-                              <td>0</td>
+                              <td>{summeryData.registration !== 0 ? ((summeryData.new_depositor / summeryData.registration) * 100).toFixed(2) : 0}%</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Total new deposit amount</td>
-                              <td>0</td>
+                              <td>{Number(summeryData.new_depositor_amount).toFixed(2)}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>New depositors</td>
-                              <td>0</td>
+                              <td>{summeryData.new_depositor}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Accounts with deposits</td>
-                              <td>0</td>
+                              <td>{Number(summeryData.all_deposit_amount).toFixed(2)}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Total Profit</td>
-                              <td>0</td>
+                              <td style={{ color: Number(summeryData.profit) < 0 ? 'red' : '' }}>{Number(summeryData.profit).toFixed(2)}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Total Loss</td>
-                              <td>0</td>
+                              <td style={{ color: Number(summeryData.loss) > 0 ? 'red' : '' }}>{Number(summeryData.loss).toFixed(2)}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Revenue</td>
-                              <td>0</td>
+                              <td style={{ color: Number(summeryData.revenue) < 0 ? 'red' : '' }}>{Number(summeryData.revenue).toFixed(2)}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Active Player</td>
-                              <td>0</td>
+                              <td>{summeryData.active_player}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Bonus Amount</td>
-                              <td>0</td>
+                              <td style={{ color: Number(summeryData.bonus) < 0 ? 'red' : '' }}>{Number(summeryData.bonus).toFixed(2)}</td>
                           </tr>
                           <tr className="table-dark">
                               <td>Referral Commission</td>
-                              <td>0</td>
+                              <td style={{ color: Number(summeryData.revenue) < 0 ? 'red' : '' }}>{Number(summeryData.revenue).toFixed(2)}</td>
                           </tr>
 
 
