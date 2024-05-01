@@ -14,42 +14,54 @@ const DepositHistory = ({
       rowIndex(rows),
       {
         name: "Gateway",
-        selector: (row) => row?.year,
+        selector: (row) => row?.gateway,
         sortable: true,
       },
       {
         name: "TRX. No.",
-        selector: (row) => row?.year,
+        selector: (row) => row?.trx,
         sortable: false,
       },
       {
         name: "Amount",
-        selector: (row) => row?.year,
+        selector: (row) => row?.amount,
         sortable: false,
       },
       {
         name: "Deposit No",
-        selector: (row) => row?.year,
+        selector: (row) => row?.deposit_no,
         sortable: false,
       },
       {
         name: "Status",
-        selector: (row) => row?.year,
+        selector: (row) => {
+          if (row?.status === "1") {
+            return 'Success';
+          } else if (row?.status === "2") {
+            return 'Pending';
+          } else if (row?.status === "3") {
+            return 'Cancel';
+          } else {
+            return 'Unknown status';
+          }
+        },
         sortable: false,
       },
       {
         name: "Initiated",
-        selector: (row) => row?.year,
+        selector: (row) => row?.initiated,
         sortable: false,
       },
       {
         name: "Details",
-        selector: (row) => row?.year,
+        selector: (row) => row?.details,
         sortable: false,
       },
     ],
     [rows]
   );
+
+  // console.log(rows?.paginationData?.totalItems);
   return (
     <div>
       <div>
@@ -60,7 +72,7 @@ const DepositHistory = ({
             data={rows?.data}
             pagination
             paginationServer
-            paginationTotalRows={rows?.total}
+            paginationTotalRows={rows?.paginationData?.totalItems}
             onChangeRowsPerPage={handlePageSizeChange}
             onChangePage={handlePageChange}
         />

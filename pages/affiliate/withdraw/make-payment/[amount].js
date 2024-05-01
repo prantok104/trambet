@@ -9,8 +9,7 @@ import { useRef, useState } from "react";
 import * as Yup from "yup";
 import { notify } from '@/components/Helper';
 const MakeDepositPage = () => {
-  const innerRef = useRef();
-  // console.log(innerRef)
+  const innerRef = useRef(null);
   const [initialValues, setInitialValues] = useState({
     amount: 100,
     wallet_number: '12qwew',

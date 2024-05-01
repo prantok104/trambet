@@ -1,10 +1,11 @@
 import AlertCard from '@/components/AlertCard';
 import Breadcrumb from '@/components/Breadcrumb';
 import Card from '@/components/Card';
-import React, { use, useEffect, useState } from 'react'
-import ProviderCard from '@/components/Users/Withdraw/ProviderCard';
+import React, { useEffect, useState } from 'react'
+import ProviderCard from '@/components/Affiliate/Withdraw/ProviderCard';
 import { notify } from '@/components/Helper';
 import { getPaymentMethods } from '@/services/transaction';
+import AffiliatLayout from "./../layout";
 const Withdraw = () => {
 
 const [paymentMethod, setPaymentMethod] = useState([]);
@@ -23,7 +24,8 @@ const paymentMethodData = async () => {
   }, []);
 
   return (
-    <div className="container-fluid">
+    <AffiliatLayout>
+    <div className="container-fluid mb-2">
       <Breadcrumb
         title="Withdraw"
         path="Home => Withdraw"
@@ -38,7 +40,7 @@ const paymentMethodData = async () => {
          </Card>
       </div>
     </div>
-    
+    </AffiliatLayout>
   );
 }
 

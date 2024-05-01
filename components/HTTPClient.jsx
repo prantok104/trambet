@@ -6,6 +6,7 @@ export async function HttpClientCall(props) {
     const headers = {
         "Content-Type": "application/json",
         Accept: "application/json",
+        "Access-Control-Allow-Origin": "*"
     };
     if (props.includeAuth == true) {
         headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
@@ -15,6 +16,7 @@ export async function HttpClientCall(props) {
         if(props.method == "GET") {
             const res = await axios.get(`${baseUrl}/${props.endpoint}`, {
                 headers: headers,
+                params: props.data,
             });
             return res.data;
         } else if (props.method == "POST") {

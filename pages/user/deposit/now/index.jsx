@@ -1,29 +1,84 @@
-
-import Card from '@/components/Card'
-import AlertCard from '@/components/AlertCard'
-import Warning from '@/components/Warning'
-import ListGroup from 'react-bootstrap/ListGroup';
+import Card from "@/components/Card";
+import AlertCard from "@/components/AlertCard";
+import Warning from "@/components/Warning";
+import ListGroup from "react-bootstrap/ListGroup";
 import { Form as FormikForm, Formik } from "formik";
 import InputField from "@/components/Form/InputField";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
-import { notify } from '@/components/Helper';
+import { notify } from "@/components/Helper";
+import { getprovider, makeDeposit } from "@/services/transaction";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 const MakeDepositPage = () => {
   const innerRef = useRef();
-  // console.log(innerRef)
   const [initialValues, setInitialValues] = useState({
-    amount: 100,
-    wallet_number: '12qwew',
-    trx_id: 'qqweqwe'
-  })
+    amount: "",
+    wallet_number: "",
+    trx_id: "",
+  });
+  const [data, setData] = useState(null);
+  const [provider, setProvider] = useState({});
+  const [user, setUser] = useState({});
+  const router = useRouter();
+  useEffect(() => {
+    const userData = JSON.parse(window.localStorage.getItem("userDetails"));
+    setUser(userData);
+    const fetchData = async () => {
+      const localData = JSON.parse(window.localStorage.getItem("deposit_payment"));
+      setData(localData);
+      try {
+        setInitialValues({
+          amount: localData?.amount,
+          wallet_number: "",
+          trx_id: "",
+        });
+        const dipositAgent = await getprovider({ provider: localData?.provider?.id });
+        if (dipositAgent?.status === true) {
+          setProvider(dipositAgent?.data[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching provider:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
   const validationSchema = Yup.object({
-      amount: Yup.number().required().min(100).max(20000),
-      wallet_number: Yup.string().required("Wallet number is required"),
-      trx_id: Yup.string().required("Transaction ID is required"),
-   });
-   const handleSubmit = (values) => {
-    notify("success", "Successfully deposit completed")
-   }
+    amount: Yup.number().required().min(100).max(20000),
+    wallet_number: Yup.string().required("Wallet number is required"),
+    trx_id: Yup.string().required("Transaction ID is required"),
+  });
+
+  const handleSubmit = async (values) => {
+    const payload = {
+      agent : provider?.admin_id,
+      provider : data?.provider?.id,
+      payment_gateway : "local",
+      amount : values?.amount,
+      payment_number : values?.wallet_number,
+      depositor_name : user?.firstname + " " + user?.lastname,
+      transaction_id : values?.trx_id,
+      samount : values?.amount,
+      method_id : data?.provider?.id,
+    };
+
+    await makeDeposit(payload).then((res) => {
+      console.log(res);
+      if (res.status === true) {
+        // innerRef.current.resetForm();
+        toast.success("Successfully deposit completed", {
+          onClose: () => router.push("/"),
+        });
+        localStorage.removeItem("deposit_payment");
+
+      } else {
+        notify("error", res.response.data.message);
+      }});
+  };
+
+
   return (
     <>
       <div className="container">
@@ -40,15 +95,15 @@ const MakeDepositPage = () => {
                 <ListGroup>
                   <ListGroup.Item className="d-flex align-items-center justify-content-between">
                     <span>Bank Name</span>
-                    <span>SureCash</span>
+                    <span>{data?.provider?.name}</span>
                   </ListGroup.Item>
                   <ListGroup.Item className="d-flex align-items-center justify-content-between">
-                    <span>SureCash Wallet Number</span>
-                    <span>3456788765</span>
+                    <span>{data?.provider?.name} Wallet Number</span>
+                    <span>{provider?.mobile}</span>
                   </ListGroup.Item>
                   <ListGroup.Item className="d-flex align-items-center justify-content-between">
-                    <span>SureCash Wallet Name</span>
-                    <span>hasan-1</span>
+                    <span>{data?.provider?.name} Wallet Name</span>
+                    <span>{provider?.wallet_name}</span>
                   </ListGroup.Item>
                 </ListGroup>
               </div>

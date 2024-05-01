@@ -34,8 +34,8 @@ const ProviderCard = ({ providers }) => {
   const handleSubmit = async (values) => {
     if (values?.amount > 0) {
       const stateData = { amount: values?.amount };
-      localStorage.setItem("deposit_payment", JSON.stringify(values));
-      navigate.push(`/user/deposit/now`);
+      localStorage.setItem("affiliate_withdraw_payment", JSON.stringify(values));
+      navigate.push(`/affiliate/withdraw/now`);
     }
   };
 

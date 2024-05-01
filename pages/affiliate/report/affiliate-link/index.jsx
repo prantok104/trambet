@@ -1,13 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Card from "@/components/Card";
 import InputField from "@/components/Form/InputField";
 import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
 import AffiliatLayout from "../../layout";
-import AffiliateLinkTable from "@/models/AffiliateLinkTable";
+import AffiliateLink from "@/models/AffiliateLink";
+import {getAffiliateLink} from "@/services/affiliate";
 
-const AffiliateLink = () => {
+const AffiliateLinks = () => {
     const innerRef = useRef();
     const [isLoading, setIsLoading] = useState(false);
     const [filter, setFilter] = useState({
@@ -31,27 +32,54 @@ const AffiliateLink = () => {
       per_page: 10,
       total: 11,
     };
-  
-    const handlePageSizeChange = (pageSize) => {
-      setFilter((prevState) => {
-        return {
-          ...prevState,
-          per_page: pageSize,
-        };
-      });
+    const handleAction = async (event, data) => {};
+    const [data, setData] = useState([]);
+    const [totalRows, setTotalRows] = useState(0);
+    const [perPage, setPerPage] = useState(10);
+    const [searchData, setSearchData] = useState('');
+
+    const fetchData = async (page) => {
+        setIsLoading(true);
+        await getAffiliateLink(page, perPage,searchData).then((res) => {
+            if (res) {
+                setData(res.websiteList);
+                setTotalRows(res?.paginationData?.totalItems);
+            }
+        }).then(() => {
+            setIsLoading(false);
+        });
+    };
+    const handleSubmit = (values) => {
+        if(values.search != null){
+            setSearchData({ search: values.search });
+            fetchData(1);
+        }
     };
     const handlePageChange = (page) => {
-      setFilter((prevState) => {
-        return {
-          ...prevState,
-          page: page,
-        };
-      });
+        setFilter((prevState) => {
+            return {
+                ...prevState,
+                page: page,
+            };
+        });
+        fetchData(page);
     };
-  
-    const handleAction = async (event, data) => {};
-  
-    const handleSubmit = (values) => {};
+
+    const handlePageSizeChange = async (newPerPage, page) => {
+        setIsLoading(true);
+        await getAffiliateLink(page, newPerPage).then((res) => {
+            if (res) {
+                setData(res.websiteList);
+                setTotalRows(res?.paginationData?.totalItems);
+            }
+        }).then(() => {
+            setIsLoading(false);
+        });
+    };
+
+    useEffect(() => {
+        fetchData(1);
+    }, []);
     return (
       <AffiliatLayout>
         <div className="container-fluid">
@@ -88,12 +116,12 @@ const AffiliateLink = () => {
                 </div>
               }
             >
-              <AffiliateLinkTable
-                isLoading={isLoading}
-                rows={rows}
-                handleAction={handleAction}
-                handlePageSizeChange={handlePageSizeChange}
-                handlePageChange={handlePageChange}
+              <AffiliateLink
+                  isLoading={isLoading}
+                  rows={data}
+                  handleAction={handleAction}
+                  handlePageSizeChange={handlePageSizeChange}
+                  handlePageChange={handlePageChange}
               />
             </Card>
           </div>
@@ -102,4 +130,4 @@ const AffiliateLink = () => {
     );
 }
 
-export default AffiliateLink
+export default AffiliateLinks

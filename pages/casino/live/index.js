@@ -1,35 +1,27 @@
 import ImageTitle from "@/components/ImageTitle";
-import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
-import casinos from '@/assets/casino.json'
+import { useEffect, useState, React } from "react";
 import Image from "next/image";
 import WarningCard from "@/components/Warning";
 import Loader from "@/components/Loader";
-const index = () => {
-const [casinoData, setCasinoData] = useState(casinos);
-const [filteredCasino, setFilteredCasino] = useState(casinos);
+import {getLiveCasinoData,getLiveCasinoOpenData} from "@/services/casino";
+import { redirect } from 'next/navigation'
+import { useRouter } from "next/router";
+export default function LiveCasino(){
+ let filterTimeout;
+const [casinoData, setCasinoData] = useState();
+const [casinoOpenData, setCasinoOpenData] = useState();
+const [filteredCasino, setFilteredCasino] = useState();
 const [activeItem, setActiveItem] = useState('all');
 const [loading, setloading] = useState(false);
- let filterTimeout;
-// const getCasinoData = async () => {
-//   try {
-//     const response = await axios.get(
-//       "https://trambet.smshagor.com/user/casino/get-casino"
-//     );
-//     if (!response.ok) {
-//       throw new Error("Failed to fetch casino data");
-//     }
-//     const data = await response.json();
-//     setCasinoData(data); // Update state with fetched data
-//   } catch (error) {
-//     console.error("Error fetching casino data:", error);
-//   }
-// };
+const router = useRouter();
 
-// useEffect(() => {
-//   getCasinoData();
-// }, []);
-
+useEffect(() => {
+    async function fetchData() {
+        const data = await getLiveCasinoData();
+        setCasinoData(data);
+    }
+    fetchData();
+}, []);
   const handleLabel = (title) => {
     setActiveItem(title);
     setloading(true);
@@ -53,7 +45,13 @@ const [loading, setloading] = useState(false);
         }
       }, 1500);
   }
+    const handelPlayButtonClick=async(id,demo)=>{
+        const response = await getLiveCasinoOpenData({ id: id,demo: demo });
+        if (response) {
+            router.push(`/casino/play?url=${response.game.url}`);
+        }
 
+    }
   return (
     <>
       <ImageTitle title="Live Casino" />
@@ -105,7 +103,7 @@ const [loading, setloading] = useState(false);
                 >
                   <span>{item?.name}</span>
                   <div>
-                    <button className="play-btn">Play</button>
+                    <button className="play-btn"  onClick={() => handelPlayButtonClick(item?.id,item?.demo)}>Play</button>
                   </div>
                 </div>
               ))
@@ -117,6 +115,5 @@ const [loading, setloading] = useState(false);
       )}
     </>
   );
-};
+}
 
-export default index;

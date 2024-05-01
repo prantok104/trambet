@@ -16,27 +16,32 @@ const WithdrawHistoryTable = ({
       rowIndex(rows),
       {
         name: "Currency",
-        selector: (row) => row?.year,
+        selector: (row) => row?.currency,
         sortable: true,
       },
       {
         name: "Date",
-        selector: (row) => row?.year,
+        selector: (row) => row?.date,
         sortable: false,
       },
       {
         name: "Payout",
-        selector: (row) => row?.year,
+        selector: (row) => row?.payout,
         sortable: false,
       },
       {
         name: "Revenue",
-        selector: (row) => row?.year,
+        selector: (row) => row?.revenue,
         sortable: false,
       },
       {
         name: "Balance",
-        selector: (row) => <span class="badge bg-warning">Active</span>,
+        selector: (row) => row?.balance,
+        sortable: false,
+      },
+      {
+        name: "Status",
+        selector: (row) => <span dangerouslySetInnerHTML={{ __html: row?.status }} ></span>,
         sortable: false,
       },
     ],
