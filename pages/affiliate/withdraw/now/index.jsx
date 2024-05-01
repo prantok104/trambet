@@ -7,7 +7,7 @@ import InputField from "@/components/Form/InputField";
 import { useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
 import { notify } from "@/components/Helper";
-import { getprovider, makeDeposit } from "@/services/transaction";
+import { getprovider, storWithdraw } from "@/services/transaction";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import AffiliatLayout from "./../../layout";
@@ -15,8 +15,6 @@ const MakeWithdrawPage = () => {
   const innerRef = useRef();
   const [initialValues, setInitialValues] = useState({
     amount: "",
-    wallet_number: "",
-    trx_id: "",
   });
   const [data, setData] = useState(null);
   const [provider, setProvider] = useState({});
@@ -26,21 +24,17 @@ const MakeWithdrawPage = () => {
     const userData = JSON.parse(window.localStorage.getItem("userDetails"));
     setUser(userData);
     const fetchData = async () => {
-      const localData = JSON.parse(
-        window.localStorage.getItem("affiliate_withdraw_payment")
-      );
+      const localData = JSON.parse(window.localStorage.getItem("affiliate_withdraw_payment"));
       setData(localData);
       try {
         setInitialValues({
           amount: localData?.amount,
-          wallet_number: "",
-          trx_id: "",
         });
-        const dipositAgent = await getprovider({
+        const withdrawAgent = await getprovider({
           provider: localData?.provider?.id,
         });
-        if (dipositAgent?.status === true) {
-          setProvider(dipositAgent?.data[0]);
+        if (withdrawAgent?.status === true) {
+          setProvider(withdrawAgent?.data[0]);
         }
       } catch (error) {
         console.error("Error fetching provider:", error);
@@ -51,32 +45,31 @@ const MakeWithdrawPage = () => {
   }, []);
 
   const validationSchema = Yup.object({
-    amount: Yup.number().required().min(100).max(20000),
-    wallet_number: Yup.string().required("Wallet number is required"),
-    trx_id: Yup.string().required("Transaction ID is required"),
+    wallet_number: Yup.string().required("Wallet number is required")
   });
 
   const handleSubmit = async (values) => {
     const payload = {
-      agent: provider?.admin_id,
-      provider: data?.provider?.id,
       payment_gateway: "local",
-      amount: values?.amount,
-      payment_number: values?.wallet_number,
-      depositor_name: user?.firstname + " " + user?.lastname,
-      transaction_id: values?.trx_id,
-      samount: values?.amount,
-      method_id: data?.provider?.id,
+      agent : provider?.admin_id,
+      provider : data?.provider?.id,
+      amount : values?.amount,
+      phone: values?.wallet_number,
+      samount : values?.amount,
+      method_id : data?.provider?.id,
     };
 
-    await makeDeposit(payload).then((res) => {
-      console.log(res);
+    await storWithdraw(payload).then((res) => {
       if (res.status === true) {
-        // innerRef.current.resetForm();
-        toast.success("Successfully deposit completed", {
-          onClose: () => router.push("/"),
+        localStorage.removeItem("affiliate_withdraw_payment");
+        localStorage.setItem("withdraw_submitted_data", JSON.stringify(res.data));
+        router.push("/affiliate/withdraw/preview")
+      } else if (res.response.status === 422) {
+        Object.keys(res.response.data.errors).forEach((field) => {
+          res.response.data.errors[field].forEach((errorMessage) => {
+            notify("error", errorMessage);
+          });
         });
-        localStorage.removeItem("deposit_payment");
       } else {
         notify("error", res.response.data.message);
       }

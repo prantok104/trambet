@@ -59,3 +59,33 @@ export async function getDepositHistory(page, perPage) {
       return [];
     });
 }
+
+export async function storWithdraw(data) {
+  return await HttpClientCall({
+    endpoint: "withdraw/withdraw-store",
+    method: "POST",
+    includeAuth: true,
+    data: data,
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+export async function submitWithdraw(data) {
+  return await HttpClientCall({
+    endpoint: "withdraw/withdraw-submit",
+    method: "POST",
+    includeAuth: true,
+    data: data,
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+
