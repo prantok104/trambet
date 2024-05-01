@@ -51,7 +51,7 @@ export async function getAffiliateLink(page, perPage,searchData) {
         data: searchData,
     })
         .then((response) => {
-            return response;
+            return response.data;
         })
         .catch((error) => {
             return [];
