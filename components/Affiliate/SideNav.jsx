@@ -50,7 +50,7 @@ const menu = [
     submenu: [
       {
         name: "Withdraw Now",
-        link: "/",
+        link: "/affiliate/withdraw",
       },
       {
         name: "Withdraw History",
