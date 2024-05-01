@@ -13,23 +13,27 @@ const RegisterUser = ({
     () => [
       rowIndex(rows),
       {
-        name: "User Details",
-        selector: (row) => row?.year,
+        name: "User ID",
+        selector: (row) => row?.better_user?.user_id,
         sortable: true,
       },
       {
         name: "Promo Code",
-        selector: (row) => row?.year,
+        selector: (row) => row?.promo?.promo_code,
         sortable: false,
       },
       {
         name: "Percentage",
-        selector: (row) => row?.year,
+        selector: (row) => row?.promo?.promo_percentage + "%",
         sortable: false,
       },
       {
         name: "Register Date",
-        selector: (row) => row?.year,
+        selector: (row) => `${new Date(row?.better_user?.created_at).toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: 'long',
+          day: '2-digit'
+        })}`,
         sortable: false,
       },
     ],
