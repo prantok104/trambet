@@ -1,125 +1,153 @@
-import Card from '@/components/Card';
-import InputField from '@/components/Form/InputField';
-import SelectField from '@/components/Form/SelectField';
-import { FieldArray, Form, Formik } from 'formik';
-import { useRouter } from 'next/router';
-import React, { useRef } from 'react'
-import { FaClock, FaInfo, FaInfoCircle, FaPlusCircle, FaTimes, FaTimesCircle } from 'react-icons/fa';
-import * as Yup from 'yup';
+import Card from "@/components/Card";
+import InputField from "@/components/Form/InputField";
+import SelectField from "@/components/Form/SelectField";
+import { FieldArray, Form, Formik } from "formik";
+import { useRouter } from "next/router";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  FaClock,
+  FaInfo,
+  FaInfoCircle,
+  FaPlusCircle,
+  FaTimes,
+  FaTimesCircle,
+} from "react-icons/fa";
+import * as Yup from "yup";
+import { getBetList, createNewSupportTicket } from "@/services/support";
+import { notify } from "@/components/Helper";
 const Support = () => {
-   const router = useRouter();
-   const innerRef = useRef();
-   const initialValues = {
-     subject: "Bet issue",
-     priority: 3,
-     message: '',
-     attachments: []
-   };
+  const router = useRouter();
+  const innerRef = useRef();
+  const initialValues = {
+    subject: "Bet issue",
+    priority: 3,
+    message: "",
+    attachments: [],
+  };
 
-   const validationSchema = Yup.object({
-     subject: Yup.string().required("Subject is required"),
-     priority: Yup.string().required("Priority is required"),
-     message: Yup.string().required("Message is required"),
-     attachments: Yup.array(),
-     bet_no: Yup.string().when("subject", {
+  const validationSchema = Yup.object({
+    subject: Yup.string().required("Subject is required"),
+    priority: Yup.string().required("Priority is required"),
+    message: Yup.string().required("Message is required"),
+    attachments: Yup.array(),
+    bet_no: Yup.string().when("subject", {
       is: (val) => val == "Bet issue",
       then: (schema) => schema.required("Bet number is required."),
-      otherwise: (schema) =>schema.nullable()
-       
-     }),
-     transaction_id: Yup.string().when("subject", (subject) => {
-       if (subject == "Withdraw problem" || subject == "Deposit problem") {
-         return Yup.string().required("Transaction ID is required.");
-       }
-       return Yup.string().nullable();
-     }),
-     transaction_date: Yup.string().when("subject", (subject) => {
-       if (subject == "Withdraw problem" || subject == "Deposit problem") {
-         return Yup.string().required("Transaction date is required.");
-       }
-       return Yup.string().nullable();
-     }),
-   });
-
-   const supports = [
-     {
-       label: "---Select Subject---",
-       value: "",
-     },
-     {
-       label: "Withdraw problem",
-       value: "Withdraw problem",
-     },
-     {
-       label: "Deposit problem",
-       value: "Deposit problem",
-     },
-     {
-       label: "Bet issue",
-       value: "Bet issue",
-     },
-     {
-       label: "KYC",
-       value: "KYC",
-     },
-     {
-       label: "Banned",
-       value: "Banned",
-     },
-     {
-       label: "Others",
-       value: "Others",
-     },
-   ];
-   const priorities = [
-      {
-         label: 'High',
-         value: 3
-      },
-      {
-         label: 'Medium',
-         value: 2
-      },
-      {
-         label: 'Low',
-         value: 1
+      otherwise: (schema) => schema.nullable(),
+    }),
+    transaction_id: Yup.string().when("subject", (subject) => {
+      if (subject == "Withdraw problem" || subject == "Deposit problem") {
+        return Yup.string().required("Transaction ID is required.");
       }
-   ];
-   const bets = [
-      {
-         label: '---Select Bet---',
-         value: ''
-      },
-      {
-         label: 'YEFHBBJDHH -- 100.00 -- Multiple',
-         value: '10'
-      },
-      {
-         label: 'ADHDDKJJJ -- 100.00 -- Single',
-         value: '20'
-      },
-      {
-         label: 'VBJDGHDJS -- 100.00 -- Multiple',
-         value: '12'
-      },
-      {
-         label: 'LFJKJHUDB -- 100.00 -- Multiple',
-         value: '16'
+      return Yup.string().nullable();
+    }),
+    transaction_date: Yup.string().when("subject", (subject) => {
+      if (subject == "Withdraw problem" || subject == "Deposit problem") {
+        return Yup.string().required("Transaction date is required.");
       }
-   ]
+      return Yup.string().nullable();
+    }),
+  });
 
-   // Form submit
-   const handleSupportSubmit = (values) => {
-      // ticket save on db and back to response and navigate messaging
+  const supports = [
+    {
+      label: "---Select Subject---",
+      value: "",
+    },
+    {
+      label: "Withdraw problem",
+      value: "Withdraw problem",
+    },
+    {
+      label: "Deposit problem",
+      value: "Deposit problem",
+    },
+    {
+      label: "Bet issue",
+      value: "Bet issue",
+    },
+    {
+      label: "KYC",
+      value: "KYC",
+    },
+    {
+      label: "Banned",
+      value: "Banned",
+    },
+    {
+      label: "Others",
+      value: "Others",
+    },
+  ];
+  const priorities = [
+    {
+      label: "High",
+      value: 3,
+    },
+    {
+      label: "Medium",
+      value: 2,
+    },
+    {
+      label: "Low",
+      value: 1,
+    },
+  ];
 
-      router.push({pathname: '/user/support/ticket/message/20sd',
-         query: {
-            subject: values?.subject
-         }
-      })
+  const [bets, setBets] = useState([
+    {
+      label: "---Select Bet---",
+      value: "",
+    },
+  ]);
+  useEffect(() => {
+    async function fetchData() {
+      await getBetList().then((res) => {
+        if (res.status === true) {
+          const originalData = res.data;
+          const transformedData = originalData.map((bet, index) => {
+            return {
+              label: `${bet.bet_number} -- ${Number(bet.amount).toFixed(2)} -- ${bet.type === 1 ? 'Single' : 'Multiple'}`,
+              value: `${bet.bet_num}`,
+            };
+          });
+          setBets(transformedData);
+        }
+      });
+    }
 
+    fetchData();
+  }, []);
 
-   }
+  // Form submit
+  const handleSupportSubmit = async(values) => {
+    const payload = {
+      'subject': values?.subject,
+      'priority': values?.priority,
+      'message': values?.message,
+      'attachments': values?.attachments,
+      'bet_no': values?.bet_no ?? '',
+      'transaction_id': values?.transaction_id ?? '',
+      'transaction_date': values?.transaction_date ?? ''
+    }
+
+    await createNewSupportTicket(payload).then((response) => {
+      console.log(response);
+      if (response?.status === true) {
+        notify("success", response?.message);
+        // router.push("/user/support/ticket/message/" + response?.data?.ticket_id);
+        // router.push("/user/support/ticket/message/" + response?.data?.ticket_id);
+      } else {
+        notify("error", response?.user_message);
+      }
+    });
+
+        // router.push({pathname: '/user/support/ticket/message/20sd',
+    //    query: {
+    //       subject: values?.subject
+    //    }
+    // })
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -245,6 +273,6 @@ const Support = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Support
+export default Support;
