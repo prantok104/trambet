@@ -2,10 +2,10 @@ import AlertCard from '@/components/AlertCard';
 import Breadcrumb from '@/components/Breadcrumb';
 import Card from '@/components/Card';
 import React, { use, useEffect, useState } from 'react'
-import ProviderCard from '@/components/Users/Deposit/ProviderCard';
+import ProviderCard from '@/components/Users/Withdraw/ProviderCard';
 import { notify } from '@/components/Helper';
 import { getPaymentMethods } from '@/services/transaction';
-const Deposit = () => {
+const Withdraw = () => {
 
 const [paymentMethod, setPaymentMethod] = useState([]);
 const paymentMethodData = async () => {
@@ -25,8 +25,8 @@ const paymentMethodData = async () => {
   return (
     <div className="container-fluid">
       <Breadcrumb
-        title="Deposits"
-        path="Home => deposits"
+        title="Withdraw"
+        path="Home => Withdraw"
       />
 
       <div className="mt-2">
@@ -43,4 +43,4 @@ const paymentMethodData = async () => {
 }
 
 
-export default Deposit
+export default Withdraw

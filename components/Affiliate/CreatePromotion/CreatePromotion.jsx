@@ -2,38 +2,75 @@ import Card from "@/components/Card";
 import InputField from "@/components/Form/InputField";
 import SelectField from "@/components/Form/SearchSelectField";
 import TextAreaField from "@/components/Form/TextAreaField";
+import { notify } from "@/components/Helper";
+import { createPromoCode } from "@/services/affiliate";
 import { Form as FormikForm, Formik } from "formik";
-import React, { useRef } from "react";
+import { useRouter } from "next/router";
+import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 const CreatePromotion = () => {
   const formikRef = useRef();
+  const [isLoading, setIsLoading] = useState(false);
+  const [promocode, setPromoCode] = useState(
+    Math.random().toString(36).substring(2, 8).toUpperCase()
+  );
+  const router = useRouter();
 
-  const countries = [
-    { label: "---Select country---", value: "" },
-    { label: "Bangladesh", value: "bn" },
-    { label: "India", value: "in" },
+  const status = [
+    { label: "Active", value: 1 },
+    { label: "Inactive", value: 0 },
   ];
 
   const validationSchema = Yup.object({
-    title: Yup.string().required("First name required").max(50),
-    promocode: Yup.string().required("Last name required").max(50),
-    attachments: Yup.string().required("Last name required").max(50),
-    status: Yup.string().required("Last name required").max(50),
-    description: Yup.string().required("Last name required").max(50),
+    title: Yup.string().required("Title required").max(50),
+    promocode: Yup.string().required("Promo Code required").max(50),
+    status: Yup.object().required("Status required"),
   });
+  // const promocode = Math.random().toString(36).substring(2, 8).toUpperCase();
   const initialValues = {
     title: "",
-    promocode: "",
+    promocode: promocode,
     attachments: "",
     status: "",
     description: "",
   };
-  const handleSubmit = async (
-    values,
-    { setErrors, setStatus, setSubmitting }
-  ) => {
-    console.log(values);
+
+  const handleSubmit = async (values) => {
+    setIsLoading(true);
+    const payload = {
+      title: values?.title,
+      promo_code: promocode,
+      details: values?.description,
+      status: values?.status?.value,
+      attachments: values?.attachments,
+    };
+
+    await createPromoCode(payload)
+      .then((res) => {
+        if (res.status === true) {
+          toast.success("Successfully deposit completed", {
+            onClose: () => {
+              setPromoCode(null);
+              formikRef.current.resetForm();
+              router.push("/affiliate/promotions");
+            },
+          });
+          setIsLoading(false);
+        } else if (res.response.status === 422) {
+          Object.keys(res.response.data.errors).forEach((field) => {
+            res.response.data.errors[field].forEach((errorMessage) => {
+              notify("error", errorMessage);
+            });
+          });
+        } else {
+          notify("error", res.response.data.message);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+      });
   };
   return (
     <Card>
@@ -43,7 +80,9 @@ const CreatePromotion = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize={true}
-        className="form-data"
+        validateOnChange={true}
+        validateOnBlur={true}
+        // className="form-data"
       >
         {({ values, touched, errors }) => (
           <FormikForm>
@@ -55,14 +94,14 @@ const CreatePromotion = () => {
                 <InputField label="Promo Code*" name="promocode" />
               </div>
               <div className="col-md-6 mt-2">
-                <InputField label="Attachments" type="file" name="image" />
+                <InputField
+                  label="Attachments"
+                  type="file"
+                  name="attachments"
+                />
               </div>
               <div className="col-md-6 mt-2">
-                <SelectField
-                  label="Status*"
-                  name="country"
-                  options={countries}
-                />
+                <SelectField label="Status*" name="status" options={status} />
               </div>
               <div className="col-md-12 mt-2">
                 <TextAreaField label="Description" name="description" />
