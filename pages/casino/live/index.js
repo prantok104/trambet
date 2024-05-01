@@ -5,6 +5,7 @@ import WarningCard from "@/components/Warning";
 import Loader from "@/components/Loader";
 import {getLiveCasinoData,getLiveCasinoOpenData} from "@/services/casino";
 import { redirect } from 'next/navigation'
+import { useRouter } from "next/router";
 export default function LiveCasino(){
  let filterTimeout;
 const [casinoData, setCasinoData] = useState();
@@ -12,7 +13,7 @@ const [casinoOpenData, setCasinoOpenData] = useState();
 const [filteredCasino, setFilteredCasino] = useState();
 const [activeItem, setActiveItem] = useState('all');
 const [loading, setloading] = useState(false);
-
+const router = useRouter();
 
 useEffect(() => {
     async function fetchData() {
@@ -48,7 +49,7 @@ useEffect(() => {
         const response = await getLiveCasinoOpenData({ id: id,demo: demo });
         if (response) {
             const queryParamString = new URLSearchParams(response.game.url).toString();
-            return redirect(`casino/play?${queryParamString}`);
+            router.push(`/play?${queryParamString}`);
         }
 
     }
