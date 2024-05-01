@@ -1504,15 +1504,27 @@ ul.sports-categories li:hover,ul.sports-categories li.active {
 .bet-types-button.bet-balance-buttons label {
   width: auto;
 }
+.single-odds-btn{
+  text-align: center;
+  margin: 0 5px;
+}
 .bet-odds-button {
     background: transparent;
     color: #ccc;
     outline: navajowhite;
     border: 1px solid #888;
-    padding: 6px 15px;
+    padding: 8px 15px;
     border-radius: 3px;
+    width: 100%;
 }
-
+.odds-btn-title{
+  font-size: 8px;
+  display: block;
+  margin-top: 2px;
+}
+.odds-btn-title.active{
+  color: #A38BFF
+}
 button.bet-odds-button.active-odds-button {
     background: linear-gradient(
     326deg,
@@ -1521,7 +1533,35 @@ button.bet-odds-button.active-odds-button {
   );
     border-color:  rgb(40, 54, 184)
 }
+.bet-card-area-start .slick-prev,.bet-card-area-start .slick-next{
+  color: #707ca1;
+  font-size: 12px;
+  width: 10px;
+  top: 15px;
+  left: -13px
+}
+.bet-card-area-start .slick-next{
+  left: auto;
+  right: -13px;
+}
+.bet-card-area-start .slick-next:hover, .bet-card-area-start .slick-prev:hover{
+  color: #aeb8d7
+}
 
+select.odds-market-selection {
+    width: 100%;
+    background: #1b2a4b;
+    color: #fff;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #334977;
+    outline: 0;
+    cursor: pointer;
+}
+
+.bet-card-odds-markets {
+    padding: 12px 5px;
+}
 /* contact style */
 .contact-container{
   background-position: center center;

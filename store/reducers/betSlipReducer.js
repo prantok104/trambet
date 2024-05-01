@@ -8,10 +8,10 @@ const betSlipReducer = createSlice({
   name: "betSlipReducer",
   initialState,
   reducers: {
-    addBetToSlip: (state, action) => {
+    addBetToSlip(state, action){
       state.bets.push(action.payload);
     },
-    removeBetFromSlip: (state, action) => {
+    removeBetFromSlip(state, action){
       state.bets = state.bets.filter((bet, index) => index !== action.payload);
     },
   },
@@ -19,4 +19,4 @@ const betSlipReducer = createSlice({
 
 export default betSlipReducer.reducer;
 
-export const { addBetToSlip, removeBetFromSlip } = betSlipReducer.actions;
+export const { addBetToSlip, removeBetFromSlip, bets } = betSlipReducer.actions;

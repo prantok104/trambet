@@ -1,4 +1,4 @@
-import betSlipReducer from "./reducers/bet-slip";
+import betSlipReducer from "@/store/reducers/betSlipReducer";
 
 const { configureStore } = require("@reduxjs/toolkit")
 

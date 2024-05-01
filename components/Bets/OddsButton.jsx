@@ -1,25 +1,38 @@
-import React, { useEffect, useState } from 'react'
-import { useBetSlip } from '../Context/BetslipProvider'
-const OddsButton = ({odds}) => {
-  const { addBetToSlip, removeBetFromSlip, selectedBets } = useBetSlip();
-  const [isClicked, setIsClicked] = useState(false);
+import { addBetToSlip, removeBetFromSlip } from "@/store/reducers/betSlipReducer";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+const OddsButton = ({ odds }) => {
+  const dispatch = useDispatch();
+  const betSlipReducer = useSelector((state) =>state.betSlipReducer);
+  console.log(betSlipReducer);
+  const [isClicked, setIsClicked] = useState(
+    !!betSlipReducer.bets.find((bet) => bet.id === odds?.id)
+  );
   const handleAddToBetSlip = (event) => {
-      event.preventDefault();
-      setIsClicked((prevState) => !prevState)
-  }
-
-  useEffect(() => {
-    if (isClicked) {
-      addBetToSlip(odds);
+    event.preventDefault();
+    setIsClicked(!isClicked);
+    if (!isClicked) {
+      dispatch(addBetToSlip(odds));
     } else {
-      removeBetFromSlip(0);
+      const betRemove = betSlipReducer?.bets.find((bet) => bet.id == odds?.id);
+      if (betRemove) {
+        dispatch(removeBetFromSlip(0));
+      }
     }
-  }, [isClicked])
+  };
 
   return (
-    <button className={`bet-odds-button ${isClicked ? 'active-odds-button' : ''}`} onClick={handleAddToBetSlip}>{odds?.value}</button>
-  )
-}
+    <div className="single-odds-btn">
+      <button
+        className={`bet-odds-button ${isClicked ? "active-odds-button" : ""}`}
+        onClick={handleAddToBetSlip}
+      >
+        {odds?.value}
+      </button>
+      <div className={`odds-btn-title ${isClicked ? 'active' : ''}`}>{odds?.title}</div>
+    </div>
+  );
+};
 
-export default OddsButton
+export default OddsButton;

@@ -1,11 +1,8 @@
 import React, { useRef, useState } from 'react'
-import { useBetSlip } from "@/components/Context/BetslipProvider";
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
-import Form from "react-bootstrap/Form";
 import RadioField from '../Form/RadioField';
 const BetSlip = () => {
-   const { selectedBets } = useBetSlip();
    const innerRef = useRef(null);
    const [initialValues, setInitialValues] = useState({
       bet_type: "1",

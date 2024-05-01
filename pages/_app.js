@@ -8,12 +8,11 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoaderPage from "./LoaderPage";
 import { LanguageProvider } from "@/components/Context/LanguageProvider";
-import { BetslipProvider } from "@/components/Context/BetslipProvider";
 import { ToastContainer } from "react-toastify";
 import { LogoutProvider } from "@/components/Context/Provider/Users/LogoutProvider";
 
 import "react-toastify/dist/ReactToastify.css";
-import { Provider as ReduxProvider } from "react-redux";
+import { Provider } from "react-redux";
 import store from "@/store";
 
 export default function App({ Component, pageProps }) {
@@ -36,24 +35,16 @@ export default function App({ Component, pageProps }) {
   }, []);
   return (
     <>
-      {loading ? (
-        <LoaderPage />
-      ) : (
-        <ReduxProvider store={store}>
-          <LanguageProvider>
-            <BetslipProvider>
-              <LogoutProvider>
-                {" "}
-                {/* Wrap with LogoutProvider */}
-                <Layout>
-                  <ToastContainer />
-                  <Component {...pageProps} />
-                </Layout>
-              </LogoutProvider>
-            </BetslipProvider>
-          </LanguageProvider>
-        </ReduxProvider>
-      )}
+      <Provider store={store}>
+        <LanguageProvider>
+          <LogoutProvider>
+            <Layout>
+              <ToastContainer />
+              {loading ? <LoaderPage /> : <Component {...pageProps} />}
+            </Layout>
+          </LogoutProvider>
+        </LanguageProvider>
+      </Provider>
     </>
   );
 }
