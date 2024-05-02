@@ -26,60 +26,9 @@ const applicationsList = () => {
      application: Yup.string().required("Application is required"),
      website: Yup.string().required("Website is required"),
    });
-  // const rows = {
-  //   data:  [
-  //     {
-  //        date: "2024-04-23",
-  //        description: "Meeting with clients",
-  //        status: "Scheduled"
-  //     },
-  //     {
-  //        date: "2024-04-25",
-  //        description: "Submit quarterly report",
-  //        status: "In progress"
-  //     },
-  //     {
-  //        date: "2024-04-28",
-  //        description: "Review project proposals",
-  //        status: "Pending"
-  //     },
-  //     {
-  //        date: "2024-04-30",
-  //        description: "Training session",
-  //        status: "Completed"
-  //     },
-  //     {
-  //        date: "2024-05-02",
-  //        description: "Team brainstorming",
-  //        status: "Ongoing"
-  //     },
-  //     {
-  //        date: "2024-05-05",
-  //        description: "Finalize budget plan",
-  //        status: "Planned"
-  //     }
-  //  ],
-  //   current_page: 1,
-  //   per_page: 10,
-  //   total: 11,
-  // };
 
-  const handlePageSizeChange = (pageSize) => {
-    setFilter((prevState) => {
-      return {
-        ...prevState,
-        per_page: pageSize,
-      };
-    });
-  };
-  const handlePageChange = (page) => {
-    setFilter((prevState) => {
-      return {
-        ...prevState,
-        page: page,
-      };
-    });
-  };
+
+
 
   const handleAction = async (event, data) => {};
 
@@ -99,6 +48,37 @@ const applicationsList = () => {
     })
 
   }
+
+  const handlePageChange = (page) => {
+    setFilter((prevState) => {
+      return {
+        ...prevState,
+        page: page,
+      };
+    });
+    fetchData(page);
+  };
+
+  const handlePageSizeChange = async(newPerPage, page) => {
+    // setFilter((prevState) => {
+    //   return {
+    //     ...prevState,
+    //     per_page: pageSize,
+    //   };
+    // });
+
+    setIsLoading(true);
+    await getApplyList(page, perPage).then((response) => {
+      if(response.status == true){
+        setData(response)
+        setTotalRows(response?.paginationData?.totalItems)
+        setIsLoading(false)
+      }
+    }).then(() => {
+      setIsLoading(false);
+    });
+  };
+
   useEffect(() => {
     fetchData(1);
   }, []);

@@ -87,7 +87,7 @@ export async function getRegisterUser(page, perPage) {
 
 export async function createAffiliateApplication(data){
   return await HttpClientCall({
-    endpoint: `affiliate-application-submit`,
+    endpoint: "affiliate-application-submit",
     method: "POST",
     includeAuth: true,
     data: data,
