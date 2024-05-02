@@ -39,7 +39,6 @@ const applicationsList = () => {
   const fetchData = async(page) => {
     setIsLoading(true);
     await getApplyList(page, perPage).then((response) => {
-      console.log(response)
       if(response.status == true){
         setData(response)
         setTotalRows(response?.paginationData?.totalItems)
@@ -68,7 +67,7 @@ const applicationsList = () => {
     // });
 
     setIsLoading(true);
-    await getApplyList(page, perPage).then((response) => {
+    await getApplyList(page, newPerPage).then((response) => {
       if(response.status == true){
         setData(response)
         setTotalRows(response?.paginationData?.totalItems)

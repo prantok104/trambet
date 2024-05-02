@@ -21,22 +21,8 @@ const CasinoHistoryPage = () => {
       search: Yup.string()
    });
 
-  const handlePageSizeChange = (pageSize) => {
-    setFilter((prevState) => {
-      return {
-        ...prevState,
-        per_page: pageSize
-      };
-    });
-  };
-  const handlePageChange = (page) => {
-        setFilter((prevState) => {
-            return {
-                ...prevState,
-                page: page
-            };
-        });
-    };
+
+
 
   const handleAction = async (event, data) => {
 
@@ -46,21 +32,52 @@ const CasinoHistoryPage = () => {
     
   }
   const [data, setData] = useState([]);
+  const [totalRows, setTotalRows] = useState(0);
+  const [perPage, setPerPage] = useState(10);
   const fetchData = async (page) => {
     setIsLoading(true);
-    await getCasinoHistory(page).then((res) => {
+    await getCasinoHistory(page , perPage).then((res) => {
         if (res) {
           setData(res);
-          // setTotalRows(res?.paginationData?.totalItems);
+          setTotalRows(res?.paginationData?.totalItems);
         }
-        console.log(res);
       }).then(() => {
         setIsLoading(false);
       });
   };
 
+  const handlePageChange = (page) => {
+    setFilter((prevState) => {
+        return {
+            ...prevState,
+            page: page
+        };
+    });
+    fetchData(page);
+};
+
+const handlePageSizeChange = async(newPerPage, page) => {
+  // setFilter((prevState) => {
+  //   return {
+  //     ...prevState,
+  //     per_page: pageSize,
+  //   };
+  // });
+
+  setIsLoading(true);
+  await getCasinoHistory(page, newPerPage).then((response) => {
+    if(response.status == true){
+      setData(response)
+      setTotalRows(response?.paginationData?.totalItems)
+      setIsLoading(false)
+    }
+  }).then(() => {
+    setIsLoading(false);
+  });
+};
+
 useEffect(() => {
-  fetchData(10)
+  fetchData(1)
 }, [])
 
   return (

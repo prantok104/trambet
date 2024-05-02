@@ -31,15 +31,15 @@ export async  function getLiveCasinoOpenData(data) {
         });
 }
 
-export async function getCasinoHistory(perpageData) {
+export async function getCasinoHistory(page, perpageData) {
     return await HttpClientCall({
-        endpoint: `casino/history/${perpageData}`,
+        endpoint: `casino/history/${page}/${perpageData}`,
         method: "GET",
         includeAuth: true,
         data: [],
     })
         .then((response) => {
-            return response.data;
+            return response;
 
         })
         .catch((error) => {
