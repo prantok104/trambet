@@ -31,4 +31,18 @@ export async  function getLiveCasinoOpenData(data) {
         });
 }
 
+export async function getCasinoHistory(perpageData) {
+    return await HttpClientCall({
+        endpoint: `casino/history/${perpageData}`,
+        method: "GET",
+        includeAuth: true,
+        data: [],
+    })
+        .then((response) => {
+            return response.data;
 
+        })
+        .catch((error) => {
+            return [];
+        });
+}
