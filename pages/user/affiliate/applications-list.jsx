@@ -92,7 +92,8 @@ const applicationsList = () => {
       if(response.status === true){
         setApplyModal(false)
       }
-    })
+    });
+    fetchData(1);
   };
   return (
     <div className="container-fluid">
