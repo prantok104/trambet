@@ -59,8 +59,8 @@ const OneClickRegister = () => {
         localStorage.setItem("token", res.access_token);
         //redirect to home page 
         
-        toast.success("Successfully deposit completed", {
-          onClose: () => router.push('/')
+        toast.success("Successfully Registration completed", {
+          onClose: () => window.location.assign('/'),
       });
       } else if (res.response.status === 422) {
         Object.keys(res.response.data.errors).forEach((field) => {

@@ -261,9 +261,12 @@ const Header = () => {
                         </li>
                         <li>
                           <Link
-                            href="javascript:void(0)"
+                            href="#"
                             // type="submit"
-                            onClick={handleLogout}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleLogout();
+                            }}
                           >
                             Logout
                           </Link>

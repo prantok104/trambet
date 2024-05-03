@@ -3,6 +3,7 @@
 import Card from '@/components/Card';
 import InputField from '@/components/Form/InputField';
 import ApplicationsList from '@/models/Affiliate/ApplicationsList';
+import { createAffiliateApplication, getApplyList } from '@/services/affiliate';
 import { Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap';
@@ -16,7 +17,7 @@ const applicationsList = () => {
       per_page: 10,
       order_by: "DESC",
     });
-    const [data, setData] = useState([]);
+
    const initialValues = {
      application: '',
      website: ''
@@ -25,58 +26,28 @@ const applicationsList = () => {
      application: Yup.string().required("Application is required"),
      website: Yup.string().required("Website is required"),
    });
-  const rows = {
-    data:  [
-      {
-         date: "2024-04-23",
-         description: "Meeting with clients",
-         status: "Scheduled"
-      },
-      {
-         date: "2024-04-25",
-         description: "Submit quarterly report",
-         status: "In progress"
-      },
-      {
-         date: "2024-04-28",
-         description: "Review project proposals",
-         status: "Pending"
-      },
-      {
-         date: "2024-04-30",
-         description: "Training session",
-         status: "Completed"
-      },
-      {
-         date: "2024-05-02",
-         description: "Team brainstorming",
-         status: "Ongoing"
-      },
-      {
-         date: "2024-05-05",
-         description: "Finalize budget plan",
-         status: "Planned"
+
+
+
+
+  const handleAction = async (event, data) => {};
+
+  const [data, setData] = useState([]);
+  const [totalRows, setTotalRows] = useState(0);
+  const [perPage, setPerPage] = useState(10);
+
+  const fetchData = async(page) => {
+    setIsLoading(true);
+    await getApplyList(page, perPage).then((response) => {
+      if(response.status == true){
+        setData(response)
+        setTotalRows(response?.paginationData?.totalItems)
+        setIsLoading(false)
       }
-   ],
-    current_page: 1,
-    per_page: 10,
-    total: 11,
-  };
+    })
 
-  useEffect(() => {
-    setTimeout(() => {
-      setData(rows)
-    }, 2000)
-  })
+  }
 
-  const handlePageSizeChange = (pageSize) => {
-    setFilter((prevState) => {
-      return {
-        ...prevState,
-        per_page: pageSize,
-      };
-    });
-  };
   const handlePageChange = (page) => {
     setFilter((prevState) => {
       return {
@@ -84,11 +55,45 @@ const applicationsList = () => {
         page: page,
       };
     });
+    fetchData(page);
   };
 
-  const handleAction = async (event, data) => {};
+  const handlePageSizeChange = async(newPerPage, page) => {
+    // setFilter((prevState) => {
+    //   return {
+    //     ...prevState,
+    //     per_page: pageSize,
+    //   };
+    // });
 
-  const handleSubmit = (values) => {};
+    setIsLoading(true);
+    await getApplyList(page, newPerPage).then((response) => {
+      if(response.status == true){
+        setData(response)
+        setTotalRows(response?.paginationData?.totalItems)
+        setIsLoading(false)
+      }
+    }).then(() => {
+      setIsLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    fetchData(1);
+  }, []);
+
+  const handleSubmit = async(values) => {
+    const payload = {
+      description : values.application,
+      website : values.website
+    }
+    await createAffiliateApplication(payload).then((response) => {
+      if(response.status === true){
+        setApplyModal(false)
+      }
+    });
+    fetchData(1);
+  };
   return (
     <div className="container-fluid">
       <div className="row">

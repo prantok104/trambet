@@ -16,7 +16,11 @@ const ApplicationsList = ({
       rowIndex(rows),
       {
         name: "Application Date",
-        selector: (row) => row?.date,
+        selector: (row) => `${new Date(row.created_at).toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: 'long',
+          day: '2-digit'
+        })}`,
         sortable: false,
       },
       {
@@ -24,17 +28,30 @@ const ApplicationsList = ({
         selector: (row) => row?.description,
         sortable: false,
       },
+      {
+        name: "Website",
+        selector: (row) => row?.website,
+        sortable: false,
+      },
 
       {
         name: "Status",
-        selector: (row) => row?.status,
+        selector: (row) => {
+          const statusMap = {
+            0: 'Pending',
+            1: 'Approve',
+            2: 'Reject',
+          };
+        
+          return statusMap[row?.status];
+        },
         sortable: false,
       },
-      {
-        name: "Action",
-        selector: (row) => row?.date,
-        sortable: false,
-      },
+      // {
+      //   name: "Action",
+      //   selector: (row) => row?.date,
+      //   sortable: false,
+      // },
     ],
     [rows]
   );
