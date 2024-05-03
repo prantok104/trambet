@@ -16,8 +16,20 @@ const KycVerification = () => {
    const validationSchema = Yup.object({
 
    });
-   const handleKycFormSubmit = (values) => {
-      console.log(values);
+   const handleKycFormSubmit = async(values) => {
+    console.log(values);
+      await HttpClientCall({
+          method: "POST",
+          endpoint: "kyc-submit",
+          includeAuth: true,
+          data: values,
+        }).then((res) => {
+            if (res.status == true) {
+              console.log(res);
+            }
+          }).catch((error) => {
+            console.log(error);
+          });
    }
 
    const effect = useCallback(async () => {
@@ -28,7 +40,8 @@ const KycVerification = () => {
      await HttpClientCall({
         method: "GET",
         endpoint: "kycform",
-        includeAuth: true
+        includeAuth: true,
+        data: {},
       }).then((res) => {
           if (res.status == true) {
             setFormData(res?.data);
@@ -190,7 +203,7 @@ const KycVerification = () => {
                           </div>
                         )}
                         <div className="col-md-12 mt-3">
-                          <button className="df-btn df-bg">Submit</button>
+                          <button type='submit' className="df-btn df-bg">Submit</button>
                         </div>
                       </div>
                     </Form>
