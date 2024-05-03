@@ -2,7 +2,6 @@ import React from "react";
 import NewsCard from "@/components/News/NewsCard";
 
 const Promotion = ({ promotions = [], promo = [] }) => {
-  console.log("promotions data :", promotions);
   return (
     <div>
       <table className="table table-dark table-striped">

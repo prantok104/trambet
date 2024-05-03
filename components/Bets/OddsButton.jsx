@@ -5,10 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 const OddsButton = ({ odds }) => {
   const dispatch = useDispatch();
   const betSlipReducer = useSelector((state) =>state.betSlipReducer);
-  console.log(betSlipReducer);
   const [isClicked, setIsClicked] = useState(
     !!betSlipReducer.bets.find((bet) => bet.id === odds?.id)
   );
+
+    useEffect(() => {
+      setIsClicked(!!betSlipReducer.bets.find((bet) => bet.id === odds?.id));
+    }, [betSlipReducer.bets, odds?.id]);
+
+
   const handleAddToBetSlip = (event) => {
     event.preventDefault();
     setIsClicked(!isClicked);

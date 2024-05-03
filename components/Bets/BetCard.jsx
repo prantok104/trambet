@@ -28,7 +28,6 @@ const BetCard = () => {
    const preventDefault = (event) => {
      event.preventDefault();
    };
-  console.log("Odds market ", oddsMarket);
   return (
     <div className="single-bet-card ">
       <Link href="/" className="p-3 bg-shadow df-radius">
