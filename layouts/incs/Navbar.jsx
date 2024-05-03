@@ -35,7 +35,7 @@ const Navbar = () => {
           return (
             <li key={index}>
               <Link
-                href={`http://localhost:3000${item?.href}`}
+                href={`${item?.href}`}
                 className={router.pathname === item?.href ? "active" : ""}
                 replace
               >

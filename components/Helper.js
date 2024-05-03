@@ -12,7 +12,6 @@ export const setLocal = (key, value) => {
 // Get from local storage
 export const getLocal = (key) => {
   try {
-    console.log(key)
     const item = localStorage.getItem(key);
     return item ? JSON.parse(item) : null;
   } catch (error) {

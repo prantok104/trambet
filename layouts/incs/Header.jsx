@@ -21,10 +21,14 @@ import { HttpClientCall } from "@/components/HTTPClient";
 import { getUserDetailsData } from "@/services/userAuthService";
 import BetSlip from "@/components/Bets/BetSlip";
 import { useLogout } from "@/components/Context/Context/Users/LogoutContext";
-
+import {  FaTimes } from "react-icons/fa";
+import { BsArrowsFullscreen } from "react-icons/bs";
+import { useSelector } from "react-redux";
 const Header = () => {
+  const betSlipReducer = useSelector((state) => state.betSlipReducer);
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
+  const [slipShow, setSlipShow] = useState(false);
   const handleRegistrationButton = () => {
     setRegistrationModal(true);
   };
@@ -61,6 +65,13 @@ const Header = () => {
     logout();
     //use toster for notification
   };
+
+  const handleBetSlipToggle = (value) => {
+    setSlipShow(value)
+  }
+  useEffect(() => {
+    setSlipShow(betSlipReducer?.slip)
+  }, [betSlipReducer])
 
   return (
     <>
@@ -220,7 +231,9 @@ const Header = () => {
                               <Link href={"/user/withdraw"}>Withdraw Now</Link>
                             </li>
                             <li>
-                              <Link href={"/user/withdraw/history"}>Withdraw History</Link>
+                              <Link href={"/user/withdraw/history"}>
+                                Withdraw History
+                              </Link>
                             </li>
                           </ul>
                         </li>
@@ -281,10 +294,14 @@ const Header = () => {
                           <Link href={"/"}>2FA Verification</Link>
                         </li>
                         <li>
-                          <Link href={"/user/kyc-verification"}>KYC Verification</Link>
+                          <Link href={"/user/kyc-verification"}>
+                            KYC Verification
+                          </Link>
                         </li>
                         <li>
-                          <Link href={"/policy/privacy-policy"}>Security and privacy</Link>
+                          <Link href={"/policy/privacy-policy"}>
+                            Security and privacy
+                          </Link>
                         </li>
                         <li>
                           <Link href={"/user/support"}>Support</Link>
@@ -407,8 +424,15 @@ const Header = () => {
       {/* Registration modal area end */}
 
       {/* Bet slip area start */}
-      <div className="betslip-area-start">
-        <h6>Betslip</h6>
+      <div className="betslip-area-start" style={{ height: slipShow ? 'auto' : '25px' }}>
+        <div className="d-flex align-items-center justify-content-between bet-slip-top-header">
+          <h6 className="slip-header">Betslip</h6>
+          <div className="slip-header-icons d-flex align-items-center gap-4">
+            <BsArrowsFullscreen onClick={() => handleBetSlipToggle(true)} style={{ fontSize: 14 }} />
+            <FaTimes onClick={() => handleBetSlipToggle(false)} style={{ fontSize: 15 }} />
+          </div>
+        </div>
+
         <BetSlip />
       </div>
       {/* Bet slip area end */}

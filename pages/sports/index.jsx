@@ -1,3 +1,4 @@
+import BetCard from '@/components/Bets/BetCard';
 import { HttpClientCall } from '@/components/HTTPClient';
 import CustomSlider from '@/components/Slider';
 import Image from 'next/image';
@@ -147,69 +148,95 @@ const Sports = () => {
      sliderEffect();
    }, [sliderEffect]);
 
+  
+   const testLoop = ['1','2','3','4','5','6','7','8','9']
+
   return (
-    <div className="container-fluid">
-      <div className="row">
-        {/* Sports category area start */}
-        <div className="col-md-12">
-          <div className="sports-main-menu-area">
-            <ul className="sports-categories d-flex">
-              {categories?.map((item, index) => (
-                <li
-                  key={`categories_menu_${index}`}
-                  className={`d-flex align-items-center justify-content-center gap-1 flex-column ${
-                    activeCategory == item?.slug ? "active" : ""
-                  }`}
-                  onClick={() => handleCategory(item?.slug)}
-                >
-                  <span className="games-count">{item?.count}</span>
-                  {item?.icon}
-                  {item?.name}
-                </li>
-              ))}
-            </ul>
-          </div>
+    <>
+      <div className="category-sub-category">
+        <div className="sports-main-menu-area px-2">
+          <ul className="sports-categories d-flex">
+            {categories?.map((item, index) => (
+              <li
+                key={`categories_menu_${index}`}
+                className={`d-flex align-items-center justify-content-center gap-1 flex-column ${
+                  activeCategory == item?.slug ? "active" : ""
+                }`}
+                onClick={() => handleCategory(item?.slug)}
+              >
+                <span className="games-count">{item?.count}</span>
+                {item?.icon}
+                {item?.name}
+              </li>
+            ))}
+          </ul>
         </div>
-        {/* Sports category area end */}
 
-        {/* Spotrs sub category area start */}
-        <div className="col-md-3 col-lg-2">
-          <div className="sport-sub-categories">
-            <ul className="sports-sub-category">
-              {filterCategory?.sub_categories?.map((item, index) => (
-                <li
-                  key={`sports_sub_categories${index}`}
-                  className={`d-flex align-items-center gap-2 ${
-                    activeSubCategory == item?.slug ? "active" : ""
-                  }`}
-                  onClick={() => handleSubCategory(item?.slug)}
-                >
-                  <Image
-                    src={item?.image}
-                    alt={item?.name}
-                    width={20}
-                    height={20}
-                  />
-                  <span>{item?.name}</span>
-                  <span className="games-count">{item?.count}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="sport-sub-categories px-2">
+          <ul className="sports-sub-category">
+            {filterCategory?.sub_categories?.map((item, index) => (
+              <li
+                key={`sports_sub_categories${index}`}
+                className={`d-flex align-items-center gap-2 ${
+                  activeSubCategory == item?.slug ? "active" : ""
+                }`}
+                onClick={() => handleSubCategory(item?.slug)}
+              >
+                <Image
+                  src={item?.image}
+                  alt={item?.name}
+                  width={20}
+                  height={20}
+                />
+                <span>{item?.name}</span>
+                <span className="games-count">{item?.count}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        {/* Spotrs sub category area end */}
+      </div>
 
-        {/* Sport data area start */}
-        <div className="col-md-9 col-lg-10">
-          <div className="sport-contents-area ">
-            <div className="main-slider-area-start mt-3">
+      <div className="px-2">
+        {/* Sport item area start */}
+        <div>
+          <div className="sport-contents-area">
+            <div className="main-slider-area-start mt-2">
               <CustomSlider images={sliders} />
             </div>
           </div>
+
+          <div className="row">
+            <div className="col-md-12">
+              <div className="d-flex align-items-center gap-2 mb-3">
+                <Image
+                  src={"https://placehold.co/60x60"}
+                  width={40}
+                  height={40}
+                  alt="Caregory/ Sub category name"
+                  unoptimized
+                  style={{
+                    borderRadius: "50%",
+                    padding: "5px",
+                    background: "#1E263D",
+                  }}
+                />
+                <h6 style={{ fontSize: "14px" }}>
+                  Category Name/ sub category name
+                </h6>
+              </div>
+            </div>
+            <>
+              {testLoop?.map((item, index) => (
+                <div className="col-md-3 mb-4" key={`bet_card_${index}`}>
+                  <BetCard />
+                </div>
+              ))}
+            </>
+          </div>
         </div>
-        {/* Sport data area end */}
+        {/* Sport item area end */}
       </div>
-    </div>
+    </>
   );
 }
 
