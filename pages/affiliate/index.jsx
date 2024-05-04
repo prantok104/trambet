@@ -5,6 +5,8 @@ import ItemCard from "@/components/Affiliate/ItemCard";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { HttpClientCall } from "@/components/HTTPClient";
+import RegistrationStatistic from "@/components/Affiliate/Charts/RegistrationStatistic";
+import EarningStatistic from "@/components/Affiliate/Charts/EarningStatistic";
 const Affiliate = () => {
   const [data, setData] = useState([]);
 
@@ -73,6 +75,18 @@ const Affiliate = () => {
                 />
               </div>
             ))}
+
+            {/* registration statistic area start */}
+            <div className="col-md-12">
+              <RegistrationStatistic />
+            </div>
+            {/* registration statistic area end */}
+
+            {/* Earning statistic area start */}
+            <div className="col-md-12 mt-3">
+              <EarningStatistic />
+            </div>
+            {/* Earning statistic area end */}
           </div>
         </div>
 
