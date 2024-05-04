@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 
 const Register = () => {
+  
   const validationSchema = Yup.object({
     email: Yup.string().required("Email is required").max(100),
     country: Yup.string().required("Country is required").max(50),
@@ -24,6 +25,7 @@ const Register = () => {
       .max(50),
     agree: Yup.boolean().required("Agree is required"),
   });
+
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("BD");
   const [mobile, setMobile] = useState("");
