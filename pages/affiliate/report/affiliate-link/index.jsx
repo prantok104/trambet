@@ -35,7 +35,7 @@ const AffiliateLinks = () => {
 
     const fetchData = async () => {
       setIsLoading(true);
-      const responseData = await getAffiliateLink(filter?.page, filter?.per_page, filter?.search);
+      const responseData = await getAffiliateLink(filter);
       if(responseData?.status == true){
         setData(responseData)
         setIsLoading(false)
