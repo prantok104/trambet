@@ -10,8 +10,10 @@ import HookFormCheckField from "../Form/HookFormCheckField";
 import Loader from "../Loader";
 import { getUserDetailsData } from "@/services/userAuthService";
 import Cookies from "js-cookie";
+import { useUserData } from "../Context/UserDataProvider/UserProvider";
 
-const LoginPage = ({ setLoginModal,setUser }) => {
+const LoginPage = ({ setLoginModal }) => {
+  const { handleUserData } = useUserData()
   const [isLoading, setIsLoading] = useState(false)
   const schema = Yup.object().shape({
     username: Yup.string().required("UserId or Email is required"),
@@ -41,7 +43,6 @@ const LoginPage = ({ setLoginModal,setUser }) => {
 
       if (res.status) {
         setIsLoading(false)
-        setUser(res.data)
         Cookies.set("token", res.access_token)
         localStorage.setItem("token", res.access_token);
         Swal.fire({
@@ -51,7 +52,10 @@ const LoginPage = ({ setLoginModal,setUser }) => {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          setLoginModal(false);
+          handleUserData(res?.data)
+          if (setLoginModal) {
+            setLoginModal(false);
+          }
           getUserDetailsData();
         });
       } else if (res.response.status === 422) {

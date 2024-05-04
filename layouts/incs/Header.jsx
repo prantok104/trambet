@@ -25,8 +25,11 @@ import { FaTimes } from "react-icons/fa";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 const Header = () => {
   const betSlipReducer = useSelector((state) => state.betSlipReducer);
+  const { userData } = useUserData()
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
   const [slipShow, setSlipShow] = useState(false);
@@ -52,26 +55,14 @@ const Header = () => {
     setLoginModal(true);
   };
 
-  const [user, setUser] = useState(null);
-  const handleUserData = () => {
-    if (localStorage.getItem("token")) {
-      getUserDetailsData();
-      const data = JSON.parse(localStorage.getItem("userDetails"));
-      setUser(data);
-    }
-  }
-  useEffect(() => {
-    handleUserData()
-  }, []);
 
   const logout = useLogout();
   const handleLogout = () => {
-    setUser(null);
-    logout();
-    if (!user) {
-      router.push("/")
-    }
-    //use toster for notification
+    console.log("click");
+    localStorage.removeItem("userDetails")
+    localStorage.removeItem("token")
+    Cookies.remove("token")
+    router.push("/auth/login")
   };
 
   const handleBetSlipToggle = (value) => {
@@ -111,11 +102,11 @@ const Header = () => {
                   <option value="a">American Odds</option>
                 </select>
 
-                {user && (
+                {userData && (
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
-                        <div>+ {Number(user?.balance).toFixed(2)}</div>
+                        <div>+ {Number(userData?.balance).toFixed(2)}</div>
                         <div className="profile-look">
                           <div style={{ fontSize: 9 }}>BDT</div>
                         </div>
@@ -123,19 +114,19 @@ const Header = () => {
                       <ul className="dropdown-menus">
                         <li>
                           <Link href={"/"}>
-                            Deposit: + {Number(user?.balance).toFixed(2)}
+                            Deposit: + {Number(userData?.balance).toFixed(2)}
                           </Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Withdrawal: + {user.data}</Link>
+                          <Link href={"/"}>Withdrawal: + {userData.data}</Link>
                         </li>
                         <li>
                           <Link href={"/"}>
-                            Bonus: + {Number(user?.bonus_account).toFixed(2)}
+                            Bonus: + {Number(userData?.bonus_account).toFixed(2)}
                           </Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Tramcard: + {user.data}</Link>
+                          <Link href={"/"}>Tramcard: + {userData.data}</Link>
                         </li>
                       </ul>
                     </li>
@@ -147,7 +138,7 @@ const Header = () => {
                 </div>
 
                 {/* Notification area start */}
-                {user && (
+                {userData && (
                   <ul className="droplist">
                     <li>
                       <div>
@@ -157,19 +148,19 @@ const Header = () => {
                             style={{ fontSize: 16 }}
                           />
                           <div className="notify-counter">
-                            {user.notifications?.total}
+                            {userData.notifications?.total}
                           </div>
                         </div>
                       </div>
                       <ul className="dropdown-menus notifications-list">
                         <li className="d-flex align-items-center justify-content-between notify-head">
                           <div>Notifications</div>{" "}
-                          <div>{user.notifications?.total}</div>
+                          <div>{userData.notifications?.total}</div>
                         </li>
                         <li>
-                          {user.notifications?.latest &&
-                            user.notifications?.latest.length > 0 ? (
-                            user.notifications?.latest.map(
+                          {userData.notifications?.latest &&
+                            userData.notifications?.latest.length > 0 ? (
+                              userData.notifications?.latest.map(
                               (notification, index) => (
                                 <Link key={index} href={notification.url}>
                                   {notification.title}
@@ -187,11 +178,11 @@ const Header = () => {
                 {/* Notification area end */}
 
                 {/* User profile area start */}
-                {user && (
+                {userData && (
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
-                        <div>ID: {user.user_id}</div>
+                        <div>ID: {userData.user_id}</div>
                         <div className="profile-look">
                           <FontAwesomeIcon icon={faUser} />
                         </div>
@@ -286,7 +277,7 @@ const Header = () => {
                 {/* User profile area end */}
 
                 {/* User settings area start */}
-                {user && (
+                {userData && (
                   <ul className="droplist">
                     <li>
                       <div className="profile-look">
@@ -359,7 +350,7 @@ const Header = () => {
                 </select>
                 {/* Language area end */}
 
-                {!user && (
+                {!userData && (
                   <>
                     <button
                       className="df-btn bg-shadow login-btn"
@@ -402,7 +393,7 @@ const Header = () => {
           <Modal.Title>Login to your account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <LoginPage setLoginModal={setLoginModal} setUser={setUser} />
+          <LoginPage setLoginModal={setLoginModal} />
         </Modal.Body>
       </Modal>
       {/* Login page area end */}
