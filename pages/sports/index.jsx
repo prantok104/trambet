@@ -113,7 +113,7 @@ const sports_categories = [
 
 
 const Sports = () => {
-   const [categories, setCategories] = useState(sports_categories);
+   const [categories, setCategories] = useState([]);
    const [filterCategory, setFilterCategory] = useState(sports_categories[0])
    const [activeCategory, setActiveCategory] = useState("american_football");
    const [activeSubCategory, setActiveSubCategory] = useState("");
@@ -146,7 +146,20 @@ const Sports = () => {
 
    useEffect(() => {
      sliderEffect();
-   }, [sliderEffect]);
+    
+     //Get the category data
+      const fetchCategory = async () => {
+        const category = await HttpClientCall({
+          method: "GET",
+          endpoint: "sport/category/running",
+          includeAuth: false,
+          data: [],
+        });
+        setCategories(category?.data);
+      };
+      fetchCategory();
+
+   }, []);
 
   
    const testLoop = ['1','2','3','4','5','6','7','8','9']
@@ -165,7 +178,7 @@ const Sports = () => {
                 onClick={() => handleCategory(item?.slug)}
               >
                 <span className="games-count">{item?.count}</span>
-                {item?.icon}
+                <div className='text-white' dangerouslySetInnerHTML={{ __html: item?.icon }} />
                 {item?.name}
               </li>
             ))}
