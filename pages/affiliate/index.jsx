@@ -7,10 +7,13 @@ import { useEffect, useState } from "react";
 import { HttpClientCall } from "@/components/HTTPClient";
 import RegistrationStatistic from "@/components/Affiliate/Charts/RegistrationStatistic";
 import EarningStatistic from "@/components/Affiliate/Charts/EarningStatistic";
+import Loader from "@/components/Loader";
 const Affiliate = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
+    setLoading(true);
     await HttpClientCall({
       endpoint: "affiliate",
       method: "GET",
@@ -18,11 +21,12 @@ const Affiliate = () => {
       data: [],
     })
       .then((response) => {
-        console.log(response);
         setData(response?.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   }
 
@@ -32,12 +36,12 @@ const Affiliate = () => {
   }, []);
 
   const itemcards = [
-    {
-      icon: <FaEdit />,
-      title: "minimum withdrawal amount 30$",
-      content: `${(Number(data?.user?.withdrawal) || 0).toFixed(2)} ${data?.user?.currency || ""}`,
-      bg: "rgb(28 40 74)",
-    },
+    // {
+    //   icon: <FaEdit />,
+    //   title: "minimum withdrawal amount 30$",
+    //   content: `${(Number(data?.user?.withdrawal) || 0).toFixed(2)} ${data?.user?.currency || ""}`,
+    //   bg: "rgb(28 40 74)",
+    // },
     {
       icon: <FaEdit />,
       title: "Yesterday's Earning",
@@ -63,32 +67,58 @@ const Affiliate = () => {
   return (
     <>
       <AffiliatLayout>
-        <div className="affiliate-dashboard-card-area mb-2">
-          <div className="row">
-            {itemcards?.map((item) => (
-              <div className="col-md-4">
-                <ItemCard
-                  icon={item.icon}
-                  title={item.title}
-                  content={item.content}
-                  style={{ background: item?.bg }}
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="affiliate-dashboard-card-area mb-2">
+            <div className="row">
+              {itemcards?.map((item) => (
+                <div className="col-md-3">
+                  <ItemCard
+                    icon={item.icon}
+                    title={item.title}
+                    content={item.content}
+                    style={{ background: item?.bg }}
+                  />
+                </div>
+              ))}
+
+              {/* registration statistic area start */}
+              <div className="col-md-12">
+                <RegistrationStatistic
+                  chartData={
+                    data?.promoCodeUserData
+                      ? Object.entries(data?.promoCodeUserData).map(
+                          ([month, value]) => ({
+                            name: month,
+                            value: value,
+                          })
+                        )
+                      : []
+                  }
                 />
               </div>
-            ))}
+              {/* registration statistic area end */}
 
-            {/* registration statistic area start */}
-            <div className="col-md-12">
-              <RegistrationStatistic />
+              {/* Earning statistic area start */}
+              <div className="col-md-12 mt-3">
+                <EarningStatistic
+                  chartData={
+                    data?.affiliateCommisionData
+                      ? Object.entries(data?.affiliateCommisionData).map(
+                          ([date, value]) => ({
+                            name: date,
+                            value: value,
+                          })
+                        )
+                      : []
+                  }
+                />
+              </div>
+              {/* Earning statistic area end */}
             </div>
-            {/* registration statistic area end */}
-
-            {/* Earning statistic area start */}
-            <div className="col-md-12 mt-3">
-              <EarningStatistic />
-            </div>
-            {/* Earning statistic area end */}
           </div>
-        </div>
+        )}
 
         {/* <Websites /> */}
       </AffiliatLayout>
