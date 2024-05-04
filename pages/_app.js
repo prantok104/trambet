@@ -35,16 +35,20 @@ export default function App({ Component, pageProps }) {
   }, []);
   return (
     <>
-      <Provider store={store}>
-        <LanguageProvider>
-          <LogoutProvider>
-            <Layout>
-              <ToastContainer />
-              {loading ? <LoaderPage /> : <Component {...pageProps} />}
-            </Layout>
-          </LogoutProvider>
-        </LanguageProvider>
-      </Provider>
+      {loading ? (
+        <LoaderPage />
+      ) : (
+        <Provider store={store}>
+          <LanguageProvider>
+            <LogoutProvider>
+              <Layout>
+                <ToastContainer />
+                <Component {...pageProps} />
+              </Layout>
+            </LogoutProvider>
+          </LanguageProvider>
+        </Provider>
+      )}
     </>
   );
 }
