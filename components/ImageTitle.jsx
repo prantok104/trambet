@@ -2,7 +2,7 @@ import React from 'react'
 const ImageTitle = ({ image ="breadcrumb.jpg", title = "title" }) => {
   return (
     <div
-     class="image-with-title"
+     className="image-with-title"
       style={{
         backgroundImage: `url('/${image}')`,
         backgroundSize: "cover",
