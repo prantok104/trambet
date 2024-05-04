@@ -31,18 +31,18 @@ const Home = () => {
   useEffect(() => {
     async function fetchBannerData() {
       const banner = await HttpClientCall({
-          method: "GET",  
-          endpoint: "frontend/banner",
-          includeAuth: false,
-          data: [],
+        method: "GET",
+        endpoint: "frontend/banner",
+        includeAuth: false,
+        data: [],
       });
-      
+
       if (banner) {
-          setSliders(banner.data);
+        setSliders(banner.data);
       }
-  }
+    }
     fetchBannerData();
-}, []);
+  }, []);
   return (
     <>
       <div className="container-fluid">
@@ -96,6 +96,7 @@ const Home = () => {
           </div>
         </div>
         {/* Promo card area end */}
+  
       </div>
     </>
   );
