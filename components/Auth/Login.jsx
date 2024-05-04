@@ -120,7 +120,7 @@ const LoginPage = () => {
             </div>
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                <Link href={"/"}>Became an affiliate</Link>
+                <Link href={"/auth/register/affiliate"}>Became an affiliate</Link>
               </h6>
             </div>
           </div>
