@@ -14,6 +14,7 @@ import { LogoutProvider } from "@/components/Context/Provider/Users/LogoutProvid
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 import store from "@/store";
+import { UserProvider } from "@/components/Context/UserDataProvider/UserProvider";
 
 export default function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
@@ -39,14 +40,16 @@ export default function App({ Component, pageProps }) {
         <LoaderPage />
       ) : (
         <Provider store={store}>
-          <LanguageProvider>
-            <LogoutProvider>
-              <Layout>
-                <ToastContainer />
-                <Component {...pageProps} />
-              </Layout>
-            </LogoutProvider>
-          </LanguageProvider>
+          <UserProvider>
+            <LanguageProvider>
+              <LogoutProvider>
+                <Layout>
+                  <ToastContainer />
+                  <Component {...pageProps} />
+                </Layout>
+              </LogoutProvider>
+            </LanguageProvider>
+          </UserProvider>
         </Provider>
       )}
     </>
