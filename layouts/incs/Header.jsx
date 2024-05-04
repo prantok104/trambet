@@ -21,9 +21,10 @@ import { HttpClientCall } from "@/components/HTTPClient";
 import { getUserDetailsData } from "@/services/userAuthService";
 import BetSlip from "@/components/Bets/BetSlip";
 import { useLogout } from "@/components/Context/Context/Users/LogoutContext";
-import {  FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 const Header = () => {
   const betSlipReducer = useSelector((state) => state.betSlipReducer);
   const [loginModal, setLoginModal] = useState(false);
@@ -32,7 +33,7 @@ const Header = () => {
   const handleRegistrationButton = () => {
     setRegistrationModal(true);
   };
-
+  const router = useRouter()
   // language
   const language = useContext(LanguageContext);
 
@@ -52,17 +53,24 @@ const Header = () => {
   };
 
   const [user, setUser] = useState(null);
-  useEffect(() => {
+  const handleUserData = () => {
     if (localStorage.getItem("token")) {
       getUserDetailsData();
       const data = JSON.parse(localStorage.getItem("userDetails"));
       setUser(data);
     }
+  }
+  useEffect(() => {
+    handleUserData()
   }, []);
+
   const logout = useLogout();
   const handleLogout = () => {
     setUser(null);
     logout();
+    if (!user) {
+      router.push("/")
+    }
     //use toster for notification
   };
 
@@ -160,7 +168,7 @@ const Header = () => {
                         </li>
                         <li>
                           {user.notifications?.latest &&
-                          user.notifications?.latest.length > 0 ? (
+                            user.notifications?.latest.length > 0 ? (
                             user.notifications?.latest.map(
                               (notification, index) => (
                                 <Link key={index} href={notification.url}>
@@ -394,7 +402,7 @@ const Header = () => {
           <Modal.Title>Login to your account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <LoginPage />
+          <LoginPage setLoginModal={setLoginModal} setUser={setUser} />
         </Modal.Body>
       </Modal>
       {/* Login page area end */}

@@ -1,92 +1,101 @@
-import React, { useRef, useState } from "react";
-import { Formik, Form } from "formik";
+import { FC, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import * as Yup from "yup";
-import InputField from "../Form/InputField2";
-import CheckboxField from "../Form/CheckboxField";
+import { yupResolver } from '@hookform/resolvers/yup';
 import Link from "next/link";
-import ConstantData from "../ConstantData";
 import Swal from "sweetalert2";
 import { HttpClientCall } from "../HTTPClient";
-const LoginPage = () => {
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState([]);
-  const baseUrl = ConstantData.API_BASE_URL;
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = {
-      username: username,
-      password: password,
-    };
+import HookFormInputFiled from "../Form/HookFormInputFiled";
+import HookFormCheckField from "../Form/HookFormCheckField";
+import Loader from "../Loader";
+import { getUserDetailsData } from "@/services/userAuthService";
+import Cookies from "js-cookie";
 
-    HttpClientCall({
-      method: "POST",
-      endpoint: "login",
-      includeAuth: false,
-      data: data,
-    }).then((res) => {
-      // console.log(res);
-        if (res.status == true) {
-          localStorage.setItem("token", res.access_token);
-          Swal.fire({
-            icon: "success",
-            title: "Login Success",
-            text: "You have successfully logged in",
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            setUserName("");
-            setPassword("");
-            setError([]);
-            window.location.reload();
-          });
-        }else if (res.response.status == 422) {
-          setError(res.response.data.errors);
-        } else {
-            Swal.fire({
-              icon: "error",
-              title: "Login Failed",
-              text: `${res.response.data.user_message}`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-      }).catch((error) => {
-        console.log(error);
+const LoginPage = ({ setLoginModal,setUser }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const schema = Yup.object().shape({
+    username: Yup.string().required("UserId or Email is required"),
+    password: Yup.string().required("Password is required"),
+  });
+
+  const form = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+      agree: false
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const { handleSubmit, formState: { errors } } = form;
+
+  const onSubmit = async (data) => {
+    setIsLoading(true)
+    try {
+      const res = await HttpClientCall({
+        method: "POST",
+        endpoint: "login",
+        includeAuth: false,
+        data: data,
       });
+
+      if (res.status) {
+        setIsLoading(false)
+        setUser(res.data)
+        Cookies.set("token", res.access_token)
+        localStorage.setItem("token", res.access_token);
+        Swal.fire({
+          icon: "success",
+          title: "Login Success",
+          text: "You have successfully logged in",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          setLoginModal(false);
+          getUserDetailsData();
+        });
+      } else if (res.response.status === 422) {
+        console.log(res.response.data.errors);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: `${res.response.data.user_message}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+
   return (
-    <div>
-      <Formik
-        enableReinitialize={true}
-        className="form-data"
-      >
-        <Form noValidate onSubmit={handleSubmit}>
+    <FormProvider {...form}>
+      <div>
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
             <div className="col-md-12">
-              <InputField
+              <HookFormInputFiled
                 label="UserId or Email*"
-                name="email"
-                onChange={(e) => setUserName(e.target.value)}
-                value={username}
-                errormessage={error.username ? error.username.join(" ") : null}
+                name="username"
+                error={errors.username}
               />
             </div>
 
             <div className="col-md-12 mt-2">
-              <InputField
+              <HookFormInputFiled
                 label="Password*"
                 type="password"
                 name="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                errormessage={error.password ? error.password.join(" ") : null}
+                error={errors.password}
               />
             </div>
 
-            <div className="col-md-12 mt-2 d-flex gap-2 align-items-center  justify-content-between bottom-register">
+            <div className="col-md-12 mt-2 d-flex gap-2 align-items-center justify-content-between bottom-register">
               <div className="bottom-register d-flex align-items-center gap-2">
-                <CheckboxField name="agree" />
+                <HookFormCheckField name="agree" error={errors.agree} />
                 Remember me?
               </div>
               <div className="bottom-register">
@@ -97,36 +106,31 @@ const LoginPage = () => {
               <button
                 type="submit"
                 className="df-btn df-radius form-control reg-btn"
-                style={{
-                  background:
-                    "linear-gradient(70deg, #31bc69 -8%, #089e4e 96%)",
-                }}
+                style={{ background: "linear-gradient(70deg, #31bc69 -8%, #089e4e 96%)" }}
               >
-                Login
+                Login {isLoading && <Loader />}
               </button>
             </div>
             <hr />
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                Don't have account?{" "}
-                <Link href={"/auth/register"}>Create Account</Link>
+                Don't have account? <Link href={"/auth/register"}>Create Account</Link>
               </h6>
             </div>
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                Are you want to quickly registration?{" "}
-                <Link href={"/auth/one-click"}>Click here</Link>
+                Are you want to quickly registration? <Link href={"/auth/one-click"}>Click here</Link>
               </h6>
             </div>
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                <Link href={"/auth/register/affiliate"}>Became an affiliate</Link>
+                <Link href={"/"}>Became an affiliate</Link>
               </h6>
             </div>
           </div>
-        </Form>
-      </Formik>
-    </div>
+        </form>
+      </div>
+    </FormProvider>
   );
 };
 
