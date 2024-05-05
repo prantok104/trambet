@@ -87,12 +87,42 @@ export async function getAffiliateLink(filter = {}) {
       return [];
     });
 }
-export async function getAffiliateSummery() {
+export async function getAffiliateDetails(values={}) {
+  return await HttpClientCall({
+    endpoint: `affiliate/report/details`,
+    method: "GET",
+    includeAuth: true,
+    data: values,
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+
+export async function getAffiliatePlayerReport(values={}) {
+  return await HttpClientCall({
+    endpoint: `affiliate/report/player`,
+    method: "GET",
+    includeAuth: true,
+    data: values,
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+
+export async function getAffiliateSummery(values={}) {
   return await HttpClientCall({
     endpoint: `affiliate/report/summery`,
     method: "GET",
     includeAuth: true,
-    data: [],
+    data: values,
   })
     .then((response) => {
       return response;
