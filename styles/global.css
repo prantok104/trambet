@@ -1347,6 +1347,7 @@ ul.sports-categories li {
     background: linear-gradient(135deg, #090F1E, #1E263D);
     position: relative;
     font-weight: 800;
+    min-width: 125px
 }
 ul.sports-categories li:last-child {
     border: 0
