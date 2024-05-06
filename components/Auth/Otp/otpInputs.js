@@ -40,7 +40,7 @@ const OTPInputGroup = () => {
     e.preventDefault();
     const otp = Object.values(inputValues).join("");
     const data = {
-      code : otp,
+      code: otp,
     };
     HttpClientCall({
       method: "POST",
@@ -51,7 +51,7 @@ const OTPInputGroup = () => {
       if (res.status === true) {
         toast.success("Successfully email verification done", {
           onClose: () => router.push('/')
-      });
+        });
       } else {
         notify("error", res.response.data.message);
       }
@@ -61,25 +61,25 @@ const OTPInputGroup = () => {
 
   return (
     <>
-    
-    <div id="OTPInputGroup" className={"digitGroup"} data-autosubmit="true">
-      {resendLoader ? <Loader /> : ''}
-      {Array.from({ length: 6 }).map((_, index) => (
-        <OTPInput
-          key={index}
-          id={`input${index + 1}`}
-          ref={(el) => (inputRefs.current[index] = el)}
-          value={inputValues[`input${index + 1}`]}
-          onValueChange={handleInputChange}
-          previousId={index === 0 ? null : `input${index}`}
-          nextId={index === 5 ? null : `input${index + 2}`}
-        />
-      ))}
-    </div>
-    <div className="text-center pb-5">
-      <p className="mb-3">Don't you received the OTP? <button className="resend-otp" onClick={handleResendOtp}>Resend OTP</button></p>
-      <button onClick={handleSubmit} className="df-btn reg-btn">Submit</button>
-    </div>
+
+      <div id="OTPInputGroup" className={"digitGroup"} data-autosubmit="true">
+        {resendLoader ? <Loader /> : ''}
+        {Array.from({ length: 6 }).map((_, index) => (
+          <OTPInput
+            key={index}
+            id={`input${index + 1}`}
+            ref={(el) => (inputRefs.current[index] = el)}
+            value={inputValues[`input${index + 1}`]}
+            onValueChange={handleInputChange}
+            previousId={index === 0 ? null : `input${index}`}
+            nextId={index === 5 ? null : `input${index + 2}`}
+          />
+        ))}
+      </div>
+      <div className="text-center pb-5">
+        <p className="mb-3">Don't you received the OTP? <button className="resend-otp" onClick={handleResendOtp}>Resend OTP</button></p>
+        <button onClick={handleSubmit} className="df-btn reg-btn">Submit</button>
+      </div>
     </>
   );
 };

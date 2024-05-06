@@ -1,7 +1,9 @@
 import { getUserDetailsData } from "@/services/userAuthService";
 
 const { createContext, useState, useContext, useEffect } = require("react");
-
+const initialValues = {
+    isOpenModa: false
+}
 // Create a context for user data
 const UserContext = createContext();
 
@@ -9,6 +11,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     // Initial user data
     const [userData, setUserData] = useState(null);
+    const [showOneClickModal, setShowOneClickModal] = useState(false)
 
     // Function to set user data
     const handleUserData = (value) => {
@@ -22,9 +25,15 @@ export const UserProvider = ({ children }) => {
         handleUserData()
     }, [])
 
+    const handleOneClickModal = (value) => {
+        const data = JSON.parse(localStorage.getItem("oneTimeUserData"));
+        if (data) {
+            setShowOneClickModal(data)
+        }
+    }
 
     return (
-        <UserContext.Provider value={{ userData, handleUserData }}>
+        <UserContext.Provider value={{ userData, handleUserData, setShowOneClickModal, showOneClickModal, handleOneClickModal }}>
             {children}
         </UserContext.Provider>
     );
