@@ -10,9 +10,13 @@ import { getCountryList, getCurrencyList } from "../../services/common";
 import { notify } from "../Helper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import LoaderPage from "@/pages/LoaderPage";
+import Loader from "../Loader";
+import { useUserData } from "../Context/UserDataProvider/UserProvider";
+import Cookies from "js-cookie";
 
 const Register = () => {
-
+  const {  handleUserData } = useUserData()
   const validationSchema = Yup.object({
     email: Yup.string().required("Email is required").max(100),
     country: Yup.string().required("Country is required").max(50),
@@ -36,16 +40,40 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [countryList, setCountryList] = useState([]);
   const [currencyList, setCurrencyList] = useState([]);
+  const [isCountryLoading, setIsCountryLoading] = useState(false)
+  const [isCurrencyLoading, setIsCurrencyLoading] = useState(false)
 
   async function countryData() {
-    const data = await getCountryList();
-    setCountryList(data);
+    setIsCountryLoading(true)
+    await HttpClientCall({
+      endpoint: "country",
+      method: "GET",
+      includeAuth: false,
+      data: [],
+    }).then((response) => {
+      setIsCountryLoading(false)
+      setCountryList(response.data);
+    }).catch((error) => {
+      return [];
+    });
   }
 
   async function currencyData() {
-    const data = await getCurrencyList();
-    setCurrencyList(data);
+    setIsCurrencyLoading(true)
+    await HttpClientCall({
+      endpoint: "country",
+      method: "GET",
+      includeAuth: false,
+      data: [],
+    }).then((response) => {
+      setIsCurrencyLoading(false)
+      setCurrencyList(response.data);
+    }).catch((error) => {
+      return [];
+    });
+
   }
+  
   const initialValues = {
     email: email,
     country: country,
@@ -88,6 +116,10 @@ const Register = () => {
     }).then((res) => {
       if (res.status === true) {
         localStorage.setItem("token", res.access_token);
+        localStorage.setItem("token", res.access_token);
+        localStorage.setItem("userDetails", JSON.stringify(res?.data));
+        Cookies.set("token", res.access_token)
+        handleUserData(res?.data)
         if (res.data.ev == 0) {
           toast.success("Successfully Registration completed", {
             onClose: () => router.push("/user/otp-verify"),
@@ -109,8 +141,12 @@ const Register = () => {
     });
   };
 
-  return (
-    <Formik
+  let content = ""
+  if (isCountryLoading || isCurrencyLoading) {
+    content = <Loader />
+  }
+  else {
+    content = <Formik
       // innerRef={formikRef}
       initialValues={initialValues}
       validationSchema={validationSchema}
@@ -198,7 +234,7 @@ const Register = () => {
                 </div>
                 <div className="col-md-6 mt-2 mb-4">
                   <button disabled={!values?.agree} style={{ background: `${values?.agree ? "linear-gradient(70deg, #31bc69 -8%, #089e4e 96%)" : "gray"}`, cursor: `${values?.agree ? "" : "not-allowed"}` }} type="submit" className="df-btn df-radius reg-btn">
-                    Registration now 
+                    Registration now
                   </button>
 
                 </div>
@@ -227,6 +263,10 @@ const Register = () => {
         )
       }}
     </Formik>
+  }
+
+  return (
+    content
   );
 };
 
