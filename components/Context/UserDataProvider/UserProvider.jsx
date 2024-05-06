@@ -11,7 +11,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     // Initial user data
     const [userData, setUserData] = useState(null);
-    const [showOneClickModal, setShowOneClickModal] = useState(null)
+    const [showOneClickModal, setShowOneClickModal] = useState(false)
 
     // Function to set user data
     const handleUserData = (value) => {
@@ -26,7 +26,10 @@ export const UserProvider = ({ children }) => {
     }, [])
 
     const handleOneClickModal = (value) => {
-        setShowOneClickModal(!showOneClickModal)
+        const data = JSON.parse(localStorage.getItem("oneTimeUserData"));
+        if (data) {
+            setShowOneClickModal(data)
+        }
     }
 
     return (

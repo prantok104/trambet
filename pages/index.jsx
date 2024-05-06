@@ -11,7 +11,10 @@ import Link from "next/link";
 import PromoCard from "@/components/PromoCard";
 import { useEffect, useState } from "react";
 import { HttpClientCall } from "@/components/HTTPClient";
+import { Modal } from "react-bootstrap";
+import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 const Home = () => {
+  const { setShowOneClickModal, showOneClickModal, userData } = useUserData()
   const images = [
     { name: "Slide one", src: FirstSlider },
     { name: "Slide two", src: SecondSlider },
@@ -27,6 +30,14 @@ const Home = () => {
     { title: "E-Sports", sub_title: "Over 250 sports", href: "/", image: PromoThree },
   ];
   const [sliders, setSliders] = useState([]);
+
+  
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("oneTimeUserData"));
+    if (data) {
+        setShowOneClickModal(true)
+    }
+  }, [])
 
   useEffect(() => {
     async function fetchBannerData() {
@@ -78,7 +89,27 @@ const Home = () => {
           </div>
         </div>
         {/* Slider area end */}
-
+        {/* one click registration page area start */}
+        <Modal
+          show={showOneClickModal}
+          onHide={() => {
+            setShowOneClickModal(false)
+            localStorage.removeItem("oneTimeUserData")
+          }}
+          backdrop="static"
+          keyboard={false}
+          className="login-page"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>One Click User Info</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h5>Please Save this for your future use</h5>
+            <h5 className="fw-bold my-2">Password: {userData?.one_time_pass}</h5>
+            <h5 className="fw-bold">User Id: {userData?.user_id}</h5>
+          </Modal.Body>
+        </Modal>
+        {/* one click registration end */}
         {/* Promo card area start */}
         <div className="row mt-2">
           <div className="col-md-12">
@@ -96,7 +127,7 @@ const Home = () => {
           </div>
         </div>
         {/* Promo card area end */}
-  
+
       </div>
     </>
   );

@@ -13,7 +13,6 @@ import * as Yup from "yup";
 import Loader from "../Loader";
 import { useUserData } from "../Context/UserDataProvider/UserProvider";
 import Cookies from "js-cookie";
-import { getUserDetailsData } from "@/services/userAuthService";
 import { Modal } from "react-bootstrap";
 
 const OneClickRegister = () => {
@@ -33,6 +32,7 @@ const OneClickRegister = () => {
   const [currencyList, setCurrencyList] = useState([]);
   const [isCountryLoading, setIsCountryLoading] = useState(false)
   const [isCurrencyLoading, setIsCurrencyLoading] = useState(false)
+  
 
   const router = useRouter();
 
@@ -102,10 +102,12 @@ const OneClickRegister = () => {
       if (res.status) {
         handleOneClickModal(true)
         localStorage.setItem("userDetails", JSON.stringify(res?.data));
+        localStorage.setItem("oneTimeUserData", JSON.stringify(true));
         Cookies.set("token", res.access_token)
         localStorage.setItem("token", res.access_token);
         toast.success("Successfully Registration completed");
         handleUserData(res?.data)
+        router.push("/")
       } else if (res.response.status === 422) {
         Object.keys(res.response.data.errors).forEach((field) => {
           res.response.data.errors[field].forEach((errorMessage) => {
@@ -210,27 +212,6 @@ const OneClickRegister = () => {
   return (
     <>
       {content}
-      {/* Login page area start */}
-      <Modal
-        show={showOneClickModal}
-        onHide={() => {
-          setShowOneClickModal(false)
-          router.push("/")
-        }}
-        backdrop="static"
-        keyboard={false}
-        className="login-page"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>One Click User Info</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h5>Please Save this for your future use</h5>
-          <h5 className="fw-bold my-2">Password: {userData?.one_time_pass}</h5>
-          <h5 className="fw-bold">User Id: {userData?.user_id}</h5>
-        </Modal.Body>
-      </Modal>
-      {/* Login page area end */}
     </>
   );
 };
