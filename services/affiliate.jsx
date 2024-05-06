@@ -42,12 +42,13 @@ export async function getWithdrawHistory(page, perPage, searchData) {
       return [];
     });
 }
-export async function getAffiliateLink(page, perPage, searchData) {
+
+export async function getAffiliateGenerateLink(values) {
   return await HttpClientCall({
-    endpoint: `affiliate/report/links/${page}/${perPage}`,
-    method: "GET",
+    endpoint: `affiliate/report/link/generate`,
+    method: "POST",
     includeAuth: true,
-    data: searchData,
+    data: values,
   })
     .then((response) => {
       return response;
@@ -56,12 +57,72 @@ export async function getAffiliateLink(page, perPage, searchData) {
       return [];
     });
 }
-export async function getAffiliateSummery() {
+
+export async function getAffiliateCreateFormData() {
+  return await HttpClientCall({
+    endpoint: `affiliate/report/common`,
+    method: "GET",
+    includeAuth: true,
+    data: [],
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+
+export async function getAffiliateLink(filter = {}) {
+  return await HttpClientCall({
+    endpoint: `affiliate/report/links`,
+    method: "GET",
+    includeAuth: true,
+    data: filter,
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+export async function getAffiliateDetails(values={}) {
+  return await HttpClientCall({
+    endpoint: `affiliate/report/details`,
+    method: "GET",
+    includeAuth: true,
+    data: values,
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+
+export async function getAffiliatePlayerReport(values={}) {
+  return await HttpClientCall({
+    endpoint: `affiliate/report/player`,
+    method: "GET",
+    includeAuth: true,
+    data: values,
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+
+export async function getAffiliateSummery(values={}) {
   return await HttpClientCall({
     endpoint: `affiliate/report/summery`,
     method: "GET",
     includeAuth: true,
-    data: [],
+    data: values,
   })
     .then((response) => {
       return response;
@@ -85,7 +146,7 @@ export async function getRegisterUser(page, perPage) {
     });
 }
 
-export async function createAffiliateApplication(data){
+export async function createAffiliateApplication(data) {
   return await HttpClientCall({
     endpoint: "affiliate-application-submit",
     method: "POST",
@@ -100,7 +161,7 @@ export async function createAffiliateApplication(data){
     });
 }
 
-export async function getApplyList(page, perPage){
+export async function getApplyList(page, perPage) {
   return await HttpClientCall({
     endpoint: `affiliate-application-list/${page}/${perPage}`,
     method: "GET",
