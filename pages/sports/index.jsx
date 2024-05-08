@@ -138,7 +138,7 @@ const Sports = () => {
     {
       id: 17,
       name: "Tennis",
-      slug: "tennis",
+      slug: "tennis_scores",
     },
     {
       id: 6,
@@ -218,8 +218,8 @@ const Sports = () => {
   ];
   const [categories, setCategories] = useState([]);
   const [filterCategory, setFilterCategory] = useState(sports_categories[0]);
-  const [activeCategory, setActiveCategory] = useState("american_football");
-  const [activeSubCategory, setActiveSubCategory] = useState("");
+  const [activeCategory, setActiveCategory] = useState();
+  const [activeSubCategory, setActiveSubCategory] = useState();
   const [sliders, setSliders] = useState([]);
   const [league, setLeague] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -227,6 +227,13 @@ const Sports = () => {
 
   const handleSubCategory = (slug) => {
     setActiveSubCategory(slug);
+    axios.get(
+      `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/getodds/soccer?cat=${activeCategory}_10&json=1&league=${slug}`
+    ).then((response) => {
+      console.log(response);
+    }).catch((error) => {
+      console.log(error);
+    });
   };
 
   const sliderEffect = useCallback(async () => {
