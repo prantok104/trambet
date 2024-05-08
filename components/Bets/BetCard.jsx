@@ -6,7 +6,7 @@ import OddsButton from './OddsButton';
 import Slider from 'react-slick';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
-const BetCard = () => {
+const BetCard = (props) => {
   const [oddsMarket, setOddsMarket] = useState('');
   const defaultSettings = {
     className: "slider",
@@ -33,9 +33,9 @@ const BetCard = () => {
       <Link href="/" className="p-3 bg-shadow df-radius">
         <div className="bet-card-area-start">
           <div className="bet-card-header d-flex align-items-center justify-content-between gap-2">
-            <ImageCard />
-            <TimeCard />
-            <ImageCard />
+            <ImageCard team={props?.data?.localteam}/>
+            <TimeCard status={props?.data?.status} date={(props.data.date || '') + ' ' + (props.data.time || '')}/>
+            <ImageCard team={props?.data?.awayteam}/>
           </div>
           <div className="bet-card-body">
             <div className="bet-card-odds-markets">

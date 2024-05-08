@@ -223,17 +223,21 @@ const Sports = () => {
   const [sliders, setSliders] = useState([]);
   const [league, setLeague] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [odds, setOdds] = useState([]);
 
   const handleSubCategory = (slug) => {
     setActiveSubCategory(slug);
-    axios.get(
-      `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/getodds/soccer?cat=${activeCategory}_10&json=1&league=${slug}`
-    ).then((response) => {
-      console.log(response);
-    }).catch((error) => {
-      console.log(error);
-    });
+    axios
+      .get(
+        `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/getodds/soccer?cat=${activeCategory}_10&json=1&league=${slug}`
+      )
+      .then((response) => {
+        console.log(response?.data?.scores);
+        setOdds(response?.data?.scores?.categories);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const sliderEffect = useCallback(async () => {
@@ -256,7 +260,8 @@ const Sports = () => {
 
   const fetchLeague = async (data) => {
     setActiveCategory(data.slug);
-    axios.get(
+    axios
+      .get(
         `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/${data.slug}/leagues?json=1&season=2024`
       )
       .then((response) => {
@@ -264,11 +269,15 @@ const Sports = () => {
         const removeAt = stringData.replace(/@/g, "");
         const objectData = JSON.parse(removeAt);
         // console.log(objectData?.data?.leagues?.league);
-        if (objectData?.data?.leagues !== undefined &&
-          objectData?.data?.leagues !== null) {
+        if (
+          objectData?.data?.leagues !== undefined &&
+          objectData?.data?.leagues !== null
+        ) {
           setLeague(objectData?.data?.leagues?.league);
-        } else if (objectData?.data?.categories?.category === undefined ||
-          objectData?.data?.categories?.category) {
+        } else if (
+          objectData?.data?.categories?.category === undefined ||
+          objectData?.data?.categories?.category
+        ) {
           setLeague(objectData?.data?.categories?.category);
         }
         setLoading(false);
@@ -283,7 +292,10 @@ const Sports = () => {
   const handleCategory = (slug) => {
     setActiveCategory(slug);
     setLoading(true);
-    axios.get(`http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/${slug}/leagues?json=1&season=2024`)
+    axios
+      .get(
+        `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/${slug}/leagues?json=1&season=2024`
+      )
       .then((response) => {
         const stringData = JSON.stringify(response);
         const removeAt = stringData.replace(/@/g, "");
@@ -301,7 +313,8 @@ const Sports = () => {
           setLeague(objectData?.data?.categories?.category);
         }
         setLoading(false);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         notify("error", "No league found for this category");
         setLeague([]);
       });
@@ -341,7 +354,9 @@ const Sports = () => {
         <div className="sport-sub-categories px-2">
           {loading ? (
             <ul className="sports-sub-category">
-              <li className="mx-auto"><Spinner animation="border" variant="primary" /></li>
+              <li className="mx-auto">
+                <Spinner animation="border" variant="primary" />
+              </li>
             </ul>
           ) : (
             <ul className="sports-sub-category">
@@ -398,11 +413,16 @@ const Sports = () => {
               </div>
             </div>
             <>
-              {testLoop?.map((item, index) => (
-                <div className="col-md-3 mb-4" key={`bet_card_${index}`}>
-                  <BetCard />
-                </div>
-              ))}
+              {odds.map((odd, oddIndex) =>
+                odd.matches?.map((item, index) => (
+                  <div
+                    className="col-md-3 mb-4"
+                    key={`bet_card_${oddIndex}_${index}`}
+                  >
+                    <BetCard data={item}/>
+                  </div>
+                ))
+              )}
             </>
           </div>
         </div>
