@@ -30,7 +30,7 @@ const BetCard = (props) => {
    };
   return (
     <div className="single-bet-card ">
-      <Link href="/" className="p-3 bg-shadow df-radius">
+      <Link href={href} className="p-3 bg-shadow df-radius">
         <div className="bet-card-area-start">
           <div className="bet-card-header d-flex align-items-center justify-content-between gap-2">
             <ImageCard team={props?.data?.localteam}/>
