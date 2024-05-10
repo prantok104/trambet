@@ -241,7 +241,7 @@ const Sports = () => {
             <>
               {testLoop?.map((item, index) => (
                 <div className="col-md-3 mb-4" key={`bet_card_${index}`}>
-                  <BetCard />
+                  <BetCard href="/sports/game/12" />
                 </div>
               ))}
             </>

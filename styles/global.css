@@ -1417,6 +1417,11 @@ ul.sports-categories li:hover,ul.sports-categories li.active {
 .single-bet-card a:hover{
   background-color: #25365f;
 }
+.game-details-right-sidebar{
+  overflow: hidden;
+}
+
+
 
 
 
