@@ -419,7 +419,14 @@ const Sports = () => {
                   }}
                 />
                 <h6 style={{ fontSize: "14px" }}>
-                  Category Name/ sub category name
+                  {activeCategory &&
+                    categories?.find((item) => item?.slug == activeCategory)
+                      ?.name}{" "}
+                  {activeSubCategory &&
+                    `/ ${
+                      league?.find((item) => item?.id == activeSubCategory)
+                        ?.name
+                    }`}
                 </h6>
               </div>
             </div>
