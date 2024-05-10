@@ -1,10 +1,13 @@
-import BetCard from '@/components/Bets/BetCard';
-import { HttpClientCall } from '@/components/HTTPClient';
-import CustomSlider from '@/components/Slider';
-import Image from 'next/image';
-import React, { useCallback, useEffect, useState } from 'react'
-import { FaFootballBall, FaBasketballBall } from 'react-icons/fa';
-
+import BetCard from "@/components/Bets/BetCard";
+import { HttpClientCall } from "@/components/HTTPClient";
+import CustomSlider from "@/components/Slider";
+import Image from "next/image";
+import React, { useCallback, useEffect, useState } from "react";
+import { FaFootballBall, FaBasketballBall } from "react-icons/fa";
+import axios from "axios";
+import { notify } from "@/components/Helper";
+import Loader from "@/components/Loader";
+import { Spinner } from "react-bootstrap";
 
 const sports_categories = [
   {
@@ -15,13 +18,15 @@ const sports_categories = [
     sub_categories: [
       {
         name: "Premier League",
-        image: "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
+        image:
+          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
         count: 10,
         slug: "football_premier_league",
       },
       {
         name: "Champions League",
-        image: "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
+        image:
+          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
         count: 20,
         slug: "football_champions_league",
       },
@@ -35,7 +40,8 @@ const sports_categories = [
     sub_categories: [
       {
         name: "Six Nations",
-        image: "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
+        image:
+          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
         count: 10,
         slug: "rugby_six_nations",
       },
@@ -49,7 +55,8 @@ const sports_categories = [
     sub_categories: [
       {
         name: "Wimbledon",
-        image: "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
+        image:
+          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
         count: 5,
         slug: "tennis_wimbledon",
       },
@@ -63,7 +70,8 @@ const sports_categories = [
     sub_categories: [
       {
         name: "PGA Tour",
-        image: "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
+        image:
+          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
         count: 3,
         slug: "golf_pga_tour",
       },
@@ -77,13 +85,15 @@ const sports_categories = [
     sub_categories: [
       {
         name: "NBA",
-        image: "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
+        image:
+          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
         count: 6,
         slug: "basketball_nba",
       },
       {
         name: "EuroLeague",
-        image: "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
+        image:
+          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
         count: 4,
         slug: "basketball_euroleague",
       },
@@ -97,13 +107,15 @@ const sports_categories = [
     sub_categories: [
       {
         name: "Test Cricket",
-        image: "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
+        image:
+          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
         count: 8,
         slug: "cricket_test_cricket",
       },
       {
         name: "ODI Cricket",
-        image: "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
+        image:
+          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
         count: 6,
         slug: "cricket_odi_cricket",
       },
@@ -111,58 +123,209 @@ const sports_categories = [
   },
 ];
 
-
 const Sports = () => {
-   const [categories, setCategories] = useState([]);
-   const [filterCategory, setFilterCategory] = useState(sports_categories[0])
-   const [activeCategory, setActiveCategory] = useState("american_football");
-   const [activeSubCategory, setActiveSubCategory] = useState("");
-   const [sliders, setSliders] = useState([]);
-   
-   const handleCategory = (slug) => {
-      setActiveCategory(slug);
-      const filteredCategory = categories?.filter((item) => item.slug === slug);
+  const categoriesData = [
+    {
+      id: 5,
+      name: "Basketball",
+      slug: "bsktbl",
+    },
+    {
+      id: 16,
+      name: "Soccer",
+      slug: "soccernew",
+    },
+    {
+      id: 17,
+      name: "Tennis",
+      slug: "tennis_scores",
+    },
+    {
+      id: 6,
+      name: "Hockey",
+      slug: "hockey",
+    },
+    {
+      id: 4,
+      name: "Handball",
+      slug: "handball",
+    },
+    {
+      id: 7,
+      name: "Volleyball",
+      slug: "volleyball",
+    },
+    {
+      id: 3,
+      name: "Football",
+      slug: "football",
+    },
+    {
+      id: 2,
+      name: "Baseball",
+      slug: "baseball",
+    },
+    {
+      id: 8,
+      name: "Cricket",
+      slug: "cricket",
+    },
+    {
+      id: 9,
+      name: "Rugby Union",
+      slug: "rugby",
+    },
+    {
+      id: 20,
+      name: "Rugby League",
+      slug: "rugbyleague",
+    },
+    {
+      id: 10,
+      name: "Boxing",
+      slug: "boxing",
+    },
+    {
+      id: 11,
+      name: "Esports",
+      slug: "esports",
+    },
+    {
+      id: 12,
+      name: "Futsal",
+      slug: "futsal",
+    },
+    {
+      id: 13,
+      name: "MMA",
+      slug: "mma",
+    },
+    {
+      id: 21,
+      name: "Table Tennis",
+      slug: "table_tennis",
+    },
+    {
+      id: 14,
+      name: "Golf",
+      slug: "golf",
+    },
+    {
+      id: 15,
+      name: "Darts",
+      slug: "darts",
+    },
+  ];
+  const [categories, setCategories] = useState([]);
+  const [filterCategory, setFilterCategory] = useState(sports_categories[0]);
+  const [activeCategory, setActiveCategory] = useState();
+  const [activeSubCategory, setActiveSubCategory] = useState();
+  const [sliders, setSliders] = useState([]);
+  const [league, setLeague] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [odds, setOdds] = useState([]);
 
-      const filterCategory = filteredCategory.length > 0 ? filteredCategory[0] : {};
-      setFilterCategory(filterCategory);
-   };
-   const handleSubCategory = (slug) => {
-     setActiveSubCategory(slug);
-   };
-
-   const sliderEffect = useCallback(async() => {
-    await fetchSlider();
-   }, []);
-
-   const fetchSlider = async () => {
-      const banner = await HttpClientCall({
-        method: "GET",
-        endpoint: "frontend/banner",
-        includeAuth: false,
-        data: [],
+  const handleSubCategory = (slug) => {
+    setActiveSubCategory(slug);
+    axios
+      .get(
+        `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/getodds/soccer?cat=${activeCategory}_10&json=1&league=${slug}`
+      )
+      .then((response) => {
+        console.log(response?.data?.scores);
+        setOdds(response?.data?.scores?.categories);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      setSliders(banner?.data);
-   }
+  };
 
-   useEffect(() => {
-     sliderEffect();
-    
-     //Get the category data
-      const fetchCategory = async () => {
-        const category = await HttpClientCall({
-          method: "GET",
-          endpoint: "sport/category/running",
-          includeAuth: false,
-          data: [],
-        });
-        setCategories(category?.data);
-      };
-      fetchCategory();
+  const sliderEffect = useCallback(async () => {
+    await fetchSlider();
+  }, []);
 
-   }, []);
+  const fetchSlider = async () => {
+    const banner = await HttpClientCall({
+      method: "GET",
+      endpoint: "frontend/banner",
+      includeAuth: false,
+      data: [],
+    });
+    setSliders(banner?.data);
+  };
 
-  
-   const testLoop = ['1','2','3','4','5','6','7','8','9']
+  // const fetchCategory = async () => {
+
+  // };
+
+  const fetchLeague = async (data) => {
+    setActiveCategory(data.slug);
+    axios
+      .get(
+        `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/${data.slug}/leagues?json=1&season=2024`
+      )
+      .then((response) => {
+        const stringData = JSON.stringify(response);
+        const removeAt = stringData.replace(/@/g, "");
+        const objectData = JSON.parse(removeAt);
+        // console.log(objectData?.data?.leagues?.league);
+        if (
+          objectData?.data?.leagues !== undefined &&
+          objectData?.data?.leagues !== null
+        ) {
+          setLeague(objectData?.data?.leagues?.league);
+        } else if (
+          objectData?.data?.categories?.category === undefined ||
+          objectData?.data?.categories?.category
+        ) {
+          setLeague(objectData?.data?.categories?.category);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        notify("error", "No league found for this category");
+        setLeague([]);
+      });
+    // console.log(league);
+  };
+
+  const handleCategory = (slug) => {
+    setActiveCategory(slug);
+    setLoading(true);
+    axios
+      .get(
+        `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/${slug}/leagues?json=1&season=2024`
+      )
+      .then((response) => {
+        const stringData = JSON.stringify(response);
+        const removeAt = stringData.replace(/@/g, "");
+        const objectData = JSON.parse(removeAt);
+        setFilterCategory(objectData);
+        if (
+          objectData?.data?.leagues !== undefined &&
+          objectData?.data?.leagues !== null
+        ) {
+          setLeague(objectData?.data?.leagues?.league);
+        } else if (
+          objectData?.data?.categories?.category === undefined ||
+          objectData?.data?.categories?.category
+        ) {
+          setLeague(objectData?.data?.categories?.category);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        notify("error", "No league found for this category");
+        setLeague([]);
+      });
+  };
+  useEffect(() => {
+    sliderEffect();
+    setCategories(categoriesData);
+    fetchLeague(categoriesData[0]);
+  }, []);
+
+  const testLoop = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
   return (
     <>
@@ -177,8 +340,11 @@ const Sports = () => {
                 }`}
                 onClick={() => handleCategory(item?.slug)}
               >
-                <span className="games-count">{item?.count}</span>
-                <div className='text-white' dangerouslySetInnerHTML={{ __html: item?.icon }} />
+                <span className="games-count">{item?.length}</span>
+                <div
+                  className="text-white"
+                  dangerouslySetInnerHTML={{ __html: item?.icon }}
+                />
                 {item?.name}
               </li>
             ))}
@@ -186,26 +352,34 @@ const Sports = () => {
         </div>
 
         <div className="sport-sub-categories px-2">
-          <ul className="sports-sub-category">
-            {filterCategory?.sub_categories?.map((item, index) => (
-              <li
-                key={`sports_sub_categories${index}`}
-                className={`d-flex align-items-center gap-2 ${
-                  activeSubCategory == item?.slug ? "active" : ""
-                }`}
-                onClick={() => handleSubCategory(item?.slug)}
-              >
-                <Image
-                  src={item?.image}
-                  alt={item?.name}
-                  width={20}
-                  height={20}
-                />
-                <span>{item?.name}</span>
-                <span className="games-count">{item?.count}</span>
+          {loading ? (
+            <ul className="sports-sub-category">
+              <li className="mx-auto">
+                <Spinner animation="border" variant="primary" />
               </li>
-            ))}
-          </ul>
+            </ul>
+          ) : (
+            <ul className="sports-sub-category">
+              {league?.map((item, index) => (
+                <li
+                  key={`sports_sub_categories${index}`}
+                  className={`d-flex align-items-center gap-2 ${
+                    activeSubCategory == item?.id ? "active" : ""
+                  }`}
+                  onClick={() => handleSubCategory(item?.id)}
+                >
+                  {/* <Image
+            src={item?.image}
+            alt={item?.name}
+            width={20}
+            height={20}
+          />  */}
+                  <span>{item?.name}</span>
+                  <span className="games-count">{item?.count}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 
@@ -239,11 +413,16 @@ const Sports = () => {
               </div>
             </div>
             <>
-              {testLoop?.map((item, index) => (
-                <div className="col-md-3 mb-4" key={`bet_card_${index}`}>
-                  <BetCard href="/sports/game/12" />
-                </div>
-              ))}
+              {odds.map((odd, oddIndex) =>
+                odd.matches?.map((item, index) => (
+                  <div
+                    className="col-md-3 mb-4"
+                    key={`bet_card_${oddIndex}_${index}`}
+                  >
+                    <BetCard data={item} href="/sports/game/12" />
+                  </div>
+                ))
+              )}
             </>
           </div>
         </div>
@@ -251,6 +430,6 @@ const Sports = () => {
       </div>
     </>
   );
-}
+};
 
-export default Sports
+export default Sports;
