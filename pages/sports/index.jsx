@@ -1,3 +1,4 @@
+"use client"
 import BetCard from "@/components/Bets/BetCard";
 import { HttpClientCall } from "@/components/HTTPClient";
 import CustomSlider from "@/components/Slider";
@@ -5,7 +6,7 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import { FaFootballBall, FaBasketballBall } from "react-icons/fa";
 import axios from "axios";
-import { notify } from "@/components/Helper";
+import { API_HOST, SEASON, notify } from "@/components/Helper";
 import Loader from "@/components/Loader";
 import { Spinner } from "react-bootstrap";
 
@@ -224,19 +225,23 @@ const Sports = () => {
   const [league, setLeague] = useState([]);
   const [loading, setLoading] = useState(true);
   const [odds, setOdds] = useState([]);
+  const [oddsLoading, setOddsLoading] = useState(false)
 
   const handleSubCategory = (slug) => {
     setActiveSubCategory(slug);
+    setOddsLoading(true);
     axios
       .get(
-        `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/getodds/soccer?cat=${activeCategory}_10&json=1&league=${slug}`
+        `${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`
       )
       .then((response) => {
         console.log(response?.data?.scores);
         setOdds(response?.data?.scores?.categories);
+        setOddsLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setOddsLoading(false);
       });
   };
 
@@ -259,11 +264,12 @@ const Sports = () => {
   // };
 
   const fetchLeague = async (data) => {
-    setActiveCategory(data.slug);
+    setActiveCategory(data?.slug);
+
+    let endpoint = `${API_HOST}/${data.slug}/leagues?json=1&season=${SEASON}`;
+  
     axios
-      .get(
-        `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/${data.slug}/leagues?json=1&season=2024`
-      )
+      .get(endpoint)
       .then((response) => {
         const stringData = JSON.stringify(response);
         const removeAt = stringData.replace(/@/g, "");
@@ -292,26 +298,33 @@ const Sports = () => {
   const handleCategory = (slug) => {
     setActiveCategory(slug);
     setLoading(true);
+    let endpoint = `${API_HOST}/${slug}/leagues?json=1&season=${SEASON}`;
+    if (slug == "cricket") {
+      endpoint = `${API_HOST}/cricketfixtures/tours/tours?json=1&season=${SEASON}`;
+    }
     axios
-      .get(
-        `http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62/${slug}/leagues?json=1&season=2024`
-      )
+      .get(endpoint)
       .then((response) => {
-        const stringData = JSON.stringify(response);
-        const removeAt = stringData.replace(/@/g, "");
-        const objectData = JSON.parse(removeAt);
-        setFilterCategory(objectData);
-        if (
-          objectData?.data?.leagues !== undefined &&
-          objectData?.data?.leagues !== null
-        ) {
-          setLeague(objectData?.data?.leagues?.league);
-        } else if (
-          objectData?.data?.categories?.category === undefined ||
-          objectData?.data?.categories?.category
-        ) {
-          setLeague(objectData?.data?.categories?.category);
+        if(slug == 'cricket') { 
+            setLeague(response?.data?.fixtures?.category);
+        }else{
+            const stringData = JSON.stringify(response);
+            const removeAt = stringData.replace(/@/g, "");
+            const objectData = JSON.parse(removeAt);
+            setFilterCategory(objectData);
+            if (
+              objectData?.data?.leagues !== undefined &&
+              objectData?.data?.leagues !== null
+            ) {
+              setLeague(objectData?.data?.leagues?.league);
+            } else if (
+              objectData?.data?.categories?.category === undefined ||
+              objectData?.data?.categories?.category
+            ) {
+              setLeague(objectData?.data?.categories?.category);
+            }
         }
+        
         setLoading(false);
       })
       .catch((error) => {
@@ -324,8 +337,6 @@ const Sports = () => {
     setCategories(categoriesData);
     fetchLeague(categoriesData[0]);
   }, []);
-
-  const testLoop = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
   return (
     <>
@@ -375,7 +386,7 @@ const Sports = () => {
             height={20}
           />  */}
                   <span>{item?.name}</span>
-                  <span className="games-count">{item?.count}</span>
+                  <span className="games-count">0</span>
                 </li>
               ))}
             </ul>
@@ -413,15 +424,19 @@ const Sports = () => {
               </div>
             </div>
             <>
-              {odds.map((odd, oddIndex) =>
-                odd.matches?.map((item, index) => (
-                  <div
-                    className="col-md-3 mb-4"
-                    key={`bet_card_${oddIndex}_${index}`}
-                  >
-                    <BetCard data={item} href="/sports/game/12" />
-                  </div>
-                ))
+              {oddsLoading ? (
+                <Loader />
+              ) : (
+                odds?.map((odd, oddIndex) =>
+                  odd.matches?.map((item, index) => (
+                    <div
+                      className="col-md-3 mb-4"
+                      key={`bet_card_${oddIndex}_${index}`}
+                    >
+                      <BetCard data={item} href="/sports/game/12" />
+                    </div>
+                  ))
+                )
               )}
             </>
           </div>
