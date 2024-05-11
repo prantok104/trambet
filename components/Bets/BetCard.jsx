@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import ImageCard from './ImageCard'
-import TimeCard from './TimeCard';
-import Link from 'next/link';
-import OddsButton from './OddsButton';
-import Slider from 'react-slick';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import React, { useState } from "react";
+import ImageCard from "./ImageCard";
+import TimeCard from "./TimeCard";
+import Link from "next/link";
+import OddsButton from "./OddsButton";
+import Slider from "react-slick";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const BetCard = (props) => {
-  const [oddsMarket, setOddsMarket] = useState('');
+  const [oddsMarket, setOddsMarket] = useState("");
   const defaultSettings = {
     className: "slider",
     dots: false,
@@ -20,22 +20,26 @@ const BetCard = (props) => {
     nextArrow: <FaAngleRight />,
   };
 
+  console.log(props.data.odds[0].bookmakers);
   const handleOddsMarketChange = (event) => {
     event.preventDefault();
     setOddsMarket(event?.target?.value);
-  }
-  
-   const preventDefault = (event) => {
-     event.preventDefault();
-   };
+  };
+
+  const preventDefault = (event) => {
+    event.preventDefault();
+  };
   return (
     <div className="single-bet-card ">
-      <Link href={href} className="p-3 bg-shadow df-radius">
+      <Link href={props.href} className="p-3 bg-shadow df-radius">
         <div className="bet-card-area-start">
           <div className="bet-card-header d-flex align-items-center justify-content-between gap-2">
-            <ImageCard team={props?.data?.localteam}/>
-            <TimeCard status={props?.data?.status} date={(props.data.date || '') + ' ' + (props.data.time || '')}/>
-            <ImageCard team={props?.data?.awayteam}/>
+            <ImageCard team={props?.data?.localteam} />
+            <TimeCard
+              status={props?.data?.status}
+              date={(props.data.date || "") + " " + (props.data.time || "")}
+            />
+            <ImageCard team={props?.data?.awayteam} />
           </div>
           <div className="bet-card-body">
             <div className="bet-card-odds-markets">
@@ -43,20 +47,27 @@ const BetCard = (props) => {
                 className="odds-market-selection"
                 onClick={preventDefault}
                 onChange={handleOddsMarketChange}
-                defaultValue={2}
+                defaultValue={0}
               >
-                <option value={1}>Fanduel H2h</option>
-                <option value={2}>Bovada H2h</option>
+                {props.data.odds[0].bookmakers.map((bookmaker, index) => (
+                  <option value={index} key={index}>
+                    {bookmaker.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="bet-card-odds-area">
               <Slider {...defaultSettings}>
-                <OddsButton odds={{ id: 1, title: "Dundee FC", value: 3 }} />
-                <OddsButton odds={{ id: 2, title: "Draw", value: 1.2 }} />
-                <OddsButton odds={{ id: 3, title: "Hearts", value: 4.3 }} />
-                <OddsButton
-                  odds={{ id: 4, title: "Ross County", value: 12.5 }}
-                />
+                {props.data.odds[0].bookmakers[0]?.odds.map((odd, index) => (
+                  <OddsButton
+                    key={index}
+                    odds={{
+                      id: index,
+                      title: odd.name,
+                      value: odd.value,
+                    }}
+                  />
+                ))}
               </Slider>
             </div>
           </div>
@@ -64,6 +75,6 @@ const BetCard = (props) => {
       </Link>
     </div>
   );
-}
+};
 
-export default BetCard
+export default BetCard;

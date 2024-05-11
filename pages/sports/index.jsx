@@ -235,7 +235,7 @@ const Sports = () => {
         `${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`
       )
       .then((response) => {
-        console.log(response?.data?.scores);
+        console.log(response);
         setOdds(response?.data?.scores?.categories);
         setOddsLoading(false);
       })
