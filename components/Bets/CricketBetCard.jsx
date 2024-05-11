@@ -6,7 +6,7 @@ import OddsButton from "./OddsButton";
 import Slider from "react-slick";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
-const BetCard = (props) => {
+const CricketBetCard = (props) => {
   const [oddsMarket, setOddsMarket] = useState("");
   const defaultSettings = {
     className: "slider",
@@ -20,7 +20,6 @@ const BetCard = (props) => {
     nextArrow: <FaAngleRight />,
   };
 
-  console.log(props.data.odds[0].bookmakers);
   const handleOddsMarketChange = (event) => {
     event.preventDefault();
     setOddsMarket(event?.target?.value);
@@ -31,44 +30,37 @@ const BetCard = (props) => {
   };
   return (
     <div className="single-bet-card ">
-      <Link href={props?.href} className="p-3 bg-shadow df-radius">
+      <Link href={props?.href} className="py-3 px-2 bg-shadow df-radius">
         <div className="bet-card-area-start">
           <div className="bet-card-header d-flex align-items-center justify-content-between gap-2">
-            <ImageCard team={props?.data?.localteam} />
+            <ImageCard team={props?.data?.match?.localteam} />
             <TimeCard
-              status={props?.data?.status}
-              date={(props.data.date || "") + " " + (props.data.time || "")}
+              status={
+                props?.data?.match?.matchinfo?.info[0]?.value
+                  ? "Live Now"
+                  : "Upcoming"
+              }
+              date={
+                (props?.data?.match.date || "") +
+                " " +
+                (props?.data?.match?.time || "")
+              }
             />
-            <ImageCard team={props?.data?.awayteam} />
+            <ImageCard team={props?.data?.match?.visitorteam} />
           </div>
           <div className="bet-card-body">
             <div className="bet-card-odds-markets">
-              <select
-                className="odds-market-selection"
-                onClick={preventDefault}
-                onChange={handleOddsMarketChange}
-                defaultValue={0}
-              >
-                {props.data.odds[0].bookmakers.map((bookmaker, index) => (
-                  <option value={index} key={index}>
-                    {bookmaker.name}
-                  </option>
-                ))}
-              </select>
+              <span className="text-center d-block">
+                {props?.data?.match?.match_num}
+              </span>
             </div>
             <div className="bet-card-odds-area">
-              <Slider {...defaultSettings}>
-                {props.data.odds[0].bookmakers[0]?.odds.map((odd, index) => (
-                  <OddsButton
-                    key={index}
-                    odds={{
-                      id: index,
-                      title: odd.name,
-                      value: odd.value,
-                    }}
-                  />
-                ))}
-              </Slider>
+              <strong className="text-center d-block">
+                {props?.data?.match?.matchinfo?.info[0]?.name} :{" "}
+                {props?.data?.match?.matchinfo?.info[0]?.value
+                  ? props?.data?.match?.matchinfo?.info[0]?.value
+                  : "Match will be start"}
+              </strong>
             </div>
           </div>
         </div>
@@ -77,4 +69,4 @@ const BetCard = (props) => {
   );
 };
 
-export default BetCard;
+export default CricketBetCard;

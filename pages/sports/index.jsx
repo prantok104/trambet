@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import BetCard from "@/components/Bets/BetCard";
 import { HttpClientCall } from "@/components/HTTPClient";
 import CustomSlider from "@/components/Slider";
@@ -7,8 +7,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FaFootballBall, FaBasketballBall } from "react-icons/fa";
 import axios from "axios";
 import { API_HOST, SEASON, notify } from "@/components/Helper";
-import Loader from "@/components/Loader";
 import { Spinner } from "react-bootstrap";
+import CricketBetCard from "@/components/Bets/CricketBetCard";
 
 const sports_categories = [
   {
@@ -225,7 +225,8 @@ const Sports = () => {
   const [league, setLeague] = useState([]);
   const [loading, setLoading] = useState(true);
   const [odds, setOdds] = useState([]);
-  const [oddsLoading, setOddsLoading] = useState(false)
+  const [oddsLoading, setOddsLoading] = useState(false);
+  const [filterOddsCricket, setFilterOddsCricket] = useState([]);
 
   const handleSubCategory = (slug) => {
     setActiveSubCategory(slug);
@@ -243,6 +244,25 @@ const Sports = () => {
         console.log(error);
         setOddsLoading(false);
       });
+    if (activeCategory == "cricket") {
+      setActiveSubCategory(slug);
+      setOdds(filterOddsCricket?.filter(item => item?.id == slug))
+    } else {
+      setActiveSubCategory(slug);
+      setOddsLoading(true);
+      axios
+        .get(
+          `${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`
+        )
+        .then((response) => {
+          setOdds(response?.data?.scores?.categories);
+          setOddsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setOddsLoading(false);
+        });
+    }
   };
 
   const sliderEffect = useCallback(async () => {
@@ -267,7 +287,7 @@ const Sports = () => {
     setActiveCategory(data?.slug);
 
     let endpoint = `${API_HOST}/${data.slug}/leagues?json=1&season=${SEASON}`;
-  
+
     axios
       .get(endpoint)
       .then((response) => {
@@ -302,35 +322,53 @@ const Sports = () => {
     if (slug == "cricket") {
       endpoint = `${API_HOST}/cricketfixtures/tours/tours?json=1&season=${SEASON}`;
     }
+
+    // League fetch
     axios
       .get(endpoint)
       .then((response) => {
-        if(slug == 'cricket') { 
-            setLeague(response?.data?.fixtures?.category);
-        }else{
-            const stringData = JSON.stringify(response);
-            const removeAt = stringData.replace(/@/g, "");
-            const objectData = JSON.parse(removeAt);
-            setFilterCategory(objectData);
-            if (
-              objectData?.data?.leagues !== undefined &&
-              objectData?.data?.leagues !== null
-            ) {
-              setLeague(objectData?.data?.leagues?.league);
-            } else if (
-              objectData?.data?.categories?.category === undefined ||
-              objectData?.data?.categories?.category
-            ) {
-              setLeague(objectData?.data?.categories?.category);
-            }
+        if (slug == "cricket") {
+          setLeague(response?.data?.fixtures?.category);
+        } else {
+          const stringData = JSON.stringify(response);
+          const removeAt = stringData.replace(/@/g, "");
+          const objectData = JSON.parse(removeAt);
+          setFilterCategory(objectData);
+          if (
+            objectData?.data?.leagues !== undefined &&
+            objectData?.data?.leagues !== null
+          ) {
+            setLeague(objectData?.data?.leagues?.league);
+          } else if (
+            objectData?.data?.categories?.category === undefined ||
+            objectData?.data?.categories?.category
+          ) {
+            setLeague(objectData?.data?.categories?.category);
+          }
         }
-        
+
         setLoading(false);
       })
       .catch((error) => {
         notify("error", "No league found for this category");
         setLeague([]);
       });
+
+    // Upcoming game fetch only for cricket
+    if (slug == "cricket") {
+      setOddsLoading(true);
+      axios
+        .get(`${API_HOST}/cricket/schedule?json=1`)
+        .then((response) => {
+          setOdds(response?.data?.fixtures?.category);
+          setFilterOddsCricket(response?.data?.fixtures?.category);
+          setOddsLoading(false);
+        })
+        .catch((error) => {
+          notify("error", "No Cricket match found.");
+          setOdds([]);
+        });
+    }
   };
   useEffect(() => {
     sliderEffect();
@@ -422,17 +460,31 @@ const Sports = () => {
                   {activeCategory &&
                     categories?.find((item) => item?.slug == activeCategory)
                       ?.name}{" "}
-                  {activeSubCategory &&
-                    `/ ${
-                      league?.find((item) => item?.id == activeSubCategory)
-                        ?.name
-                    }`}
+                  {activeSubCategory
+                    ? `/ ${
+                        league?.find((item) => item?.id == activeSubCategory)
+                          ?.name
+                      }`
+                    : ""}
                 </h6>
               </div>
             </div>
             <>
               {oddsLoading ? (
-                <Loader />
+                <div className="text-center">
+                  <Spinner animation="border" variant="primary" />
+                </div>
+              ) : activeCategory == "cricket" ? (
+                odds?.map((odd, oddIndex) => (
+                  <div className="col-md-3 mb-4" key={`bet_card_${oddIndex}`}>
+                    <CricketBetCard
+                      data={odd}
+                      href={`/sports/game/${odd?.match?.id}?cat=${activeCategory}&sub=${activeSubCategory}&league=${odd?.id}&match=${odd?.match?.id}&series=${odd?.series_file}&squads=${odd?.squads_file}&localteam=${odd?.match?.localteam?.id}&visitorteam=${odd?.match?.visitorteam?.id}`}
+                      category={activeCategory}
+                      subCategories={activeSubCategory}
+                    />
+                  </div>
+                ))
               ) : (
                 odds?.map((odd, oddIndex) =>
                   odd.matches?.map((item, index) => (
@@ -440,7 +492,12 @@ const Sports = () => {
                       className="col-md-3 mb-4"
                       key={`bet_card_${oddIndex}_${index}`}
                     >
-                      <BetCard data={item} href="/sports/game/12" />
+                      <BetCard
+                        data={item}
+                        href="/sports/game/12"
+                        category={activeCategory}
+                        subCategories={activeSubCategory}
+                      />
                     </div>
                   ))
                 )
