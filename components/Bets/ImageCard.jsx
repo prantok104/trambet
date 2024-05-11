@@ -13,7 +13,7 @@ const ImageCard = ({imagePath="https://placehold.co/60x60", team}) => {
         unoptimized
         style={{ borderRadius: "50%", padding: "2px", background: "#090F1E" }}
       />
-      <h6 className="df-font mt-2">{team.name}</h6>
+      <h6 className="df-font mt-2">{team?.name}</h6>
     </div>
   );
 };
