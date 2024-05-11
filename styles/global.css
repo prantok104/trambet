@@ -1405,9 +1405,9 @@ ul.sports-categories li:hover,ul.sports-categories li.active {
   border-radius: 50%;
 }
 .sports-sub-category .games-count{
-  position: relative;
-  right: auto;
-  top: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .sport-contents-area{
   width: 100%;
@@ -1425,10 +1425,30 @@ ul.sports-categories li:hover,ul.sports-categories li.active {
 .game-details-right-sidebar{
   overflow: hidden;
 }
-
-
-
-
+.bet-card-header .bet-card-image{
+  width: 30%
+}
+.cricket-tabs-area button {
+    background: #1E263D;
+    border: 1px solid #26B361!important;
+    color: #fff;
+}
+.cricket-tabs-area .nav-tabs .nav-link.active{
+    color: #fff;
+    background-color: #26B462;
+}
+.cricket-tabs-area .nav-tabs .nav-link:hover{
+    color: #ED6720;
+}
+.cricket-bowlers-innig span, .cricket-batsman-innig span{
+  color: #26B462;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.cricket-bowlers-innig span:hover, .cricket-batsman-innig span:hover{
+  color: #EF6621;
+}
 
 .password-eye{
   background: #1E263D;
