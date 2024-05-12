@@ -75,19 +75,34 @@ const GameDetails = () => {
                       <Tab.Content>
                         {details?.odds?.map((item, index) => (
                           <Tab.Pane eventKey={`link-${index}`} key={index}>
-                            {item?.bookmakers?.map((odd, i) => 
-                            <div className="card mb-2" key={i}>
-                            <div className="card-body">
-                              <h4 className="text-center">{odd.name}</h4>
-                              {odd?.odds?.map((o, j) => (
-                                <div key={j} className="d-flex justify-content-between">
-                                  <span>{o.name}</span>
-                                  <span>{o.value}</span>
+                            {item?.bookmakers?.map((odd, i) => (
+                              <div className="card mb-2" key={i}>
+                                <div className="card-body">
+                                  <h4 className="text-center">{odd.name}</h4>
+                                  {odd?.odds?.map((o, j) =>
+                                    o.odds !== undefined ? (
+                                      o.odds.map((innerOdd, k) => (
+                                        <div
+                                          key={k}
+                                          className="d-flex justify-content-between"
+                                        >
+                                          <span>{innerOdd.name}</span>
+                                          <span>{innerOdd.value}</span>
+                                        </div>
+                                      ))
+                                    ) : (
+                                      <div
+                                        key={j}
+                                        className="d-flex justify-content-between"
+                                      >
+                                        <span>{o.name}</span>
+                                        <span>{o.value}</span>
+                                      </div>
+                                    )
+                                  )}
                                 </div>
-                              ))}
-                            </div>
-                          </div>
-                            )}
+                              </div>
+                            ))}
                           </Tab.Pane>
                         ))}
                       </Tab.Content>
