@@ -175,3 +175,18 @@ export async function getApplyList(page, perPage) {
       return [];
     });
 }
+
+export async function getMyTickets(page) {
+  return await HttpClientCall({
+    endpoint: `all/${page}`,
+    method: "GET",
+    includeAuth: true,
+    data: [],
+  })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
