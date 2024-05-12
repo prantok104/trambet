@@ -390,7 +390,7 @@ const Sports = () => {
                     >
                       <BetCard
                         data={item}
-                        href={`/sports/game/${item?.id}?category=${activeCategory}`}
+                        href={`/sports/game_/${item?.id}?cat=${activeCategory}&league=${odd?.id}&match=${item?.id}`}
                         category={activeCategory}
                         subCategories={activeSubCategory}
                       />

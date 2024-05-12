@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ImageCard from "./ImageCard";
 import TimeCard from "./TimeCard";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const BetCard = (props) => {
   const [oddsMarket, setOddsMarket] = useState("");
+  const [oddsMarketList, setOddsMarketList] = useState([]);
   const defaultSettings = {
     className: "slider",
     dots: false,
@@ -20,7 +21,7 @@ const BetCard = (props) => {
     nextArrow: <FaAngleRight />,
   };
 
-  console.log(props.data.odds[0].bookmakers);
+  console.log(props.data);
   const handleOddsMarketChange = (event) => {
     event.preventDefault();
     setOddsMarket(event?.target?.value);
@@ -29,6 +30,10 @@ const BetCard = (props) => {
   const preventDefault = (event) => {
     event.preventDefault();
   };
+
+  useEffect(() => {
+    setOddsMarketList(props.data.odds[0].bookmakers);
+  }, []);
   return (
     <div className="single-bet-card ">
       <Link href={props?.href} className="p-3 bg-shadow df-radius">
@@ -49,7 +54,7 @@ const BetCard = (props) => {
                 onChange={handleOddsMarketChange}
                 defaultValue={0}
               >
-                {props.data.odds[0].bookmakers.map((bookmaker, index) => (
+                {oddsMarketList?.map((bookmaker, index) => (
                   <option value={index} key={index}>
                     {bookmaker.name}
                   </option>
