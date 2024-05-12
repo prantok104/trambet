@@ -107,7 +107,9 @@ const Support = () => {
           const originalData = res.data;
           const transformedData = originalData.map((bet, index) => {
             return {
-              label: `${bet.bet_number} -- ${Number(bet.amount).toFixed(2)} -- ${bet.type === 1 ? 'Single' : 'Multiple'}`,
+              label: `${bet.bet_number} -- ${Number(bet.amount).toFixed(
+                2
+              )} -- ${bet.type === 1 ? "Single" : "Multiple"}`,
               value: `${bet.bet_num}`,
             };
           });
@@ -120,29 +122,34 @@ const Support = () => {
   }, []);
 
   // Form submit
-  const handleSupportSubmit = async(values) => {
+  const handleSupportSubmit = async (values) => {
     const payload = {
-      'subject': values?.subject,
-      'priority': values?.priority,
-      'message': values?.message,
-      'attachments': values?.attachments,
-      'bet_no': values?.bet_no ?? '',
-      'transaction_id': values?.transaction_id ?? '',
-      'transaction_date': values?.transaction_date ?? ''
+      subject: values?.subject,
+      priority: values?.priority,
+      message: values?.message,
+      attachments: values?.attachments,
+      bet_no: values?.bet_no ?? "",
+      transaction_id: values?.transaction_id ?? "",
+      transaction_date: values?.transaction_date ?? "",
+    };
+    const response = await createNewSupportTicket(payload);
+    if (response?.status) {
+      notify("success", response?.app_message);
+      router.push("/user/support/ticket/message/" + response?.message_id);
+    } else {
+      notify("error", response?.user_message);
     }
+    // await createNewSupportTicket(payload).then((response) => {
+    //   if (response?.status === true) {
+    //     notify("success", response?.message);
+    //     // router.push("/user/support/ticket/message/" + response?.data?.ticket_id);
+    //     // router.push("/user/support/ticket/message/" + response?.data?.ticket_id);
+    //   } else {
+    //     notify("error", response?.user_message);
+    //   }
+    // });
 
-    await createNewSupportTicket(payload).then((response) => {
-      console.log(response);
-      if (response?.status === true) {
-        notify("success", response?.message);
-        // router.push("/user/support/ticket/message/" + response?.data?.ticket_id);
-        // router.push("/user/support/ticket/message/" + response?.data?.ticket_id);
-      } else {
-        notify("error", response?.user_message);
-      }
-    });
-
-        // router.push({pathname: '/user/support/ticket/message/20sd',
+    // router.push({pathname: '/user/support/ticket/message/20sd',
     //    query: {
     //       subject: values?.subject
     //    }

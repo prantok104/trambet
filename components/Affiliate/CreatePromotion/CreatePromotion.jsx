@@ -25,8 +25,10 @@ const CreatePromotion = () => {
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Title required").max(50),
+    attachments: Yup.array(),
     promocode: Yup.string().required("Promo Code required").max(50),
     status: Yup.object().required("Status required"),
+    details: Yup.string().nullable(),
   });
   // const promocode = Math.random().toString(36).substring(2, 8).toUpperCase();
   const initialValues = {
@@ -38,6 +40,7 @@ const CreatePromotion = () => {
   };
 
   const handleSubmit = async (values) => {
+    // console.log("🚀 ~ handleSubmit ~ values:", values)
     setIsLoading(true);
     const payload = {
       title: values?.title,

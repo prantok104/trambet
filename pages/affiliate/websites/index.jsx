@@ -8,7 +8,6 @@ import AffiliatLayout from "../layout";
 import Website from "@/models/Website";
 import { getWebsites } from "@/services/affiliate";
 const Websites = () => {
-  
   const innerRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState({
@@ -24,10 +23,7 @@ const Websites = () => {
   });
 
   const rows = {
-    data: [
-      { year: 40 },
-      { year: 20 },
-    ],
+    data: [{ year: 40 }, { year: 20 }],
     current_page: 1,
     per_page: 10,
     total: 11,
@@ -37,24 +33,25 @@ const Websites = () => {
   const [data, setData] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
-  const [searchData, setSearchData] = useState('');
+  const [searchData, setSearchData] = useState("");
 
-  const fetchData = async (page) => {
+  const fetchData = async (page, search = "") => {
     setIsLoading(true);
-    await getWebsites(page, perPage,searchData).then((res) => {
-      console.log(res);
-      if (res) {
-        setData(res);
-        setTotalRows(res?.paginationData?.totalItems);
-      }
-    }).then(() => {
-      setIsLoading(false);
-    });
+    await getWebsites(page, perPage, search)
+      .then((res) => {
+        if (res) {
+          setData(res);
+          setTotalRows(res?.paginationData?.totalItems);
+        }
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
   };
   const handleSubmit = (values) => {
-    if(values.search != null){
-      setSearchData({ search: values.search });
-      fetchData(1);
+    // console.log("🚀 ~ handleSubmit ~ values:", values)
+    if (values.search) {
+      fetchData(filter?.page, values.search);
     }
   };
   const handlePageChange = (page) => {
@@ -69,14 +66,16 @@ const Websites = () => {
 
   const handlePageSizeChange = async (newPerPage, page) => {
     setIsLoading(true);
-    await getWebsites(page, newPerPage).then((res) => {
-      if (res) {
-        setData(res);
-        setTotalRows(res?.paginationData?.totalItems);
-      }
-    }).then(() => {
-      setIsLoading(false);
-    });
+    await getWebsites(page, newPerPage)
+      .then((res) => {
+        if (res) {
+          setData(res);
+          setTotalRows(res?.paginationData?.totalItems);
+        }
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -84,50 +83,49 @@ const Websites = () => {
   }, []);
 
   return (
-      <AffiliatLayout>
-        <div className="container-fluid">
-          <Breadcrumb title="Websites" path="Home => affiliate => websites"/>
-          <div className="mt-2">
-            <Card
-                header="Websites"
-                filter={
-                  <div className="text-right">
-                    <Formik
-                        innerRef={innerRef}
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmit}
-                        enableReinitialize={true}
-                    >
-                      {({values}) => (
-                          <FormikForm>
-                            <div className="d-flex align-items-center gap-2 justify-content-end">
-                              <InputField name="search" placeholder="Search"/>
-                              <button
-                                  className="df-btn py-1 reg-btn text-uppercase"
-                                  onClick={handleSubmit}
-                              >
-                                search
-                              </button>
-                            </div>
-                          </FormikForm>
-                      )}
-                    </Formik>
-                  </div>
-                }
-            >
-              <Website
-                  isLoading={isLoading}
-                  rows={data}
-                  handleAction={handleAction}
-                  handlePageSizeChange={handlePageSizeChange}
-                  handlePageChange={handlePageChange}
-              />
-            </Card>
-          </div>
+    <AffiliatLayout>
+      <div className="container-fluid">
+        <Breadcrumb title="Websites" path="Home => affiliate => websites" />
+        <div className="mt-2">
+          <Card
+            header="Websites"
+            filter={
+              <div className="text-right">
+                <Formik
+                  innerRef={innerRef}
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleSubmit}
+                  enableReinitialize={true}
+                >
+                  {({ values }) => (
+                    <FormikForm>
+                      <div className="d-flex align-items-center gap-2 justify-content-end">
+                        <InputField name="search" placeholder="Search" />
+                        <button
+                          className="df-btn py-1 reg-btn text-uppercase"
+                          type="submit"
+                        >
+                          search
+                        </button>
+                      </div>
+                    </FormikForm>
+                  )}
+                </Formik>
+              </div>
+            }
+          >
+            <Website
+              isLoading={isLoading}
+              rows={data}
+              handleAction={handleAction}
+              handlePageSizeChange={handlePageSizeChange}
+              handlePageChange={handlePageChange}
+            />
+          </Card>
         </div>
-      </AffiliatLayout>
-
+      </div>
+    </AffiliatLayout>
   );
 };
 
