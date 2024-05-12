@@ -11,7 +11,7 @@ const BetCard = (props) => {
   const defaultSettings = {
     className: "slider",
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
