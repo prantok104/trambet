@@ -30,9 +30,9 @@ const [categoryLoader, setCategoryLoader] = useState(true);
 
  const effect = useCallback(async () => {
    if (cat == "cricket") {
-      // await fetchCricketOdds();
-      // await fetchCricketLive();
-      // await fetchTeamSquads();
+      await fetchCricketOdds();
+      await fetchCricketLive();
+      await fetchTeamSquads();
    }
  }, [cat]);
 
