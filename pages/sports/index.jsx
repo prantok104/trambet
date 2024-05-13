@@ -10,215 +10,119 @@ import { API_HOST, SEASON, notify } from "@/components/Helper";
 import { Spinner } from "react-bootstrap";
 import CricketBetCard from "@/components/Bets/CricketBetCard";
 
-const sports_categories = [
-  {
-    name: "Football",
-    slug: "football",
-    icon: <FaFootballBall />,
-    count: 10,
-    sub_categories: [
-      {
-        name: "Premier League",
-        image:
-          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
-        count: 10,
-        slug: "football_premier_league",
-      },
-      {
-        name: "Champions League",
-        image:
-          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
-        count: 20,
-        slug: "football_champions_league",
-      },
-    ],
-  },
-  {
-    name: "Rugby",
-    slug: "rugby",
-    icon: <FaFootballBall />,
-    count: 25,
-    sub_categories: [
-      {
-        name: "Six Nations",
-        image:
-          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
-        count: 10,
-        slug: "rugby_six_nations",
-      },
-    ],
-  },
-  {
-    name: "Tennis",
-    slug: "tennis",
-    icon: <FaFootballBall />,
-    count: 8,
-    sub_categories: [
-      {
-        name: "Wimbledon",
-        image:
-          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
-        count: 5,
-        slug: "tennis_wimbledon",
-      },
-    ],
-  },
-  {
-    name: "Golf",
-    slug: "golf",
-    icon: <FaFootballBall />,
-    count: 10,
-    sub_categories: [
-      {
-        name: "PGA Tour",
-        image:
-          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
-        count: 3,
-        slug: "golf_pga_tour",
-      },
-    ],
-  },
-  {
-    name: "Basketball",
-    slug: "basketball",
-    icon: <FaBasketballBall />,
-    count: 15,
-    sub_categories: [
-      {
-        name: "NBA",
-        image:
-          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
-        count: 6,
-        slug: "basketball_nba",
-      },
-      {
-        name: "EuroLeague",
-        image:
-          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
-        count: 4,
-        slug: "basketball_euroleague",
-      },
-    ],
-  },
-  {
-    name: "Cricket",
-    slug: "cricket",
-    icon: <FaFootballBall />,
-    count: 5,
-    sub_categories: [
-      {
-        name: "Test Cricket",
-        image:
-          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
-        count: 8,
-        slug: "cricket_test_cricket",
-      },
-      {
-        name: "ODI Cricket",
-        image:
-          "https://trambet.smshagor.com/assets/images/league/65b44d2b59bd21706315051.jpg",
-        count: 6,
-        slug: "cricket_odi_cricket",
-      },
-    ],
-  },
-];
-
 const Sports = () => {
   const categoriesData = [
     {
       id: 5,
       name: "Basketball",
       slug: "bsktbl",
+      restApi: 1,
     },
     {
       id: 16,
       name: "Soccer",
       slug: "soccernew",
+      restApi: 1,
     },
     {
       id: 17,
       name: "Tennis",
       slug: "tennis_scores",
+      restApi: 1,
     },
     {
       id: 6,
       name: "Hockey",
       slug: "hockey",
+      restApi: 1,
     },
     {
       id: 4,
       name: "Handball",
       slug: "handball",
+      restApi: 0,
     },
     {
       id: 7,
       name: "Volleyball",
       slug: "volleyball",
+      restApi: 1,
     },
     {
       id: 3,
       name: "Football",
       slug: "football",
+      restApi: 0,
     },
     {
       id: 2,
       name: "Baseball",
       slug: "baseball",
+      restApi: 1,
     },
     {
       id: 8,
       name: "Cricket",
       slug: "cricket",
+      restApi: 0,
     },
     {
       id: 9,
       name: "Rugby Union",
       slug: "rugby",
+      restApi: 0,
     },
     {
       id: 20,
       name: "Rugby League",
       slug: "rugbyleague",
+      restApi: 0,
     },
     {
       id: 10,
       name: "Boxing",
       slug: "boxing",
+      restApi: 0,
     },
     {
       id: 11,
       name: "Esports",
       slug: "esports",
+      restApi: 0,
     },
     {
       id: 12,
       name: "Futsal",
       slug: "futsal",
+      restApi: 0,
     },
     {
       id: 13,
       name: "MMA",
       slug: "mma",
+      restApi: 0,
     },
     {
       id: 21,
       name: "Table Tennis",
       slug: "table_tennis",
+      restApi: 1,
     },
     {
       id: 14,
       name: "Golf",
       slug: "golf",
+      restApi: 0,
     },
     {
       id: 15,
       name: "Darts",
       slug: "darts",
+      restApi: 0,
     },
   ];
   const [categories, setCategories] = useState([]);
-  const [filterCategory, setFilterCategory] = useState(sports_categories[0]);
+  const [filterCategory, setFilterCategory] = useState('');
   const [activeCategory, setActiveCategory] = useState();
   const [activeSubCategory, setActiveSubCategory] = useState();
   const [sliders, setSliders] = useState([]);
@@ -229,16 +133,23 @@ const Sports = () => {
   const [filterOddsCricket, setFilterOddsCricket] = useState([]);
 
   const handleSubCategory = (slug) => {
+    setActiveSubCategory(slug);
+    setOddsLoading(true);
+    axios.get(`${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`).then((response) => {
+        setOdds(response?.data?.scores?.categories);
+        setOddsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setOddsLoading(false);
+      });
     if (activeCategory == "cricket") {
       setActiveSubCategory(slug);
       setOdds(filterOddsCricket?.filter(item => item?.id == slug))
     } else {
       setActiveSubCategory(slug);
       setOddsLoading(true);
-      axios
-        .get(
-          `${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`
-        )
+      axios.get(`${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`)
         .then((response) => {
           setOdds(response?.data?.scores?.categories);
           setOddsLoading(false);
@@ -479,7 +390,7 @@ const Sports = () => {
                     >
                       <BetCard
                         data={item}
-                        href="/sports/game/12"
+                        href={`/sports/game_/${item?.id}?cat=${activeCategory}&league=${odd?.id}&match=${item?.id}`}
                         category={activeCategory}
                         subCategories={activeSubCategory}
                       />

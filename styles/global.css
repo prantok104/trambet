@@ -1467,7 +1467,9 @@ ul.sports-categories li:hover,ul.sports-categories li.active {
     line-height: 0;
     color: #ccc;
 }
-
+.game-page-sub-category-item{
+  border-top: 1px solid #ddd;
+}
 
 
 
