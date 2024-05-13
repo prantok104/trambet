@@ -11,10 +11,10 @@ const Commentaries = ({ commentaries }) => {
           <p>Runs: {commentary.runs}</p>
           <p>Over: {commentary.over}</p>
           <p>Balls: {commentary.balls}</p>
-          {commentary.noballs === "True" && <p>It's a No ball!</p>}
-          {commentary.wides === "True" && <p>It's a Wides!</p>}
-          {commentary.isFour === "True" && <p>It's a Four!</p>}
-          {commentary.isSix === "True" && <p>It's a Six!</p>}
+          {commentary.noballs === "True" && <p>Its a No ball!</p>}
+          {commentary.wides === "True" && <p>Its a Wides!</p>}
+          {commentary.isFour === "True" && <p>Its a Four!</p>}
+          {commentary.isSix === "True" && <p>Its a Six!</p>}
           {commentary.isWicket === "True" && <p>Wicket!</p>}
         </ListGroup.Item>
       ))}

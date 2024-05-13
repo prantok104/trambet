@@ -8,7 +8,7 @@ import { Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap';
 import * as Yup from 'yup'
-const applicationsList = () => {
+const ApplicationsListPage = () => {
    const [isLoading, setIsLoading] = useState(false);
    const [applyModal, setApplyModal] = useState(false)
    const innerRef = useRef();
@@ -176,4 +176,4 @@ const applicationsList = () => {
   );
 }
 
-export default applicationsList
+export default ApplicationsListPage

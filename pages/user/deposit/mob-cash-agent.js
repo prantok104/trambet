@@ -1,54 +1,57 @@
-import AlertCard from '@/components/AlertCard';
-import Card from '@/components/Card';
-import { HttpClientCall } from '@/components/HTTPClient';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
-const mobCashAgent = () => {
-   const [search, setSearch] = useState('');
-   const [agents, setAgents] = useState([
-     {
-       id: 130,
-       identity: "124571",
-       address: "Guabari, Borobihanali-6250, Bagmara, Rajshahi",
-       telegram_link: "t.me/prantomoly",
-     },
-     {
-       id: 195,
-       identity: "124588",
-       address: "gazipur sadar kapasia bazar",
-       telegram_link: "Marly102",
-     },
-     {
-       id: 196,
-       identity: "124589",
-       address: "sylhet",
-       telegram_link: "t.me/Bob_bp",
-     },
-     {
-       id: 202,
-       identity: "124595",
-       address: "adf",
-       telegram_link: "ad",
-     },
-   ]);
-   useEffect(() => {
-      if(search?.length > 3){
-          async function fetchAgents() {
-            const agents = await HttpClientCall({
-              method: "GET",
-              endpoint: `user/deposit/mob-cash/agent?admin_id=${search}`, // Change the endpoint its just demo purpose
-              includeAuth: true,
-              data: [],
-            });
+import AlertCard from "@/components/AlertCard";
+import Card from "@/components/Card";
+import { HttpClientCall } from "@/components/HTTPClient";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
+const MobCashAgent = () => {
+  const [search, setSearch] = useState("");
+  const [agents, setAgents] = useState([
+    {
+      id: 130,
+      identity: "124571",
+      address: "Guabari, Borobihanali-6250, Bagmara, Rajshahi",
+      telegram_link: "t.me/prantomoly",
+    },
+    {
+      id: 195,
+      identity: "124588",
+      address: "gazipur sadar kapasia bazar",
+      telegram_link: "Marly102",
+    },
+    {
+      id: 196,
+      identity: "124589",
+      address: "sylhet",
+      telegram_link: "t.me/Bob_bp",
+    },
+    {
+      id: 202,
+      identity: "124595",
+      address: "adf",
+      telegram_link: "ad",
+    },
+  ]);
 
-            if (agents) {
-              setAgents(agents);
-            }
-          }
-          fetchAgents();
-      }
-   }, [search])
+  const getAgents = async () => {
+    const agents = await HttpClientCall({
+      method: "GET",
+      endpoint: `user/deposit/mob-cash/agent?admin_id=${search}`, // Change the endpoint its just demo purpose
+      includeAuth: true,
+      data: [],
+    });
+
+    if (agents) {
+      setAgents(agents);
+    }
+  };
+
+  useEffect(() => {
+    if (search?.length > 3) {
+      getAgents();
+    }
+  }, [search]);
+
   return (
     <div className="container">
       <div className="row">
@@ -81,6 +84,6 @@ const mobCashAgent = () => {
       </div>
     </div>
   );
-}
+};
 
-export default mobCashAgent
+export default MobCashAgent;

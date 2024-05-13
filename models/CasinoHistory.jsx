@@ -45,7 +45,7 @@ const CasinoHistory = ({
     [rows]
   );
   const handleButtonClick = (session_id) => {
-    console.log(session_id);
+    // console.log(session_id);
   }
   return (
     <div>

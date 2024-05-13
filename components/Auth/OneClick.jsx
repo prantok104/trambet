@@ -82,7 +82,7 @@ const OneClickRegister = () => {
 
 
   const handleSubmit = async (values) => {
-    // console.log(values);
+    // // console.log(values);
     // return
     const countryName = countryList.filter((item) => item.code === country);
     const data = {

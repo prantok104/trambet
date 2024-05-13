@@ -65,7 +65,7 @@ const MakeDepositPage = () => {
     };
 
     await makeDeposit(payload).then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.status === true) {
         // innerRef.current.resetForm();
         toast.success("Successfully deposit completed", {

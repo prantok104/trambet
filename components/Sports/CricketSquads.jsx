@@ -1,14 +1,18 @@
-import React from 'react'
-import SquadsPlayerForCricket from './SquadsPlayerForCricket'
+import React from "react";
+import SquadsPlayerForCricket from "./SquadsPlayerForCricket";
 
-const CricketSquads = ({data = []}) => {
+const CricketSquads = ({ data = [] }) => {
   return (
     <>
-      {data?.map((item) => (
-         <SquadsPlayerForCricket team={item?.name} item={item?.player} />
+      {data?.map((item, idx) => (
+        <SquadsPlayerForCricket
+          team={item?.name}
+          item={item?.player}
+          key={idx}
+        />
       ))}
     </>
-  )
-}
+  );
+};
 
-export default CricketSquads
+export default CricketSquads;

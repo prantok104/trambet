@@ -59,7 +59,6 @@ const LoginPage = ({ setLoginModal }) => {
           getUserDetailsData();
         });
       } else if (res.response.status === 422) {
-        console.log(res.response.data.errors);
       } else {
         Swal.fire({
           icon: "error",
@@ -70,7 +69,7 @@ const LoginPage = ({ setLoginModal }) => {
         });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -118,7 +117,7 @@ const LoginPage = ({ setLoginModal }) => {
             <hr />
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                Don't have account? <Link href={"/auth/register"}>Create Account</Link>
+                Dont have account? <Link href={"/auth/register"}>Create Account</Link>
               </h6>
             </div>
             <div className="col-md-12 mt-1 bottom-register">

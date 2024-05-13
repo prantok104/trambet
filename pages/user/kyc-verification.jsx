@@ -17,7 +17,7 @@ const KycVerification = () => {
 
    });
    const handleKycFormSubmit = async(values) => {
-    console.log(values);
+    // console.log(values);
       await HttpClientCall({
           method: "POST",
           endpoint: "kyc-submit",
@@ -25,10 +25,10 @@ const KycVerification = () => {
           data: values,
         }).then((res) => {
             if (res.status == true) {
-              console.log(res);
+              // console.log(res);
             }
           }).catch((error) => {
-            console.log(error);
+            // console.log(error);
           });
    }
 
@@ -46,10 +46,10 @@ const KycVerification = () => {
           if (res.status == true) {
             setFormData(res?.data);
             setIsLoading(false)
-            console.log(res?.data);
+            // console.log(res?.data);
           }
         }).catch((error) => {
-          console.log(error);
+          // console.log(error);
           setIsLoading(false);
         });
    }

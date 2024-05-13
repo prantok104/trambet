@@ -115,6 +115,7 @@ useEffect(() => {
                 bets?.map((item, index) => (
                   <BetSlipItem
                     index={index}
+                    key={index}
                     toImage={""}
                     toName={"Arcenal"}
                     market={"Buvada H2H"}

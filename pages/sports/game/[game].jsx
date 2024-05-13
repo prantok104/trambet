@@ -62,7 +62,7 @@ const [seriesData, setSeriesData] = useState([]);
       }
     })
     .catch((errors) => {
-      console.log(errors)
+      // console.log(errors)
       setSquadLoader(false);
     }); 
  }

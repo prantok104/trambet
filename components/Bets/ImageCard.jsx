@@ -2,7 +2,6 @@ import Image from 'next/image'
 import React from 'react'
 
 const ImageCard = ({imagePath="https://placehold.co/60x60", team}) => {
-  console.log(team)
   return (
     <div className="bet-card-image text-center">
       <Image

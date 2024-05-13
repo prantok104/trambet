@@ -1,58 +1,58 @@
 import ImageTitle from "@/components/ImageTitle";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-import casinos from '@/assets/casino.json'
+import casinos from "@/assets/casino.json";
 import Image from "next/image";
 import WarningCard from "@/components/Warning";
 import Loader from "@/components/Loader";
-const index = () => {
-const [casinoData, setCasinoData] = useState(casinos);
-const [filteredCasino, setFilteredCasino] = useState(casinos);
-const [activeItem, setActiveItem] = useState('all');
-const [loading, setloading] = useState(false);
- let filterTimeout;
-// const getCasinoData = async () => {
-//   try {
-//     const response = await axios.get(
-//       "https://trambet.smshagor.com/user/casino/get-casino"
-//     );
-//     if (!response.ok) {
-//       throw new Error("Failed to fetch casino data");
-//     }
-//     const data = await response.json();
-//     setCasinoData(data); // Update state with fetched data
-//   } catch (error) {
-//     console.error("Error fetching casino data:", error);
-//   }
-// };
+const Play = () => {
+  const [casinoData, setCasinoData] = useState(casinos || []);
+  const [filteredCasino, setFilteredCasino] = useState(casinos || []);
+  const [activeItem, setActiveItem] = useState("all");
+  const [loading, setloading] = useState(false);
+  let filterTimeout;
+  // const getCasinoData = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       "https://trambet.smshagor.com/user/casino/get-casino"
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch casino data");
+  //     }
+  //     const data = await response.json();
+  //     setCasinoData(data); // Update state with fetched data
+  //   } catch (error) {
+  //     console.error("Error fetching casino data:", error);
+  //   }
+  // };
 
-// useEffect(() => {
-//   getCasinoData();
-// }, []);
+  // useEffect(() => {
+  //   getCasinoData();
+  // }, []);
 
   const handleLabel = (title) => {
     setActiveItem(title);
     setloading(true);
-     clearTimeout(filterTimeout);
-      filterTimeout = setTimeout(() => {
-        if (title !== "all") {
-          const updatedFilteredCasinoData = {
-            ...filteredCasino,
-            content: {
-              ...filteredCasino.content,
-              gameList: filteredCasino.content.gameList.filter(
-                (item) => item?.title === title
-              ),
-            },
-          };
-          setloading(false);
-          setCasinoData(updatedFilteredCasinoData);
-        } else {
-          setloading(false);
-          setCasinoData(filteredCasino);
-        }
-      }, 1500);
-  }
+    clearTimeout(filterTimeout);
+    filterTimeout = setTimeout(() => {
+      if (title !== "all") {
+        const updatedFilteredCasinoData = {
+          ...filteredCasino,
+          content: {
+            ...filteredCasino.content,
+            gameList: filteredCasino.content.gameList.filter(
+              (item) => item?.title === title
+            ),
+          },
+        };
+        setloading(false);
+        setCasinoData(updatedFilteredCasinoData);
+      } else {
+        setloading(false);
+        setCasinoData(filteredCasino);
+      }
+    }, 1500);
+  };
 
   return (
     <>
@@ -119,4 +119,4 @@ const [loading, setloading] = useState(false);
   );
 };
 
-export default index;
+export default Play;
