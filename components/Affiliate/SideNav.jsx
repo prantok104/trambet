@@ -88,11 +88,11 @@ const menu = [
     submenu: [
       {
         name: "Open New Ticket",
-        link: "/",
+        link: "/affiliate/open-new-ticket",
       },
       {
         name: "My Ticket",
-        link: "/",
+        link: "/affiliate/my-ticket",
       },
     ],
   },
@@ -103,11 +103,11 @@ const menu = [
     submenu: [
       {
         name: "Profile Setting",
-        link: "/",
+        link: "/affiliate/profile-setting",
       },
       {
         name: "Change Password",
-        link: "/",
+        link: "/affiliate/change-password",
       },
       {
         name: "2FA Security",

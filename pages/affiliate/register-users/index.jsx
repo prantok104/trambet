@@ -19,6 +19,7 @@ const RegisterUsers = () => {
     page: 1,
     per_page: 10,
     order_by: "DESC",
+    searchValue: "",
   });
   const [initialValues, setInitialValues] = useState({
     search: "",
@@ -27,16 +28,18 @@ const RegisterUsers = () => {
     search: Yup.string(),
   });
 
-  const fetchData = async (page) => {
+  const fetchData = async (page, search = "") => {
     setIsLoading(true);
-    await getRegisterUser(page, perPage).then((res) => {
-      if (res) {
-        setData(res);
-        setTotalRows(res?.paginationData?.totalItems);
-      }
-    }).then(() => {
-      setIsLoading(false);
-    });
+    await getRegisterUser(page, perPage, search)
+      .then((res) => {
+        if (res) {
+          setData(res);
+          setTotalRows(res?.paginationData?.totalItems);
+        }
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
   };
 
   const handlePageSizeChange = async (newPerPage, page) => {
@@ -48,15 +51,16 @@ const RegisterUsers = () => {
     // });
 
     setIsLoading(true);
-    await getRegisterUser(page, newPerPage).then((res) => {
-      if (res) {
-        setData(res);
-        setTotalRows(res?.paginationData?.totalItems);
-      }
-    }).then(() => {
-      setIsLoading(false);
-    });
-    
+    await getRegisterUser(page, newPerPage)
+      .then((res) => {
+        if (res) {
+          setData(res);
+          setTotalRows(res?.paginationData?.totalItems);
+        }
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
   };
   const handlePageChange = (page) => {
     setFilter((prevState) => {
@@ -70,7 +74,11 @@ const RegisterUsers = () => {
 
   const handleAction = async (event, data) => {};
 
-  const handleSubmit = (values) => {};
+  const handleSubmit = async (values) => {
+    if (values.search) {
+      fetchData(filter?.page, values.search);
+    }
+  };
 
   useEffect(() => {
     fetchData(1);
@@ -100,7 +108,7 @@ const RegisterUsers = () => {
                         <InputField name="search" placeholder="Search" />
                         <button
                           className="df-btn py-1 reg-btn text-uppercase"
-                          onClick={handleSubmit}
+                          type="submit"
                         >
                           search
                         </button>
