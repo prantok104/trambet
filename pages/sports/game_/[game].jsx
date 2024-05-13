@@ -82,13 +82,15 @@ const GameDetails = () => {
                                   {odd?.odds?.map((o, j) =>
                                     o.odds !== undefined ? (
                                       o.odds.map((innerOdd, k) => (
+                                        <>
                                         <div
                                           key={k}
                                           className="d-flex justify-content-between"
                                         >
                                           <span>{innerOdd.name}</span>
                                           <span>{innerOdd.value}</span>
-                                        </div>
+                                        </div><hr />
+                                        </>
                                       ))
                                     ) : (
                                       <div
