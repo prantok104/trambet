@@ -1,26 +1,52 @@
-import Card from '@/components/Card';
-import InputField from '@/components/Form/InputField';
-import { FieldArray, Form, Formik } from 'formik';
-import { useRouter } from 'next/router';
-import React, { useRef } from 'react'
-import { Button } from 'react-bootstrap';
-import { FaClock, FaInfoCircle, FaPlusCircle, FaReply, FaTimes, FaTimesCircle } from 'react-icons/fa';
-import * as Yup from 'yup';
+import Card from "@/components/Card";
+import InputField from "@/components/Form/InputField";
+import { closeTicket, replyTicket } from "@/services/support";
+import { FieldArray, Form, Formik } from "formik";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/router";
+import React, { useRef } from "react";
+import { Button } from "react-bootstrap";
+import {
+  FaClock,
+  FaInfoCircle,
+  FaPlusCircle,
+  FaReply,
+  FaTimes,
+  FaTimesCircle,
+} from "react-icons/fa";
+import * as Yup from "yup";
 const Messaging = () => {
   const innerRef = useRef();
   const router = useRouter();
+  const { ticket_id } = useParams();
   const { subject } = router?.query;
   const initialValues = {
-    replay: "",
-    attachments: []
+    message: "",
+    attachments: [],
   };
   const validationSchema = Yup.object({
-    replay: Yup.string().required("Replay is required"),
-    attachments:Yup.array()
+    message: Yup.string().required("Replay is required"),
+    attachments: Yup.array(),
   });
-  const handleReplay = (values) => {
-    console.log(values)
-  } 
+  const handleReplay = async (values) => {
+    console.log(values);
+    const data = {
+      ...values,
+      id: ticket_id,
+    };
+    const response = await replyTicket(data);
+    console.log("🚀 ~ handleReplay ~ response:", response)
+    if (response?.status) {
+      // notify("success", response?.app_message);
+      // router.push("/user/support/ticket/message/" + response?.message_id);
+    } else {
+      notify("error", response?.user_message);
+    }
+  };
+  const handleCloseTicket = async () =>{
+    const response = await closeTicket(ticket_id);
+    console.log(response);
+  }
   return (
     <div className="container">
       <div className="row">
@@ -44,7 +70,7 @@ const Messaging = () => {
                     [Ticket #2325474 ] {subject}
                   </strong>
                 </div>
-                <Button size="sm" variant="outline-danger">
+                <Button onClick={handleCloseTicket} size="sm" variant="outline-danger">
                   Close Ticket <FaTimes />
                 </Button>
               </div>
@@ -63,7 +89,7 @@ const Messaging = () => {
                     <div className="col-md-12">
                       <InputField
                         as="textarea"
-                        name="replay"
+                        name="message"
                         label="Replay*"
                         placeholder="Replay"
                       />
@@ -186,6 +212,6 @@ const Messaging = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Messaging;
