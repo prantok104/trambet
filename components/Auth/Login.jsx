@@ -103,7 +103,7 @@ const LoginPage = ({ setLoginModal }) => {
                 Remember me?
               </div>
               <div className="bottom-register">
-                <Link href={"/user/reset-password"}>Forgot password?</Link>
+                <Link href={"/password/reset-password"}>Forgot password?</Link>
               </div>
             </div>
             <div className="col-md-12 mt-2 mb-4">
@@ -128,7 +128,7 @@ const LoginPage = ({ setLoginModal }) => {
             </div>
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                <Link href={"/"}>Became an affiliate</Link>
+                <Link href={"/auth/register/affiliate"}>Became an affiliate</Link>
               </h6>
             </div>
           </div>
