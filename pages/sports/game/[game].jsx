@@ -25,15 +25,18 @@ const [seriesLoader, setSeriesLoader] = useState(true);
 const [seriesData, setSeriesData] = useState([]);
 const [oddsLoader, setOddsLoader] = useState(true);
 const [odds, setOdds] = useState({});
+const [subcategories, setSubcategories] = useState([]);
+const [categoryLoader, setCategoryLoader] = useState(true);
 
  const effect = useCallback(async () => {
    if (cat == "cricket") {
-      await fetchCricketOdds();
-      await fetchCricketLive();
-      await fetchTeamSquads();
+      // await fetchCricketOdds();
+      // await fetchCricketLive();
+      // await fetchTeamSquads();
    }
  }, [cat]);
 
+ // Fetch Odds data
 const fetchCricketOdds = async () => {
   setOddsLoader(true);
   const endpoint = `${API_HOST}/getodds/soccer?cat=cricket_10&json=1`;
@@ -51,7 +54,7 @@ const fetchCricketOdds = async () => {
     });
 }
 
-
+// Fetch Live details data
  const fetchCricketLive = async () => {
    const endpoint = `${API_HOST}/cricket/livescore?json=1`;
    await axios
@@ -73,6 +76,7 @@ const fetchCricketOdds = async () => {
      }); 
  }
 
+ // Fetch Team Squads data
  const fetchTeamSquads = async () => {
   setSquadLoader(true);
   const endpoint = `${API_HOST}/cricketfixtures/${squads}?json=1`;
@@ -90,9 +94,29 @@ const fetchCricketOdds = async () => {
     }); 
  }
 
+
+ // Fetch sub category data
+ const fetchSubcategoryData = async () => {
+    const endpoint =`${API_HOST}/cricketfixtures/tours/tours?json=1&season=${SEASON}`;
+    axios
+      .get(endpoint)
+      .then((response) => {
+        setSubcategories(response?.data?.fixtures?.category);
+        setCategoryLoader(false);
+      })
+      .catch((error) => {
+        notify("error", "No league found for cricket category");
+         setCategoryLoader(false);
+      });
+;
+ }
+
+
  useEffect(() => {
    effect();
- }, [effect])
+ }, [effect]);
+
+ 
 
 
 
@@ -101,7 +125,16 @@ const fetchCricketOdds = async () => {
     <div className="container-fluid">
       <div className="row">
         <div className="col-md-3">
-          <div className="game-details-left-sidebar">Category area</div>
+          <div className="game-details-left-sidebar bg-shadow df-radius">
+            <h5 className="detail-category p-3 ">Cricket</h5>
+            <ul className="game-page-sub-category-item">
+              {categoryLoader? (
+                <div className='d-flex align-items-center justify-content-center'>
+                    <Spinner />
+                </div>
+              ) : subcategories?.map((item, index))}
+            </ul>
+          </div>
         </div>
         <div className="col-md-6">
           <div className="cricket-odds-show">
