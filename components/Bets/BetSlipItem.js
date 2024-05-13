@@ -4,6 +4,7 @@ import { FaTimes } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { removeBetFromSlip } from '@/store/reducers/betSlipReducer';
 import {Spinner, Placeholder, Card} from 'react-bootstrap'
+import BetItemImageCard from './BetItemImageCard';
 const BetSlipItem = ({
   index,
   toImage,
@@ -84,7 +85,7 @@ const BetSlipItem = ({
       ) : (
         <div className="betslip-single-bet-item">
           <div className="betslip-single-bet-item-header d-flex align-items-center justify-content-between">
-            <ImageCard src={toImage} alt={toName} title={toName} />
+            <BetItemImageCard src={toImage} alt={toName} title={toName} />
             <div className="betslip-single-bet-item-center-item">
               <h6>{market}</h6>
               <h6 className="d-flex align-items-center justify-content-center gap-2 my-1">
@@ -95,7 +96,7 @@ const BetSlipItem = ({
               </h6>
               <h6>{oddsName}</h6>
             </div>
-            <ImageCard src={twImage} alt={twImage} title={twName} />
+            <BetItemImageCard src={twImage} alt={twImage} title={twName} />
           </div>
           {betType == 1 && (
             <div className="bet-slip-stake-amount  d-flex align-items-center justify-content-between gap-2 mt-2">

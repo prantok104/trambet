@@ -27,7 +27,9 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
+import { useRouter as useRouterChecker } from "next/router";
 const Header = () => {
+  const routerCheck = useRouterChecker();
   const betSlipReducer = useSelector((state) => state.betSlipReducer);
   const { userData } = useUserData()
   const [loginModal, setLoginModal] = useState(false);
@@ -122,7 +124,8 @@ const Header = () => {
                         </li>
                         <li>
                           <Link href={"/"}>
-                            Bonus: + {Number(userData?.bonus_account).toFixed(2)}
+                            Bonus: +{" "}
+                            {Number(userData?.bonus_account).toFixed(2)}
                           </Link>
                         </li>
                         <li>
@@ -159,8 +162,8 @@ const Header = () => {
                         </li>
                         <li>
                           {userData.notifications?.latest &&
-                            userData.notifications?.latest.length > 0 ? (
-                              userData.notifications?.latest.map(
+                          userData.notifications?.latest.length > 0 ? (
+                            userData.notifications?.latest.map(
                               (notification, index) => (
                                 <Link key={index} href={notification.url}>
                                   {notification.title}
@@ -380,7 +383,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-
       {/* Login page area start */}
       <Modal
         show={loginModal}
@@ -397,7 +399,6 @@ const Header = () => {
         </Modal.Body>
       </Modal>
       {/* Login page area end */}
-
       {/* Registration modal area start */}
       <Modal
         show={registrationModal}
@@ -421,19 +422,28 @@ const Header = () => {
         </Modal.Body>
       </Modal>
       {/* Registration modal area end */}
-
       {/* Bet slip area start */}
-      <div className="betslip-area-start" style={{ height: slipShow ? 'auto' : '25px' }}>
+      {routerCheck?.route !== "/sports/game/[game]" ? <div
+        className="betslip-area-start"
+        style={{ height: slipShow ? "auto" : "25px" }}
+      >
         <div className="d-flex align-items-center justify-content-between bet-slip-top-header">
           <h6 className="slip-header">Betslip</h6>
           <div className="slip-header-icons d-flex align-items-center gap-4">
-            <BsArrowsFullscreen onClick={() => handleBetSlipToggle(true)} style={{ fontSize: 14 }} />
-            <FaTimes onClick={() => handleBetSlipToggle(false)} style={{ fontSize: 15 }} />
+            <BsArrowsFullscreen
+              onClick={() => handleBetSlipToggle(true)}
+              style={{ fontSize: 14 }}
+            />
+            <FaTimes
+              onClick={() => handleBetSlipToggle(false)}
+              style={{ fontSize: 15 }}
+            />
           </div>
         </div>
-
+        {router?.pathname}
         <BetSlip />
-      </div>
+      </div> : ""}
+      
       {/* Bet slip area end */}
     </>
   );
