@@ -116,13 +116,13 @@ useEffect(() => {
                   <BetSlipItem
                     index={index}
                     toImage={""}
-                    toName={"Arcenal"}
-                    market={"Buvada H2H"}
-                    oddsName={"Dundee Fc"}
+                    toName={item?.toName}
+                    market={item?.market}
+                    oddsName={item?.oddsName}
                     value={item?.value}
-                    isLive={true}
+                    isLive={item?.isLive}
                     twImage={""}
-                    twName={"Bercelona"}
+                    twName={item?.twName}
                     stakeInput={
                       <InputField
                         name={`stake_amount[${index}]`}

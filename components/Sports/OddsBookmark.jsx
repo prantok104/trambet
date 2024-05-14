@@ -2,7 +2,7 @@ import React from "react";
 import OddsButton from "../Bets/OddsButton";
 import Card from "../Card";
 
-const OddsBookmark = ({ odds }) => {
+const OddsBookmark = ({ odds, isLive }) => {
   return (
     <div>
       {odds?.odds?.type?.map((item, index) => (
@@ -34,6 +34,11 @@ const OddsBookmark = ({ odds }) => {
                                       id: odditem?.id,
                                       title: `${odditem?.name} (${totalitem?.name})`,
                                       value: odditem?.value,
+                                      toName: odds?.localteam?.name,
+                                      twName: odds?.visitorteam?.name,
+                                      isLive: isLive,
+                                      market: markerItem?.name,
+                                      oddsName: `${odditem?.name} (${totalitem?.name})`,
                                     }}
                                   />
                                 ))}
@@ -53,6 +58,11 @@ const OddsBookmark = ({ odds }) => {
                                   id: odd?.id,
                                   title: `${odd?.name} (${markerItem?.total?.name})`,
                                   value: odd?.value,
+                                  toName: odds?.localteam?.name,
+                                  twName: odds?.visitorteam?.name,
+                                  isLive: isLive,
+                                  market: markerItem?.name,
+                                  oddsName: `${odd?.name} (${markerItem?.total?.name})`,
                                 }}
                               />
                             ))}
@@ -69,8 +79,13 @@ const OddsBookmark = ({ odds }) => {
                                   key={`odds_item_${index}`}
                                   odds={{
                                     id: item?.id,
-                                    title: item?.name,
+                                    title: `${item?.name}`,
                                     value: item?.value,
+                                    toName: odds?.localteam?.name,
+                                    twName: odds?.visitorteam?.name,
+                                    isLive: isLive,
+                                    market: markerItem?.name,
+                                    oddsName: `${item?.name}`,
                                   }}
                                 />
                               ))}
@@ -107,6 +122,11 @@ const OddsBookmark = ({ odds }) => {
                                     id: odditem?.id,
                                     title: `${odditem?.name} (${totalitem?.name})`,
                                     value: odditem?.value,
+                                    toName: odds?.localteam?.name,
+                                    twName: odds?.visitorteam?.name,
+                                    isLive: isLive,
+                                    market: item?.bookmaker?.name,
+                                    oddsName: `${odditem?.name} (${totalitem?.name})`,
                                   }}
                                 />
                               ))}
@@ -127,6 +147,11 @@ const OddsBookmark = ({ odds }) => {
                               id: odditem?.id,
                               title: `${odditem?.name} (${item?.bookmaker?.total?.name})`,
                               value: odditem?.value,
+                              toName: odds?.localteam?.name,
+                              twName: odds?.visitorteam?.name,
+                              isLive: isLive,
+                              market: item?.bookmaker?.name,
+                              oddsName: `${odditem?.name} (${item?.bookmaker?.total?.name})`,
                             }}
                           />
                         ))}
@@ -138,13 +163,18 @@ const OddsBookmark = ({ odds }) => {
 
                   {item?.bookmaker.hasOwnProperty("odd") ? (
                     <div className="d-flex align-items-center flex-wrap">
-                      {item?.bookmaker?.odd?.map((item, index) => (
+                      {item?.bookmaker?.odd?.map((_item, index) => (
                         <OddsButton
                           key={`odds_item_${index}`}
                           odds={{
-                            id: item?.id,
-                            title: item?.name,
-                            value: item?.value,
+                            id: _item?.id,
+                            title: `${_item?.name}`,
+                            value: _item?.value,
+                            toName: odds?.localteam?.name,
+                            twName: odds?.visitorteam?.name,
+                            isLive: isLive,
+                            market: item?.bookmaker?.name,
+                            oddsName: _item?.name,
                           }}
                         />
                       ))}

@@ -380,6 +380,9 @@ a.more-link {
   font-size: 14px;
   margin-top: 15px;
 }
+.modal{
+  z-index: 99999999;
+}
 .modal-dialog {
   height: 90vh;
   justify-content: center;
@@ -1468,10 +1471,15 @@ ul.sports-categories li:hover,ul.sports-categories li.active {
     color: #ccc;
 }
 .game-page-sub-category-item{
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #25365F;
+  list-style: none;
 }
-
-
+ul.game-page-sub-category-item .game-page-item {
+  padding: 12px 18px;background: linear-gradient(183deg, #090F1E, #1E263D);cursor: pointer;
+}
+ul.game-page-sub-category-item .game-page-item:hover, ul.game-page-sub-category-item .game-page-item:active{
+  background: linear-gradient(326deg, #4a5c8f, #36518f); 
+}
 
 /* Betslip area start */
 .betslip-area-start {
@@ -1572,7 +1580,7 @@ ul.sports-categories li:hover,ul.sports-categories li.active {
 .odds-btn-title.active{
   color: #A38BFF
 }
-button.bet-odds-button.active-odds-button {
+button.bet-odds-button.active-odds-button, button.bet-odds-button:hover {
     background: linear-gradient(
     326deg,
     rgb(40, 54, 184) 0%,

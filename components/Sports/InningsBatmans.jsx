@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap';
 import { API_HOST, notify } from '../Helper';
 import axios from 'axios';
+import CricketPlayerDetails from './CricketPlayerDetails';
 
 const InningsBatmans = ({data = []}) => {
   const [profileModal, setProfileModal] = useState(false);
@@ -16,9 +17,7 @@ const InningsBatmans = ({data = []}) => {
       .get(endpoint)
       .then((response) => {
         if (response?.status == 200) {
-          setPlayer(
-            response?.data
-          );
+          setPlayer(response?.data?.players?.player);
           setLoader(false);
         }
       })
@@ -74,13 +73,13 @@ const InningsBatmans = ({data = []}) => {
         onHide={() => setProfileModal(false)}
         backdrop="static"
         keyboard={false}
-        className="login-page"
+        size='xl'
       >
         <Modal.Header closeButton>
           <Modal.Title>Player Information</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          hi
+          <CricketPlayerDetails loading={loader} data={player} />
         </Modal.Body>
       </Modal>
       {/* Registration modal area end */}
