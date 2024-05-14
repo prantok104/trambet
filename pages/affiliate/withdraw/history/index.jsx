@@ -43,7 +43,7 @@ const WithdrawHistory = () => {
 
   const fetchData = async (page) => {
     setIsLoading(true);
-    await getWithdrawHistory(page, perPage,searchData).then((res) => {
+    await getWithdrawHistory(page, perPage, searchData).then((res) => {
       if (res) {
         setData(res);
         setTotalRows(res?.paginationData?.totalItems);
@@ -121,6 +121,7 @@ const WithdrawHistory = () => {
                         <InputField name="daterange" placeholder="Search by Date" />
                         <button
                           className="df-btn py-1 reg-btn text-uppercase"
+                          type="submit"
                           onClick={handleSubmit}
                         >
                           search
