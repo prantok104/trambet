@@ -95,7 +95,7 @@ const RegisterUsers = () => {
             header="History"
             filter={
               <div className="text-right">
-                <Formik
+                {/* <Formik
                   innerRef={innerRef}
                   initialValues={initialValues}
                   validationSchema={validationSchema}
@@ -115,7 +115,7 @@ const RegisterUsers = () => {
                       </div>
                     </FormikForm>
                   )}
-                </Formik>
+                </Formik> */}
               </div>
             }
           >
