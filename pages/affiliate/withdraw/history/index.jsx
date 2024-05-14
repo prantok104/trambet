@@ -53,8 +53,9 @@ const WithdrawHistory = () => {
     });
   };
   const handleSubmit = (values) => {
+    console.log(values);
     if(values.search != null){
-      setSearchTransaction(values.search );
+      setSearchTransaction(values.search);
     }
     if(values.daterange != null){
       setSearchDate(values.daterange );
