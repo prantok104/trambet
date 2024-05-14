@@ -1,10 +1,11 @@
 import Card from "@/components/Card";
 import InputField from "@/components/Form/InputField";
-import { closeTicket, replyTicket } from "@/services/support";
+import { notify } from "@/components/Helper";
+import { closeTicket, getTicketById, replyTicket } from "@/services/support";
 import { FieldArray, Form, Formik } from "formik";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import {
   FaClock,
@@ -18,7 +19,8 @@ import * as Yup from "yup";
 const Messaging = () => {
   const innerRef = useRef();
   const router = useRouter();
-  const { ticket_id } = useParams();
+  const params = useParams();
+  const [replys, setReplys] = useState([]);
   const { subject } = router?.query;
   const initialValues = {
     message: "",
@@ -26,27 +28,46 @@ const Messaging = () => {
   };
   const validationSchema = Yup.object({
     message: Yup.string().required("Replay is required"),
-    attachments: Yup.array(),
+    attachments: Yup.array().nullable(),
   });
   const handleReplay = async (values) => {
-    console.log(values);
+    // console.log(values);
     const data = {
       ...values,
-      id: ticket_id,
+      id: params?.ticket_id,
     };
     const response = await replyTicket(data);
-    console.log("🚀 ~ handleReplay ~ response:", response)
+    // console.log("🚀 ~ handleReplay ~ response:", response);
     if (response?.status) {
-      // notify("success", response?.app_message);
+      notify("success", response?.app_message);
       // router.push("/user/support/ticket/message/" + response?.message_id);
     } else {
       notify("error", response?.user_message);
     }
   };
-  const handleCloseTicket = async () =>{
-    const response = await closeTicket(ticket_id);
-    console.log(response);
-  }
+  const handleCloseTicket = async () => {
+    const response = await closeTicket(params?.ticket_id);
+    // console.log("🚀 ~ handleCloseTicket ~ response:", response)
+    if (response.status) {
+      notify("success", "Ticket Closed");
+      router.push("/affiliate/my-ticket");
+    } else {
+      notify("error", "Something Wrong");
+    }
+  };
+  const getTicketData = async () => {
+    const data = await getTicketById(params?.ticket_id);
+    if (data?.status) {
+      setReplys(data);
+    }
+    // console.log("🚀 ~ getTicketData ~ data:", data);
+  };
+  useEffect(() => {
+    if (params?.ticket_id) {
+      getTicketData();
+    }
+  }, [params?.ticket_id]);
+
   return (
     <div className="container">
       <div className="row">
@@ -70,7 +91,11 @@ const Messaging = () => {
                     [Ticket #2325474 ] {subject}
                   </strong>
                 </div>
-                <Button onClick={handleCloseTicket} size="sm" variant="outline-danger">
+                <Button
+                  onClick={handleCloseTicket}
+                  size="sm"
+                  variant="outline-danger"
+                >
                   Close Ticket <FaTimes />
                 </Button>
               </div>

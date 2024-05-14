@@ -191,9 +191,9 @@ export async function getApplyList(page, perPage) {
     });
 }
 
-export async function getMyTickets(page) {
+export async function getMyTickets(page, per_page, search) {
   return await HttpClientCall({
-    endpoint: `all/${page}`,
+    endpoint: `ticket/all/${page}/${per_page}?search=${search}`,
     method: "GET",
     includeAuth: true,
     data: [],

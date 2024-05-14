@@ -27,7 +27,7 @@ const ChangePassword = () => {
 
    // Handle password changed
    const handlePasswordChange  = (values) => {
-      console.log(values);
+      // console.log(values);
    }
   return (
     <div className="container-fluid">

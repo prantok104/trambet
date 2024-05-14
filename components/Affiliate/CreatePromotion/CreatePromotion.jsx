@@ -40,7 +40,6 @@ const CreatePromotion = () => {
   };
 
   const handleSubmit = async (values) => {
-    // console.log("🚀 ~ handleSubmit ~ values:", values)
     setIsLoading(true);
     const payload = {
       title: values?.title,

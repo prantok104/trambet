@@ -77,7 +77,7 @@ const OTPInputGroup = () => {
         ))}
       </div>
       <div className="text-center pb-5">
-        <p className="mb-3">Don't you received the OTP? <button className="resend-otp" onClick={handleResendOtp}>Resend OTP</button></p>
+        <p className="mb-3">Dont you received the OTP? <button className="resend-otp" onClick={handleResendOtp}>Resend OTP</button></p>
         <button onClick={handleSubmit} className="df-btn reg-btn">Submit</button>
       </div>
     </>
@@ -85,7 +85,7 @@ const OTPInputGroup = () => {
 };
 
 const OTPInput = React.forwardRef(
-  ({ id, previousId, nextId, value, onValueChange }, ref) => {
+  function OTPInput({ id, previousId, nextId, value, onValueChange }, ref) {
     const handleKeyUp = (e) => {
       if (e.keyCode === 8 || e.keyCode === 37) {
         const prev = document.getElementById(previousId);
@@ -120,5 +120,8 @@ const OTPInput = React.forwardRef(
     );
   }
 );
+
+OTPInput.displayName = 'OTPInput';
+
 
 export default OTPInputGroup;

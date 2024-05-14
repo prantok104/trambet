@@ -61,7 +61,7 @@ const DepositHistory = ({
     [rows]
   );
 
-  // console.log(rows?.paginationData?.totalItems);
+  // // console.log(rows?.paginationData?.totalItems);
   return (
     <div>
       <div>

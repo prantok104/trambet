@@ -44,7 +44,7 @@ const Header = () => {
 
   // Handle onChange data
   const handleOnChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   // handle langugae on change
@@ -60,7 +60,7 @@ const Header = () => {
 
   const logout = useLogout();
   const handleLogout = () => {
-    console.log("click");
+    // console.log("click");
     localStorage.removeItem("userDetails")
     localStorage.removeItem("token")
     Cookies.remove("token")

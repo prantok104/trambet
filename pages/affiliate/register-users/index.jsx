@@ -83,6 +83,7 @@ const RegisterUsers = () => {
   useEffect(() => {
     fetchData(1);
   }, []);
+
   return (
     <AffiliatLayout>
       <div className="container-fluid">
