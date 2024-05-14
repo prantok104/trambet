@@ -22,7 +22,7 @@ const OddsButton = ({ odds }) => {
     } else {
       const betRemove = betSlipReducer?.bets.find((bet) => bet.id == odds?.id);
       if (betRemove) {
-        dispatch(removeBetFromSlip(0));
+        dispatch(removeBetFromSlip(betRemove?.id));
       }
     }
   };

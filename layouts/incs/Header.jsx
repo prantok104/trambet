@@ -100,8 +100,8 @@ const Header = () => {
                   defaultValue="d"
                 >
                   <option value="d">Decimal Odds</option>
-                  <option value="f">Fraction Odds</option>
-                  <option value="a">American Odds</option>
+                  {/* <option value="f">Fraction Odds</option>
+                  <option value="a">American Odds</option> */}
                 </select>
 
                 {userData && (
