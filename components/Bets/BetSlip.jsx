@@ -154,7 +154,7 @@ const BetSlip = () => {
               <>
                 {isAuthenticate ? (
                   <>
-                   Singles(x{bets?.length})
+                    <div>Singles ( x {bets?.length} )</div>
                     <div className="bet-slip-stake-amount d-flex align-items-center justify-content-between gap-2 mt-2">
                       <div className="return-amount">
                         Return BDT :{" "}
