@@ -25,7 +25,7 @@ const Contact = () => {
   });
 
   const handleContact = (values) => {
-    console.log(values)
+    // // console.log(values)
   }
 
   return (

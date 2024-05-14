@@ -9,7 +9,7 @@ const termsOfService = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await getTermsOfService();
-      console.log("Fetched data:", data); // Log the fetched data
+      // console.log("Fetched data:", data); // Log the fetched data
       setTermsOfServiceData(data);
     }
     fetchData();

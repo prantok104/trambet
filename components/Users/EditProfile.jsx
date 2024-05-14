@@ -19,7 +19,7 @@ const formikRef = useRef();
     values,
     { setErrors, setStatus, setSubmitting }
   ) => {
-    console.log(values);
+   //  // console.log(values);
   };
 
   const [user, setUser] = useState(null);
@@ -33,7 +33,7 @@ const formikRef = useRef();
 
  const [firstname, setFirstname] = useState(user?.firstname);
 
- console.log(user)
+ // console.log(user)
   return (
     <Formik innerRef={formikRef} initialValues={initialValues}
         validationSchema={validationSchema}

@@ -28,7 +28,7 @@ const RecoveryPassword = () => {
 
    // Handle password changed
    const handlePasswordChange = (values) => {
-     console.log(token);
+     // console.log(token);
    };
   return (
     <div className="container-fluid">

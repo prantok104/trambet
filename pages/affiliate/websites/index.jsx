@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import AffiliatLayout from "../layout";
 import Website from "@/models/Website";
 import { getWebsites } from "@/services/affiliate";
+
 const Websites = () => {
   const innerRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +50,6 @@ const Websites = () => {
       });
   };
   const handleSubmit = (values) => {
-    // console.log("🚀 ~ handleSubmit ~ values:", values)
     if (values.search) {
       fetchData(filter?.page, values.search);
     }

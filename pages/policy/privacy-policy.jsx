@@ -9,7 +9,7 @@ const privacyPolicy = () => {
     useEffect(() => {
         async function fetchData() {
             const data = await getPrivacyPolicy();
-            console.log("Fetched data:", data); // Log the fetched data
+            // console.log("Fetched data:", data); // Log the fetched data
             setPrivacyData(data);
         }
         fetchData();

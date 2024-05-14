@@ -11,7 +11,7 @@ const WithdrawPreview = () => {
   const router = useRouter();
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("withdraw_submitted_data"));
-    console.log(data);
+    // console.log(data);
     setWithdrawStorData(data);
   }, []);
 

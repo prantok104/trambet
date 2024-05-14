@@ -89,7 +89,7 @@ const fetchCricketOdds = async () => {
       }
     })
     .catch((errors) => {
-      console.log(errors)
+      // console.log(errors)
       setSquadLoader(false);
     }); 
  }

@@ -30,7 +30,7 @@ const Register = () => {
     values,
     { setErrors, setStatus, setSubmitting }
   ) => {
-    console.log(values);
+    // // console.log(values);
   };
 
 

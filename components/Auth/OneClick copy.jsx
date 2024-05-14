@@ -21,7 +21,6 @@ const OneClickRegister = () => {
   const [promo, setPromo] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted");
   };
 
   const countries = [
@@ -34,7 +33,6 @@ const OneClickRegister = () => {
     { label: "INR", value: "INR" },
   ];
 
-  console.log("Country: ", country);
   return (
     <Formik
    
