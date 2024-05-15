@@ -174,6 +174,10 @@ const Header = () => {
                             <Link href={"/"}>No new notifications</Link>
                           )}
                         </li>
+                        {userData.notifications?.latest.length == 0 ? <li> 
+                          {/* Condiiton will be chnaged it will more than 0 then show all notification */}
+                          <Link href={"/user/notifications"}>All notifications</Link>
+                        </li> : '' }
                       </ul>
                     </li>
                   </ul>
@@ -423,27 +427,31 @@ const Header = () => {
       </Modal>
       {/* Registration modal area end */}
       {/* Bet slip area start */}
-      {routerCheck?.route !== "/sports/game/[game]" ? <div
-        className="betslip-area-start"
-        style={{ height: slipShow ? "auto" : "25px" }}
-      >
-        <div className="d-flex align-items-center justify-content-between bet-slip-top-header">
-          <h6 className="slip-header">Betslip</h6>
-          <div className="slip-header-icons d-flex align-items-center gap-4">
-            <BsArrowsFullscreen
-              onClick={() => handleBetSlipToggle(true)}
-              style={{ fontSize: 14 }}
-            />
-            <FaTimes
-              onClick={() => handleBetSlipToggle(false)}
-              style={{ fontSize: 15 }}
-            />
+      {routerCheck?.route !== "/sports/game/[game]" ? (
+        <div
+          className="betslip-area-start"
+          style={{ height: slipShow ? "auto" : "25px" }}
+        >
+          <div className="d-flex align-items-center justify-content-between bet-slip-top-header">
+            <h6 className="slip-header">Betslip</h6>
+            <div className="slip-header-icons d-flex align-items-center gap-4">
+              <BsArrowsFullscreen
+                onClick={() => handleBetSlipToggle(true)}
+                style={{ fontSize: 14 }}
+              />
+              <FaTimes
+                onClick={() => handleBetSlipToggle(false)}
+                style={{ fontSize: 15 }}
+              />
+            </div>
           </div>
+          {router?.pathname}
+          <BetSlip />
         </div>
-        {router?.pathname}
-        <BetSlip />
-      </div> : ""}
-      
+      ) : (
+        ""
+      )}
+
       {/* Bet slip area end */}
     </>
   );
