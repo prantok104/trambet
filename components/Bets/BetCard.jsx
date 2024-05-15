@@ -21,7 +21,6 @@ const BetCard = (props) => {
     nextArrow: <FaAngleRight />,
   };
 
-  console.log(props.data);
   const handleOddsMarketChange = (event) => {
     event.preventDefault();
     setOddsMarket(event?.target?.value);

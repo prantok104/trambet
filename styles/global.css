@@ -834,6 +834,8 @@ select.form-control option {
   height: 100%;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 9999999;
   display: flex;
   align-items: center;
@@ -1212,6 +1214,10 @@ a.single-agent-for-deposit span {
   color: #fff;
   font-size: 11px;
   padding: 5px;
+}
+.home-page-casino{
+  flex: 0 1 calc(16.66% - 12px);
+  height: 160px
 }
 
 .casino-item-data:hover:after {

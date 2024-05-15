@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { HttpClientCall } from "@/components/HTTPClient";
 import { Modal } from "react-bootstrap";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
+import HomePageCasino from "@/components/Casino/HomePageCasino";
 const Home = () => {
   const { setShowOneClickModal, showOneClickModal, userData } = useUserData()
   const images = [
@@ -64,6 +65,7 @@ const Home = () => {
               <Slider images={sliders} />
             </div>
           </div>
+
           <div className="col-md-5">
             <div className="d-flex align-items-center justify-content-between gap-4">
               <div
@@ -89,27 +91,7 @@ const Home = () => {
           </div>
         </div>
         {/* Slider area end */}
-        {/* one click registration page area start */}
-        <Modal
-          show={showOneClickModal}
-          onHide={() => {
-            setShowOneClickModal(false)
-            localStorage.removeItem("oneTimeUserData")
-          }}
-          backdrop="static"
-          keyboard={false}
-          className="login-page"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>One Click User Info</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h5>Please Save this for your future use</h5>
-            <h5 className="fw-bold my-2">Password: {userData?.one_time_pass}</h5>
-            <h5 className="fw-bold">User Id: {userData?.user_id}</h5>
-          </Modal.Body>
-        </Modal>
-        {/* one click registration end */}
+
         {/* Promo card area start */}
         <div className="row mt-2">
           <div className="col-md-12">
@@ -128,6 +110,35 @@ const Home = () => {
         </div>
         {/* Promo card area end */}
 
+        {/* Live Casino area start */}
+        <div className=" mt-2">
+          <HomePageCasino />
+        </div>
+        {/* Live Casino area end */}
+
+        {/* one click registration page area start */}
+        <Modal
+          show={showOneClickModal}
+          onHide={() => {
+            setShowOneClickModal(false);
+            localStorage.removeItem("oneTimeUserData");
+          }}
+          backdrop="static"
+          keyboard={false}
+          className="login-page"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>One Click User Info</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h5>Please Save this for your future use</h5>
+            <h5 className="fw-bold my-2">
+              Password: {userData?.one_time_pass}
+            </h5>
+            <h5 className="fw-bold">User Id: {userData?.user_id}</h5>
+          </Modal.Body>
+        </Modal>
+        {/* one click registration end */}
       </div>
     </>
   );

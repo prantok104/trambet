@@ -26,25 +26,23 @@ export default function LiveCasino() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!casinoRef.current) return;
 
-    useEffect(() => {
-      if (!casinoRef.current) return;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    });
 
-      const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          setPage((prevPage) => prevPage + 1);
-        }
-      });
+    observer.observe(casinoRef.current);
 
-      observer.observe(casinoRef.current);
-
-      return () => {
-        if (casinoRef.current) {
-          observer.unobserve(casinoRef.current);
-        }
-      };
-    }, [casinoRef.current]);
-
+    return () => {
+      if (casinoRef.current) {
+        observer.unobserve(casinoRef.current);
+      }
+    };
+  }, [casinoRef.current]);
 
   const handleLabel = (title) => {
     setActiveItem(title);
@@ -71,10 +69,10 @@ export default function LiveCasino() {
     }, 0);
   };
   const handelPlayButtonClick = async (id, demo) => {
-    setloading(true)
+    setloading(true);
     const response = await getLiveCasinoOpenData({ id: id, demo: demo });
     if (response) {
-      setloading(false)
+      setloading(false);
       router.push(`/casino/play?url=${response.game.url}`);
     }
   };
@@ -122,26 +120,29 @@ export default function LiveCasino() {
           <div className="casino-all-data">
             {casinoData?.content?.gameList?.length > 0 ? (
               <>
-                {casinoData?.content?.gameList?.slice(0, page *
-                pageSize)?.map((item) => (
-                <div
-                  className="casino-item-data"
-                  style={{ background: `url(${item?.img})` }}
-                  key={item?.id}
-                >
-                  <span>{item?.name}</span>
-                  <div>
-                    <button
-                      className="play-btn"
-                      onClick={() =>
-                        handelPlayButtonClick(item?.id, item?.demo)
-                      }
+                {casinoData?.content?.gameList
+                  ?.slice(0, page * pageSize)
+                  ?.map((item) => (
+                    <div
+                      className="casino-item-data"
+                      style={{
+                        background: `url(${item?.img})  no-repeat center center/ cover`,
+                      }}
+                      key={item?.id}
                     >
-                      Play
-                    </button>
-                  </div>
-                </div>
-                ))}
+                      <span>{item?.name}</span>
+                      <div>
+                        <button
+                          className="play-btn"
+                          onClick={() =>
+                            handelPlayButtonClick(item?.id, item?.demo)
+                          }
+                        >
+                          Play
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 <div ref={casinoRef} />
               </>
             ) : (

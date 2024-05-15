@@ -62,6 +62,35 @@ const CricketBetCard = (props) => {
                   : "Match will be start"}
               </strong>
             </div>
+
+            {Array.isArray(props.data.match?.odds?.type) ? (
+              <div className="bet-card-odds-area px-3 mt-2">
+                <Slider {...defaultSettings}>
+                  {props.data.match?.odds?.type[0].bookmaker?.odd?.map(
+                    (odd, index) => (
+                      <OddsButton
+                        key={index}
+                        odds={{
+                          id: odd?.id,
+                          title: odd.name,
+                          value: odd.value,
+                          toName: props.data.match?.localteam?.name,
+                          twName: props.data.match?.visitorteam?.name,
+                          isLive: odd?.match?.matchinfo?.info[0]?.value
+                            ? "live"
+                            : "Upcoming",
+                          market:
+                            props.data.match?.odds?.type[0].bookmaker?.name,
+                          oddsName: odd.name,
+                        }}
+                      />
+                    )
+                  )}
+                </Slider>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </Link>
