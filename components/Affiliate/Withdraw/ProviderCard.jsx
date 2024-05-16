@@ -7,7 +7,6 @@ import * as Yup from "yup";
 import { useRouter } from "next/router";
 import ConstantData from "@/components/ConstantData";
 const ProviderCard = ({ providers }) => {
-  // console.log(providers);
   const formikRef = useRef();
   const navigate = useRouter();
   const [modalView, setModalView] = useState(false);

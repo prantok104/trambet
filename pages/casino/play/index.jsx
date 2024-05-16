@@ -12,7 +12,7 @@ const PlayGame = () => {
     const lang = searchParams.get('lang');
     const copyrights = searchParams.get('copyrights');
     const finalUrl = `${url}&mgckey=${mgckey}&currency=${currency}&exit_mode=${exit_mode}&home_url=${home_url}&hide_info=${hide_info}&lang=${lang}&copyrights=${copyrights}`;
-    console.log(searchParams.get('url'));
+    // console.log(searchParams.get('url'));
     return (
         <div className="col-lg-12">
             <iframe id="inlineFrameExample" title="Casino Game" width="100%" height="500" src={finalUrl}/>

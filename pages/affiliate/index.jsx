@@ -25,7 +25,7 @@ const Affiliate = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         setLoading(false);
       });
   }
@@ -72,8 +72,8 @@ const Affiliate = () => {
         ) : (
           <div className="affiliate-dashboard-card-area mb-2">
             <div className="row">
-              {itemcards?.map((item) => (
-                <div className="col-md-3">
+              {itemcards?.map((item,idx) => (
+                <div className="col-md-3" key={idx}>
                   <ItemCard
                     icon={item.icon}
                     title={item.title}

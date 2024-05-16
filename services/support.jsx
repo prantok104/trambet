@@ -31,7 +31,7 @@ export async function getBetList() {
 
 export async function replyTicket(data) {
   return await HttpClientCall({
-    endpoint: `reply/store/${data?.id}`,
+    endpoint: `ticket/reply/${data?.id}`,
     method: "POST",
     includeAuth: true,
     data: data,
@@ -45,9 +45,25 @@ export async function replyTicket(data) {
 }
 
 
+export async function getTicketById(id) {
+  return await HttpClientCall({
+    endpoint: `ticket/${id}`,
+    method: "GET",
+    includeAuth: true,
+    data: [],
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+
+
 export async function closeTicket(id) {
   return await HttpClientCall({
-    endpoint: `close/${id}`,
+    endpoint: `ticket/close/${id}`,
     method: "POST",
     includeAuth: true,
     data: {},

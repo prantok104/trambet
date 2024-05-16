@@ -12,7 +12,7 @@ export async function userLogout() {
       localStorage.removeItem("token");
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
     });
 }
 
@@ -29,7 +29,7 @@ export async function getUserDetailsData() {
       // return data;
     }
   }).catch((error) => {
-    console.log(error);
+    // console.log(error);
   });
 }
 
@@ -41,9 +41,9 @@ export async function oneClickRegister(){
     data: [],
   })
     .then((res) => {
-      console.log(res);
+      // console.log(res);
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
     });
 }

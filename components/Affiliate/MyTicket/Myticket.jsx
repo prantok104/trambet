@@ -1,60 +1,85 @@
-import React from "react";
+import DataTableComponent from "@/components/DataTableComponent";
+import React, { useMemo } from "react";
+import { rowIndex } from "@/components/Helper";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { RiComputerLine } from "react-icons/ri";
+import Link from "next/link";
 
-const Myticket = ({ promotions = [], promo = [] }) => {
+const Myticket = ({
+  rows,
+  isLoading,
+  handlePageSizeChange,
+  handlePageChange,
+  page = {},
+}) => {
+  const columns = useMemo(
+    () => [
+      rowIndex(rows),
+      {
+        name: "Subject",
+        selector: (row) => row?.subject,
+        sortable: true,
+      },
+      {
+        name: "Status",
+        selector: (row) => (
+          <span
+            class={`badge ${row?.status == "1" ? "bg-success" : "bg-danger"}`}
+          >
+            {row?.status == "1" ? "Open" : "Close"}
+          </span>
+        ),
+        sortable: false,
+      },
+      {
+        name: "Priority",
+        selector: (row) => (
+          <span
+            class={`badge ${row?.status == "1" ? "bg-success" : "bg-danger"}`}
+          >
+            {row?.status == "1" ? "High" : "Low"}
+          </span>
+        ),
+        sortable: false,
+      },
+      {
+        name: "Last Reply",
+        selector: (row) => row?.last_reply,
+        sortable: true,
+      },
+      {
+        name: "Action",
+        selector: (row) => (
+          <div className="d-flex justify-content-center gap-2">
+            <Link href={`/user/support/ticket/message/${row?.ticket}`}>
+              <button
+                className="btn btn-primary btn-sm d-flex justify-content-center"
+              >
+                <RiComputerLine />
+              </button>
+            </Link>
+          </div>
+        ),
+        sortable: false,
+      },
+    ],
+    [rows]
+  );
   return (
     <div>
-      <table className="table table-dark table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Subject</th>
-            <th scope="col">Status</th>
-            <th scope="col">Priority</th>
-            <th scope="col">Last Reply</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {promotions?.map((promotionItem, index) => (
-            <tr key={index}>
-              <th scope="row">{index + 1}</th>
-              <td>{promotionItem.title}</td>
-              <td>{promotionItem.promo_code}</td>
-              <td>{promotionItem.promo_percentage}%</td>
-              <td>{promotionItem.created_at}</td>
-              <td>
-                {promotionItem.is_admin_approved == 0 && (
-                  <span className="badge bg-info">Pending</span>
-                )}
-                {promotionItem.is_admin_approved == 1 && (
-                  <span className="badge bg-success">Approved</span>
-                )}
-                {promotionItem.is_admin_approved == 2 && (
-                  <span className="badge bg-danger">Rejected</span>
-                )}
-              </td>
-              <td>
-                <span
-                  className={
-                    promotionItem.admin_comment ? "" : "badge bg-warning"
-                  }
-                >
-                  {promotionItem.admin_comment || "No Comment"}
-                </span>
-              </td>
-              <td>
-                <span
-                  className={`badge ${
-                    promotionItem.status == 1 ? "bg-success" : "bg-warning"
-                  }`}
-                >
-                  {promotionItem.status == 1 ? "Active" : "Inactive"}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div>
+        <DataTableComponent
+          title=""
+          progressPending={isLoading}
+          columns={columns}
+          data={rows}
+          pagination
+          paginationServer
+          paginationTotalRows={rows?.total}
+          onChangeRowsPerPage={handlePageSizeChange}
+          onChangePage={handlePageChange}
+        />
+      </div>
     </div>
   );
 };

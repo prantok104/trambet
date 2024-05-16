@@ -28,7 +28,6 @@ const LoginPage = () => {
       password: password
     };
     axios.post(`${baseUrl}/login`, data).then((res) => {
-      // console.log(res.data.access_token);
       localStorage.setItem("token", res.data.access_token);
       Swal.fire({
         icon: "success",
@@ -40,11 +39,10 @@ const LoginPage = () => {
         window.location.reload();
       });
     }).catch((error) => {
-      console.log(error.response.status);
       if (error.response.status == 422) {
         
       } else {
-        console.log(error);
+        // console.log(error);
       }
     });
   }
@@ -96,7 +94,7 @@ const LoginPage = () => {
              <hr/>
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                Don't have account? <Link href={"/auth/register"}>Create Account</Link>
+                Dont have account? <Link href={"/auth/register"}>Create Account</Link>
               </h6>
             </div>
             <div className="col-md-12 mt-1 bottom-register">

@@ -155,7 +155,7 @@ const Sports = () => {
           setOddsLoading(false);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           setOddsLoading(false);
         });
     }
@@ -190,7 +190,7 @@ const Sports = () => {
         const stringData = JSON.stringify(response);
         const removeAt = stringData.replace(/@/g, "");
         const objectData = JSON.parse(removeAt);
-        // console.log(objectData?.data?.leagues?.league);
+        // // console.log(objectData?.data?.leagues?.league);
         if (
           objectData?.data?.leagues !== undefined &&
           objectData?.data?.leagues !== null
@@ -208,7 +208,7 @@ const Sports = () => {
         notify("error", "No league found for this category");
         setLeague([]);
       });
-    // console.log(league);
+    // // console.log(league);
   };
 
   const handleCategory = (slug) => {

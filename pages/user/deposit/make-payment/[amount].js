@@ -10,7 +10,7 @@ import * as Yup from "yup";
 import { notify } from '@/components/Helper';
 const MakeDepositPage = () => {
   const innerRef = useRef();
-  // console.log(innerRef)
+  // // console.log(innerRef)
   const [initialValues, setInitialValues] = useState({
     amount: 100,
     wallet_number: '12qwew',

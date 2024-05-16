@@ -9,7 +9,7 @@ const refundPolicy = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await getRefundPolicy();
-      console.log("Fetched data:", data); // Log the fetched data
+      // console.log("Fetched data:", data); // Log the fetched data
       setRefundPolicyData(data);
     }
     fetchData();

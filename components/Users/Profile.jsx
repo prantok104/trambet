@@ -16,7 +16,6 @@ const ProfileCard = () => {
     logout();
     window.location.href = "/";
   };
-console.log(user)
 
 
   return (
