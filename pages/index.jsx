@@ -14,6 +14,7 @@ import { HttpClientCall } from "@/components/HTTPClient";
 import { Modal } from "react-bootstrap";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 import HomePageCasino from "@/components/Casino/HomePageCasino";
+import HomePageSports from "@/components/Sports/HomePageSports";
 const Home = () => {
   const { setShowOneClickModal, showOneClickModal, userData } = useUserData()
   const images = [
@@ -24,11 +25,11 @@ const Home = () => {
   ];
 
   const promoCards = [
-    { title: "Live Game", sub_title: "Live Games 24/7", href: "/", image: PromoOne },
+    { title: "Sports", sub_title: "Live Games 24/7", href: "/sports", image: PromoOne },
+    { title: "Live Games", sub_title: "Free turnaments", href: "/sports/live", image: PromoFour },
+    { title: "Upcoming Games", sub_title: "Over 250 sports", href: "/sports/upcoming", image: PromoThree },
     { title: "Casino", sub_title: "Over 3000 games", href: "/", image: PromoTwo },
     { title: "Live Casino", sub_title: "Live dealers", href: "/", image: PromoThree },
-    { title: "Crash", sub_title: "Free turnaments", href: "/", image: PromoFour },
-    { title: "E-Sports", sub_title: "Over 250 sports", href: "/", image: PromoThree },
   ];
   const [sliders, setSliders] = useState([]);
 
@@ -110,10 +111,14 @@ const Home = () => {
         </div>
         {/* Promo card area end */}
 
-        {/* Live Casino area start */}
-        <div className=" mt-2">
-          <HomePageCasino />
+        {/* Sports area start */}
+        <div className="mt-2">
+          <HomePageSports />
         </div>
+        {/* Sports area end */}
+
+        {/* Live Casino area start */}
+        <div className=" mt-2"><HomePageCasino /></div>
         {/* Live Casino area end */}
 
         {/* one click registration page area start */}

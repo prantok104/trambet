@@ -29,8 +29,12 @@ const CricketBetCard = (props) => {
     event.preventDefault();
   };
   return (
-    <div className="single-bet-card ">
-      <Link href={props?.href} className="py-3 px-2 bg-shadow df-radius">
+    <div className="single-bet-card bg-shadow " style={{ minHeight: "190px" }}>
+      <Link
+        href={props?.href}
+        className="py-3 px-2 bg-shadow df-radius"
+        style={{ minHeight: "190px" }}
+      >
         <div className="bet-card-area-start">
           <div className="bet-card-header d-flex align-items-center justify-content-between gap-2">
             <ImageCard team={props?.data?.match?.localteam} />

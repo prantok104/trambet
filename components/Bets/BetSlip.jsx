@@ -116,6 +116,7 @@ const BetSlip = () => {
                 {bets?.length > 0 ? (
                   bets?.map((item, index) => (
                     <BetSlipItem
+                      key={index}
                       index={item?.id}
                       toImage={""}
                       toName={item?.toName}
@@ -152,7 +153,7 @@ const BetSlip = () => {
               </div>
 
               <div className="bet-slip-final-bet betslip-single-bet-item mt-2">
-                <>
+                {/* <>
                   {isAuthenticate ? (
                     <div>
                       <h6 className="df-font">{`Singles (  ${bets?.length} )`}</h6>
@@ -230,7 +231,7 @@ const BetSlip = () => {
                       </Link>
                     </div>
                   )}
-                </>
+                </> */}
               </div>
             </>
           </FormikForm>

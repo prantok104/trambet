@@ -110,14 +110,15 @@ const OddsBookmark = ({ odds, isLive }) => {
                   {item?.bookmaker?.hasOwnProperty("total") ? (
                     Array.isArray(item?.bookmaker?.total) ? (
                       item?.bookmaker?.total?.map((totalitem, index) => (
-                        <div className={`total_${index}`}>
+                        <div
+                          className={`total_${index}`}
+                          key={`total_odd_item_${index}`}
+                        >
                           {Array.isArray(totalitem?.odd) ? (
-                            <div
-                              className="d-flex align-items-center flex-wrap"
-                              key={`total_odd_item_${index}`}
-                            >
+                            <div className="d-flex align-items-center flex-wrap">
                               {totalitem?.odd?.map((odditem, index) => (
                                 <OddsButton
+                                  key={index}
                                   odds={{
                                     id: odditem?.id,
                                     title: `${odditem?.name} (${totalitem?.name})`,
@@ -143,6 +144,7 @@ const OddsBookmark = ({ odds, isLive }) => {
                       >
                         {item?.bookmaker?.total?.odd?.map((odditem, index) => (
                           <OddsButton
+                            key={index}
                             odds={{
                               id: odditem?.id,
                               title: `${odditem?.name} (${item?.bookmaker?.total?.name})`,
