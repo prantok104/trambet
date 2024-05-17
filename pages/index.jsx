@@ -68,7 +68,7 @@ const Home = () => {
           </div>
 
           <div className="col-md-5">
-            <div className="d-flex align-items-center justify-content-between gap-4">
+            <div className=" mobile-promo d-flex align-items-center justify-content-between gap-4">
               <div
                 className="single-goal-section"
                 style={{

@@ -19,6 +19,12 @@ const Sports = () => {
       restApi: 1,
     },
     {
+      id: 8,
+      name: "Cricket",
+      slug: "cricket",
+      restApi: 0,
+    },
+    {
       id: 16,
       name: "Soccer",
       slug: "soccernew",
@@ -59,12 +65,6 @@ const Sports = () => {
       name: "Baseball",
       slug: "baseball",
       restApi: 1,
-    },
-    {
-      id: 8,
-      name: "Cricket",
-      slug: "cricket",
-      restApi: 0,
     },
     {
       id: 9,
@@ -342,7 +342,7 @@ const Sports = () => {
         </div>
       </div>
 
-      <div className="px-2">
+      <div className="container-fluid">
         {/* Sport item area start */}
         <div>
           <div className="sport-contents-area">

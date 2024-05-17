@@ -19,6 +19,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
 import { Spinner, Tab, Tabs } from "react-bootstrap";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 const GameDetails = () => {
   const route = useRouter();
@@ -36,6 +37,7 @@ const GameDetails = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [categoryLoader, setCategoryLoader] = useState(true);
   const [leagueImage, setLeagueImage] = useState({});
+  const [showSubMenu, setShowSubMenu] = useState(true);
 
   const effect = useCallback(async () => {
     if (cat == "cricket") {
@@ -144,13 +146,22 @@ const GameDetails = () => {
     effect();
   }, [effect]);
 
+  // Submenu view
+  const handleSubmenuView = () => {
+    setShowSubMenu((prevState) => !prevState)
+  }
+
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-md-3">
           <div className="game-details-left-sidebar bg-shadow df-radius">
-            <h5 className="detail-category p-3 ">Cricket</h5>
-            <ul className="game-page-sub-category-item">
+            <h5 className="detail-category p-3 d-flex align-items-center justify-content-between">
+              Cricket {showSubMenu
+               ? <FaAngleDown onClick={handleSubmenuView} /> : 
+              <FaAngleUp onClick={handleSubmenuView} />}
+            </h5>
+            <ul className="game-page-sub-category-item" style={{ height: showSubMenu ? 'auto' : '0px' }}>
               {categoryLoader ? (
                 <div className="d-flex align-items-center justify-content-center">
                   <Spinner />

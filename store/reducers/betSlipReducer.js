@@ -20,6 +20,12 @@ const betSlipReducer = createSlice({
     clearBetSlip(state, action){
       state.bets = action.payload;
       state.slip = true;
+    },
+    closeSlip(state, action){
+      state.slip = false
+    },
+    openSlip(state, action){
+      state.slip = false
     }
   },
 });
