@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as Yup from "yup";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { HttpClientCall } from "../HTTPClient";
@@ -11,10 +11,11 @@ import Loader from "../Loader";
 import { getUserDetailsData } from "@/services/userAuthService";
 import Cookies from "js-cookie";
 import { useUserData } from "../Context/UserDataProvider/UserProvider";
+import { notify } from "../Helper";
 
 const LoginPage = ({ setLoginModal }) => {
-  const { handleUserData } = useUserData()
-  const [isLoading, setIsLoading] = useState(false)
+  const { handleUserData } = useUserData();
+  const [isLoading, setIsLoading] = useState(false);
   const schema = Yup.object().shape({
     username: Yup.string().required("UserId or Email is required"),
     password: Yup.string().required("Password is required"),
@@ -24,15 +25,18 @@ const LoginPage = ({ setLoginModal }) => {
     defaultValues: {
       username: "",
       password: "",
-      agree: false
+      agree: false,
     },
     resolver: yupResolver(schema),
   });
 
-  const { handleSubmit, formState: { errors } } = form;
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   const onSubmit = async (data) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const res = await HttpClientCall({
         method: "POST",
@@ -42,9 +46,9 @@ const LoginPage = ({ setLoginModal }) => {
       });
 
       if (res.status) {
-        setIsLoading(false)
-        Cookies.set("token", res.access_token)
-        localStorage.setItem("token", res.access_token);
+        setIsLoading(false);
+        Cookies.set("token", res.access_token);
+        localStorage.setItem("token", res.access_token, { expires: 1 / 24 });
         Swal.fire({
           icon: "success",
           title: "Login Success",
@@ -52,14 +56,17 @@ const LoginPage = ({ setLoginModal }) => {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          handleUserData(res?.data)
+          handleUserData();
+          getUserDetailsData();
           if (setLoginModal) {
             setLoginModal(false);
           }
-          getUserDetailsData();
         });
-      } else if (res.response.status === 422) {
+      } else if (res.response?.data?.code === 401) {
+        setIsLoading(false);
+        notify("error", res.response?.data?.user_message);
       } else {
+        setIsLoading(false);
         Swal.fire({
           icon: "error",
           title: "Login Failed",
@@ -72,7 +79,6 @@ const LoginPage = ({ setLoginModal }) => {
       // console.log(error);
     }
   };
-
 
   return (
     <FormProvider {...form}>
@@ -109,7 +115,10 @@ const LoginPage = ({ setLoginModal }) => {
               <button
                 type="submit"
                 className="df-btn df-radius form-control reg-btn"
-                style={{ background: "linear-gradient(70deg, #31bc69 -8%, #089e4e 96%)" }}
+                style={{
+                  background:
+                    "linear-gradient(70deg, #31bc69 -8%, #089e4e 96%)",
+                }}
               >
                 Login {isLoading && <Loader />}
               </button>
@@ -117,17 +126,21 @@ const LoginPage = ({ setLoginModal }) => {
             <hr />
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                Dont have account? <Link href={"/auth/register"}>Create Account</Link>
+                Dont have account?{" "}
+                <Link href={"/auth/register"}>Create Account</Link>
               </h6>
             </div>
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                Are you want to quickly registration? <Link href={"/auth/one-click"}>Click here</Link>
+                Are you want to quickly registration?{" "}
+                <Link href={"/auth/one-click"}>Click here</Link>
               </h6>
             </div>
             <div className="col-md-12 mt-1 bottom-register">
               <h6 className="text-center">
-                <Link href={"/auth/register/affiliate"}>Became an affiliate</Link>
+                <Link href={"/auth/register/affiliate"}>
+                  Became an affiliate
+                </Link>
               </h6>
             </div>
           </div>

@@ -1,34 +1,59 @@
-import Card from '@/components/Card'
-import PasswordField from '@/components/Form/PasswordField'
-import { Form, Formik } from 'formik'
-import React, { useRef } from 'react'
-import * as Yup from 'yup'
+import React, { useRef, useState } from "react";
+import Card from "@/components/Card";
+import PasswordField from "@/components/Form/PasswordField";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+import { HttpClientCall } from "@/components/HTTPClient";
+import { notify } from "@/components/Helper";
 const ChangePassword = () => {
-   const innerRef = useRef();
+  const innerRef = useRef();
+  const [initialValues, setinitialValues] = useState({
+    current_password: "",
+    password: "",
+    password_confirmation: "",
+  });
 
-   // Initial vales
-   const initialValues = {
-      current_password: '',
-      new_password: '',
-      confirm_password: ''
-   }
+  // Validation schema
+  const validationSchema = Yup.object({
+    current_password: Yup.string().required("Current password required."),
+    password: Yup.string()
+      .min(6, "At least 6 characters required.")
+      .required("New password required."),
+    password_confirmation: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords miss match")
+      .min(6, "At least 6 characters required.")
+      .required("Confirm password required."),
+  });
 
-   // Validation schema
-   const validationSchema = Yup.object({
-     current_password: Yup.string().required("Current password required."),
-     new_password: Yup.string()
-       .min(6, "At least 6 characters required.")
-       .required("New password required."),
-     confirm_password: Yup.string()
-       .oneOf([Yup.ref("new_password"), null], "Passwords miss match")
-       .min(6, "At least 6 characters required.")
-       .required("Confirm password required."),
-   });
-
-   // Handle password changed
-   const handlePasswordChange  = (values) => {
-      // console.log(values);
-   }
+  // Handle password changed
+  const handlePasswordChange = async (values) => {
+    try {
+      const res = await HttpClientCall({
+        method: "POST",
+        endpoint: "change-password",
+        includeAuth: true,
+        data: values,
+      });
+      if (res?.code === 200) {
+        notify("success", "Password chnage successfuly!");
+        setinitialValues({
+          current_password: "",
+          password: "",
+          password_confirmation: "",
+        });
+      } else if (res.response.status === 422) {
+        Object.keys(res.response.data.errors).forEach((field) => {
+          if (typeof res.response.data.errors[field] !== "string") {
+            res.response.data.errors[field].forEach((errorMessage) => {
+              notify("error", errorMessage);
+            });
+          } else {
+            notify("error", res.response.data.errors[field]);
+          }
+        });
+      }
+    } catch (error) {}
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -55,14 +80,14 @@ const ChangePassword = () => {
                       <PasswordField
                         type="password"
                         label="New password*"
-                        name="new_password"
+                        name="password"
                       />
                     </div>
                     <div className="col-md-12 mt-2">
                       <PasswordField
                         type="password"
                         label="Confirm password*"
-                        name="confirm_password"
+                        name="password_confirmation"
                       />
                     </div>
                     <div className="col-md-12 mt-2">
@@ -79,6 +104,6 @@ const ChangePassword = () => {
       </div>
     </div>
   );
-}
+};
 
-export default ChangePassword
+export default ChangePassword;
