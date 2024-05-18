@@ -10,7 +10,7 @@ const WithdrawHistoryTable = ({
   handlePageChange,
   page = {},
 }) => {
-  
+
   const columns = useMemo(
     () => [
       rowIndex(rows),
@@ -41,7 +41,17 @@ const WithdrawHistoryTable = ({
       },
       {
         name: "Status",
-        selector: (row) => <span dangerouslySetInnerHTML={{ __html: row?.status }} ></span>,
+        selector: (row) => {
+          if (row?.status === "1") {
+            return 'Success';
+          } else if (row?.status === "2") {
+            return 'Pending';
+          } else if (row?.status === "3") {
+            return 'Cancel';
+          } else {
+            return 'Unknown status';
+          }
+        },
         sortable: false,
       },
     ],

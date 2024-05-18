@@ -2,7 +2,7 @@ import { HttpClientCall } from "@/components/HTTPClient";
 
 export async function createPromoCode(data) {
   return await HttpClientCall({
-    endpoint: "affiliate/promotions",
+    endpoint: "affiliate/promo/create",
     method: "POST",
     includeAuth: true,
     data: data,
