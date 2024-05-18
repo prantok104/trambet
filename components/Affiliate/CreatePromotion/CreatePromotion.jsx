@@ -52,7 +52,7 @@ const CreatePromotion = () => {
     await createPromoCode(payload)
       .then((res) => {
         if (res.status === true) {
-          toast.success("Successfully deposit completed", {
+          toast.success("Successfully Promocode Created", {
             onClose: () => {
               setPromoCode(null);
               formikRef.current.resetForm();
