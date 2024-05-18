@@ -19,6 +19,12 @@ const Sports = () => {
       restApi: 1,
     },
     {
+      id: 8,
+      name: "Cricket",
+      slug: "cricket",
+      restApi: 0,
+    },
+    {
       id: 16,
       name: "Soccer",
       slug: "soccernew",
@@ -59,12 +65,6 @@ const Sports = () => {
       name: "Baseball",
       slug: "baseball",
       restApi: 1,
-    },
-    {
-      id: 8,
-      name: "Cricket",
-      slug: "cricket",
-      restApi: 0,
     },
     {
       id: 9,
@@ -212,7 +212,7 @@ const Sports = () => {
   };
 
   const handleCategory = (slug) => {
-    setActiveCategory(slug);
+    setActiveCategory(slug);setActiveSubCategory('');
     setLoading(true);
     let endpoint = `${API_HOST}/${slug}/leagues?json=1&season=${SEASON}`;
     if (slug == "cricket") {
@@ -254,7 +254,7 @@ const Sports = () => {
     if (slug == "cricket") {
       setOddsLoading(true);
       axios
-        .get(`${API_HOST}/cricket/schedule?json=1`)
+        .get(`${API_HOST}/cricket/schedule1?json=1`)
         .then((response) => {
           setOdds(response?.data?.fixtures?.category);
           setFilterOddsCricket(response?.data?.fixtures?.category);
@@ -305,30 +305,44 @@ const Sports = () => {
             </ul>
           ) : (
             <ul className="sports-sub-category">
-              {league?.map((item, index) => (
-                <li
-                  key={`sports_sub_categories${index}`}
-                  className={`d-flex align-items-center gap-2 ${
-                    activeSubCategory == item?.id ? "active" : ""
-                  }`}
-                  onClick={() => handleSubCategory(item?.id)}
-                >
-                  {/* <Image
-            src={item?.image}
-            alt={item?.name}
-            width={20}
-            height={20}
-          />  */}
-                  <span>{item?.name}</span>
-                  <span className="games-count">0</span>
-                </li>
-              ))}
+              {activeCategory == "cricket"
+                ?
+                  league?.map((item, index) => {
+                     const oddsCricketCopy = [...filterOddsCricket];
+                     const matchedItems = oddsCricketCopy?.filter(
+                       (_item) => _item.id === item?.id
+                     );
+                    return (
+                      <li
+                        key={`sports_sub_categories${index}`}
+                        className={`d-flex align-items-center gap-2 ${
+                          activeSubCategory == item?.id ? "active" : ""
+                        }`}
+                        onClick={() => handleSubCategory(item?.id)}
+                      >
+                        <span>{item?.name}</span>
+                        <span className="games-count">{matchedItems?.length}</span>
+                      </li>
+                    );
+                  })
+                : league?.map((item, index) => (
+                    <li
+                      key={`sports_sub_categories${index}`}
+                      className={`d-flex align-items-center gap-2 ${
+                        activeSubCategory == item?.id ? "active" : ""
+                      }`}
+                      onClick={() => handleSubCategory(item?.id)}
+                    >
+                      <span>{item?.name}</span>
+                      <span className="games-count">0</span>
+                    </li>
+                  ))}
             </ul>
           )}
         </div>
       </div>
 
-      <div className="px-2">
+      <div className="container-fluid">
         {/* Sport item area start */}
         <div>
           <div className="sport-contents-area">

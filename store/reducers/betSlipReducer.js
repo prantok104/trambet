@@ -14,12 +14,18 @@ const betSlipReducer = createSlice({
       state.slip = true;
     },
     removeBetFromSlip(state, action){
-      state.bets = state.bets.filter((bet, index) => index !== action.payload);
+      state.bets = state.bets.filter((bet, index) => bet?.id !== action.payload);
       state.slip = true;
     },
     clearBetSlip(state, action){
       state.bets = action.payload;
       state.slip = true;
+    },
+    closeSlip(state, action){
+      state.slip = false
+    },
+    openSlip(state, action){
+      state.slip = false
     }
   },
 });

@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 const navItems = [
   { icon: faHomeAlt, name: "Home", href: "/" },
+  { icon: faHomeAlt, name: "Check", href: "/check" },
   { icon: faSpinner, name: "Live", href: "/sports/live" },
   { icon: faForward, name: "Upcoming", href: "/sports/upcoming" },
   { icon: faTableTennis, name: "Sports", href: "/sports" },

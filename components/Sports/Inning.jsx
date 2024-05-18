@@ -8,7 +8,7 @@ const Inning = ({ item }) => {
       <h6 className="h-4 text-capitalize mb-4">{`${item?.name} (${item?.team})`}</h6>
       <InningsBatmans data={item?.batsmanstats?.player} />
 
-      <InningsBowlers data={item?.bowlers?.player} />
+      <InningsBowlers data={item?.bowlers?.player ?? []} />
     </div>
   );
 };
