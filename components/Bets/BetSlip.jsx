@@ -12,7 +12,9 @@ import { GoTrash } from "react-icons/go";
 import { clearBetSlip } from "@/store/reducers/betSlipReducer";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { useUserData } from "../Context/UserDataProvider/UserProvider";
 const BetSlip = () => {
+  const { userData } = useUserData();
   const dispatch = useDispatch();
   const isAuthenticate = Cookies.get("token");
   const betSlip = useSelector((state) => state.betSlipReducer);
@@ -91,27 +93,30 @@ const BetSlip = () => {
                   value="2"
                 />
               </div>
-              <div className="bet-types-button bet-balance-buttons d-flex align-items-center gap-2 justify-content-center">
-                <RadioField
-                  label="Deposit (9000.00)"
-                  id="deposit_btn"
-                  name="bet_balance_type"
-                  value="1"
-                />
-                <RadioField
-                  label="Bonus (100.00)"
-                  id="bonus_btn"
-                  name="bet_balance_type"
-                  value="2"
-                />
-                <RadioField
-                  label="Tramcard (100.00)"
-                  id="tramcard_btn"
-                  name="bet_balance_type"
-                  value="3"
-                />
-              </div>
-              {/* {JSON.stringify(values)} */}
+              {userData && (
+                <div className="bet-types-button bet-balance-buttons d-flex align-items-center gap-2 justify-content-center">
+                  <RadioField
+                    label={`Deposit (${Number(userData?.balance)?.toFixed(2)})`}
+                    id="deposit_btn"
+                    name="bet_balance_type"
+                    value="1"
+                  />
+                  <RadioField
+                    label={`Bonus (${Number(userData?.bonus_account).toFixed(2)})`}
+                    id="bonus_btn"
+                    name="bet_balance_type"
+                    value="2"
+                  />
+                  <RadioField
+                    label={`Tramcard (${Number(userData?.tramcard).toFixed(
+                      2
+                    )})`}
+                    id="tramcard_btn"
+                    name="bet_balance_type"
+                    value="3"
+                  />
+                </div>
+              )}
               <div className="bet-slip-best-show">
                 {bets?.length > 0 ? (
                   bets?.map((item, index) => (
