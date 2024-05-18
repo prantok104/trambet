@@ -34,7 +34,6 @@ const Header = () => {
   const routerCheck = useRouterChecker();
   const betSlipReducer = useSelector((state) => state.betSlipReducer);
   const { userData } = useUserData();
-  console.log(userData);
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
   const [slipShow, setSlipShow] = useState(false);
