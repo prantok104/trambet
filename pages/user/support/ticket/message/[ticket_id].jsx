@@ -3,6 +3,7 @@ import InputField from "@/components/Form/InputField";
 import { notify } from "@/components/Helper";
 import { closeTicket, getTicketById, replyTicket } from "@/services/support";
 import { FieldArray, Form, Formik } from "formik";
+import moment from "moment";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
@@ -21,6 +22,7 @@ const Messaging = () => {
   const router = useRouter();
   const params = useParams();
   const [replys, setReplys] = useState([]);
+  const [ticketDetails, setTicketDetails] = useState({});
   const { subject } = router?.query;
   const initialValues = {
     message: "",
@@ -31,9 +33,10 @@ const Messaging = () => {
     attachments: Yup.array().nullable(),
   });
   const handleReplay = async (values) => {
-    // console.log(values);
+    console.log(ticketDetails);
     const data = {
       ...values,
+      ...ticketDetails,
       id: params?.ticket_id,
     };
     const response = await replyTicket(data);
@@ -47,7 +50,6 @@ const Messaging = () => {
   };
   const handleCloseTicket = async () => {
     const response = await closeTicket(params?.ticket_id);
-    // console.log("🚀 ~ handleCloseTicket ~ response:", response)
     if (response.status) {
       notify("success", "Ticket Closed");
       router.push("/affiliate/my-ticket");
@@ -56,11 +58,11 @@ const Messaging = () => {
     }
   };
   const getTicketData = async () => {
-    const data = await getTicketById(params?.ticket_id);
-    if (data?.status) {
-      setReplys(data);
+    const response = await getTicketById(params?.ticket_id);
+    if (response?.status) {
+      setReplys(response?.data?.messages);
+      setTicketDetails(response?.data?.ticket);
     }
-    // console.log("🚀 ~ getTicketData ~ data:", data);
   };
   useEffect(() => {
     if (params?.ticket_id) {
@@ -180,57 +182,33 @@ const Messaging = () => {
 
           <div className="mt-2">
             <Card header="Previous replies">
-              <Card
-                header={
-                  <div className="d-flex align-items-center justify-content-between">
-                    Replay User
-                    <div
-                      className="d-flex align-items-center gap-2"
-                      style={{ fontSize: 9, color: "#ccc" }}
-                    >
-                      <FaClock /> 27th April 2024 @ 00:41
-                    </div>
-                  </div>
-                }
-                bg="#090F1E"
-                mt="10px"
-              >
-                Please check the email.
-              </Card>
-              <Card
-                header={
-                  <div className="d-flex align-items-center justify-content-between">
-                    Pranto Kumar
-                    <div
-                      className="d-flex align-items-center gap-2"
-                      style={{ fontSize: 9, color: "#ccc" }}
-                    >
-                      <FaClock /> 27th April 2024 @ 00:41
-                    </div>
-                  </div>
-                }
-                bg="#090F1E"
-                mt="10px"
-              >
-                Please check the email.
-              </Card>
-              <Card
-                header={
-                  <div className="d-flex align-items-center justify-content-between">
-                    Supporter
-                    <div
-                      className="d-flex align-items-center gap-2"
-                      style={{ fontSize: 9, color: "#ccc" }}
-                    >
-                      <FaClock /> 27th April 2024 @ 00:41
-                    </div>
-                  </div>
-                }
-                bg="#090F1E"
-                mt="10px"
-              >
-                Please check the email.
-              </Card>
+              {replys?.map((reply, idx) => {
+                return (
+                  <Card
+                    key={idx}
+                    header={
+                      <div className="d-flex align-items-center justify-content-between">
+                        <p style={{ textTransform: "capitalize" }}>
+                          {reply?.ticket?.name}
+                        </p>
+                        <div
+                          className="d-flex align-items-center gap-2"
+                          style={{ fontSize: 9, color: "#ccc" }}
+                        >
+                          <FaClock />{" "}
+                          {`${moment(reply?.created_at).format(
+                            "YYYY/MM/DD HH:MM"
+                          )}`}
+                        </div>
+                      </div>
+                    }
+                    bg="#090F1E"
+                    mt="10px"
+                  >
+                    {reply?.message}
+                  </Card>
+                );
+              })}
             </Card>
           </div>
         </div>

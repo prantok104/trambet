@@ -595,6 +595,9 @@ a.more-link {
 .kyc-verified {
   color: #23b260;
 }
+.kyc-unverified {
+  color: #b22323;
+}
 .balance-text {
   font-weight: 600;
   font-size: 18px;

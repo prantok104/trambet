@@ -16,7 +16,13 @@ import Cookies from "js-cookie";
 import { Modal } from "react-bootstrap";
 
 const OneClickRegister = () => {
-  const { setShowOneClickModal, handleUserData, handleOneClickModal, showOneClickModal, userData } = useUserData()
+  const {
+    setShowOneClickModal,
+    handleUserData,
+    handleOneClickModal,
+    showOneClickModal,
+    userData,
+  } = useUserData();
   const validationSchema = Yup.object({
     country: Yup.string().required("Country is required").max(50),
     currency: Yup.string().required("Currency is required").max(50),
@@ -30,9 +36,8 @@ const OneClickRegister = () => {
   const [agree, setAgree] = useState();
   const [countryList, setCountryList] = useState([]);
   const [currencyList, setCurrencyList] = useState([]);
-  const [isCountryLoading, setIsCountryLoading] = useState(false)
-  const [isCurrencyLoading, setIsCurrencyLoading] = useState(false)
-  
+  const [isCountryLoading, setIsCountryLoading] = useState(false);
+  const [isCurrencyLoading, setIsCurrencyLoading] = useState(false);
 
   const router = useRouter();
 
@@ -43,43 +48,44 @@ const OneClickRegister = () => {
     agree: agree,
   };
 
-
   async function countryData() {
-    setIsCountryLoading(true)
+    setIsCountryLoading(true);
     await HttpClientCall({
       endpoint: "country",
       method: "GET",
       includeAuth: false,
       data: [],
-    }).then((response) => {
-      setIsCountryLoading(false)
-      setCountryList(response.data);
-    }).catch((error) => {
-      return [];
-    });
+    })
+      .then((response) => {
+        setIsCountryLoading(false);
+        setCountryList(response.data);
+      })
+      .catch((error) => {
+        return [];
+      });
   }
 
   async function currencyData() {
-    setIsCurrencyLoading(true)
+    setIsCurrencyLoading(true);
     await HttpClientCall({
       endpoint: "country",
       method: "GET",
       includeAuth: false,
       data: [],
-    }).then((response) => {
-      setIsCurrencyLoading(false)
-      setCurrencyList(response.data);
-    }).catch((error) => {
-      return [];
-    });
-
+    })
+      .then((response) => {
+        setIsCurrencyLoading(false);
+        setCurrencyList(response.data);
+      })
+      .catch((error) => {
+        return [];
+      });
   }
 
   useEffect(() => {
     countryData();
     currencyData();
   }, []);
-
 
   const handleSubmit = async (values) => {
     // // console.log(values);
@@ -90,7 +96,8 @@ const OneClickRegister = () => {
       currencies: curr,
       promo: promo,
       agree: agree,
-      country: countryName.length && countryName[0].name ? countryName[0].name : null,
+      country:
+        countryName.length && countryName[0].name ? countryName[0].name : null,
     };
 
     HttpClientCall({
@@ -100,14 +107,13 @@ const OneClickRegister = () => {
       data: data,
     }).then((res) => {
       if (res.status) {
-        handleOneClickModal(true)
-        localStorage.setItem("userDetails", JSON.stringify(res?.data));
+        handleOneClickModal(true);
         localStorage.setItem("oneTimeUserData", JSON.stringify(true));
-        Cookies.set("token", res.access_token)
+        Cookies.set("token", res.access_token, { expires: 1 / 24 });
         localStorage.setItem("token", res.access_token);
         toast.success("Successfully Registration completed");
-        handleUserData(res?.data)
-        router.push("/")
+        handleUserData();
+        router.push("/");
       } else if (res.response.status === 422) {
         Object.keys(res.response.data.errors).forEach((field) => {
           res.response.data.errors[field].forEach((errorMessage) => {
@@ -120,19 +126,20 @@ const OneClickRegister = () => {
     });
   };
 
-  let content = ""
+  let content = "";
   if (isCountryLoading || isCurrencyLoading) {
-    content = <Loader />
+    content = <Loader />;
   } else {
-    content = <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-      enableReinitialize={true}
-      className="form-data">
-      {({ values, touched, errors }) => {
-        return (
-          (
+    content = (
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+        enableReinitialize={true}
+        className="form-data"
+      >
+        {({ values, touched, errors }) => {
+          return (
             <FormikForm>
               <div className="row">
                 <div className="col-md-6">
@@ -177,10 +184,21 @@ const OneClickRegister = () => {
                   </div>
                 </div>
                 <div className="col-md-6 mt-2 mb-4">
-                  <button disabled={!values?.agree} style={{ background: `${values?.agree ? "linear-gradient(70deg, #31bc69 -8%, #089e4e 96%)" : "gray"}`, cursor: `${values?.agree ? "" : "not-allowed"}` }} type="submit" className="df-btn df-radius reg-btn">
+                  <button
+                    disabled={!values?.agree}
+                    style={{
+                      background: `${
+                        values?.agree
+                          ? "linear-gradient(70deg, #31bc69 -8%, #089e4e 96%)"
+                          : "gray"
+                      }`,
+                      cursor: `${values?.agree ? "" : "not-allowed"}`,
+                    }}
+                    type="submit"
+                    className="df-btn df-radius reg-btn"
+                  >
                     Registration now
                   </button>
-
                 </div>
                 <hr />
                 <div className="col-md-12 mt-1 bottom-register">
@@ -198,22 +216,20 @@ const OneClickRegister = () => {
                 </div>
                 <div className="col-md-12 mt-1 bottom-register">
                   <h6 className="text-center">
-                    <Link href={"/auth/register/affiliate"}>Became an affiliate</Link>
+                    <Link href={"/auth/register/affiliate"}>
+                      Became an affiliate
+                    </Link>
                   </h6>
                 </div>
               </div>
             </FormikForm>
-          )
-        )
-      }}
-    </Formik>
+          );
+        }}
+      </Formik>
+    );
   }
 
-  return (
-    <>
-      {content}
-    </>
-  );
+  return <>{content}</>;
 };
 
 export default OneClickRegister;
