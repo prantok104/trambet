@@ -42,10 +42,6 @@ const Tramcard = () => {
 
 
   // Tramcard claim
-  const claimEffect  = useCallback(async () => {
-
-  }, [])
-
   const handleClaimTramcard = async () => {
     setLoading(true);
     const responseData = await tramcardClaimService();
