@@ -3,6 +3,8 @@ import DataTableComponent from "@/components/DataTableComponent";
 import React, { useMemo, useState } from "react";
 import { rowIndex } from "@/components/Helper";
 import { Modal } from "react-bootstrap";
+import dayjs from "dayjs";
+import { notificationRead } from "@/services/notification";
 
 const NotificationTable = ({
   rows,
@@ -10,16 +12,21 @@ const NotificationTable = ({
   handlePageSizeChange,
   handlePageChange,
   page = {},
+  setMuted,
 }) => {
+  const [modal, setModal] = useState(false);
+  const [data, setData] = useState({});
+  const [change, setChange] = useState(true);
+  const handleNotification = async (row) => {
+    setModal(true);
+    await handleNotificationRead(row?.id);
+    setMuted((prevState) => !prevState);
+    setData(row);
+  };
 
-   const [modal, setModal] = useState(false);
-   const [data, setData] = useState({});
-   const handleNotification = (row) => {
-      setModal(true);
-      setData(row);
-   }
-
-
+  const handleNotificationRead = async (id) => {
+    const resposneData = await notificationRead(id);
+  };
 
   const columns = useMemo(
     () => [
@@ -29,7 +36,7 @@ const NotificationTable = ({
         selector: (row) => (
           <span
             style={{
-              color: row?.is_read ? "#fff" : "#23B260",
+              color: row?.is_read != "0" ? "#fff" : "#23B260",
               cursor: "pointer",
             }}
             onClick={() => handleNotification(row)}
@@ -38,13 +45,13 @@ const NotificationTable = ({
           </span>
         ),
         sortable: false,
-        minWidth: "80%",
+        minWidth: "75%",
       },
       {
         name: "Date time",
-        selector: (row) => row?.date,
+        selector: (row) => dayjs(row?.created_at).format("DD MMM, YYYY hh:mm"),
         sortable: false,
-        minWidth: "12%",
+        minWidth: "15%",
       },
     ],
     [rows]

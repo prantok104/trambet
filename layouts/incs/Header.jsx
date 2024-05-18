@@ -33,7 +33,8 @@ import { useRouter as useRouterChecker } from "next/router";
 const Header = () => {
   const routerCheck = useRouterChecker();
   const betSlipReducer = useSelector((state) => state.betSlipReducer);
-  const { userData } = useUserData()
+  const { userData } = useUserData();
+  console.log(userData);
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
   const [slipShow, setSlipShow] = useState(false);
@@ -114,7 +115,10 @@ const Header = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link href={"/"}>Withdrawal: + {userData.data}</Link>
+                        <Link href={"/"}>
+                          Withdrawal: +{" "}
+                          {Number(userData?.withdrawal).toFixed(2)}
+                        </Link>
                       </li>
                       <li>
                         <Link href={"/"}>
@@ -122,7 +126,9 @@ const Header = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link href={"/"}>Tramcard: + {userData.data}</Link>
+                        <Link href={"/"}>
+                          Tramcard: + {Number(userData?.tramcard).toFixed(2)}
+                        </Link>
                       </li>
                     </ul>
                   </li>
@@ -162,7 +168,7 @@ const Header = () => {
                           <Link href={"/"}>No new notifications</Link>
                         )}
                       </li>
-                      {userData.notifications?.latest.length == 0 ? (
+                      {userData.notifications?.latest.length > 0 ? (
                         <li>
                           {/* Condiiton will be chnaged it will more than 0 then show all notification */}
                           <Link href={"/user/notifications"}>
@@ -459,14 +465,17 @@ const Header = () => {
                           <div style={{ fontSize: 9 }}>BDT</div>
                         </div>
                       </div>
-                      <ul className="dropdown-menus">
+                      <ul className="dropdown-menus" style={{ width: "200px" }}>
                         <li>
                           <Link href={"/"}>
                             Deposit: + {Number(userData?.balance).toFixed(2)}
                           </Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Withdrawal: + {userData.data}</Link>
+                          <Link href={"/"}>
+                            Withdrawal: +{" "}
+                            {Number(userData.withdrawal).toFixed(2)}
+                          </Link>
                         </li>
                         <li>
                           <Link href={"/"}>
@@ -475,7 +484,9 @@ const Header = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Tramcard: + {userData.data}</Link>
+                          <Link href={"/"}>
+                            Tramcard: + {Number(userData?.tramcard).toFixed(2)}
+                          </Link>
                         </li>
                       </ul>
                     </li>
@@ -511,7 +522,11 @@ const Header = () => {
                           userData.notifications?.latest.length > 0 ? (
                             userData.notifications?.latest.map(
                               (notification, index) => (
-                                <Link key={index} href={notification.url}>
+                                <Link
+                                  key={index}
+                                  href={notification.url}
+                                  style={{ color: notification?.is_read == "0" ?  "#6a38e9" : "#000" }}
+                                >
                                   {notification.title}
                                 </Link>
                               )
@@ -520,7 +535,7 @@ const Header = () => {
                             <Link href={"/"}>No new notifications</Link>
                           )}
                         </li>
-                        {userData.notifications?.latest.length == 0 ? (
+                        {userData.notifications?.latest.length > 0 ? (
                           <li>
                             {/* Condiiton will be chnaged it will more than 0 then show all notification */}
                             <Link href={"/user/notifications"}>

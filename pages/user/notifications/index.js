@@ -1,25 +1,17 @@
 import Card from "@/components/Card";
 import NotificationTable from "@/models/Notifications";
-import React, { useState } from "react";
+import { getNotifications } from "@/services/notification";
+import React, { useCallback, useEffect, useState } from "react";
 
 const NotificationPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState({
-    data: [
-      {id: 1,  title: "Notification title qwe", date: "01 May, 2024", is_read: 1 },
-      {id: 2,  title: "Notification title ewew", date: "01 May, 2024", is_read: 0 },
-      {id: 11,  title: "Notification tiewerw wew wewetle", date: "01 May, 2024", is_read: 1 },
-      {id: 174,  title: "Notification titl wewe e", date: "01 May, 2024", is_read: 1 },
-      {id: 254,  title: "Notification titleweqww weqew dfgfbf", date: "01 May, 2024", is_read: 0 },
-      {id: 352,  title: "Notification title", date: "01 May, 2024", is_read: 0 },
-      {id: 745,  title: "Notification titdf shdfjks skfsdkfsckjs  skdfjsbfuiwiefw nsnnms cnksnkd le", date: "01 May, 2024", is_read: 0 },
-    ],
-  });
+  const [data, setData] = useState([]);
   const [filter, setFilter] = useState({
     page: 1,
     per_page: 10,
     order_by: "DESC",
   });
+  const [muted, setMuted] = useState(true)
 
   const handlePageSizeChange = (pageSize) => {
     setFilter((prevState) => {
@@ -38,6 +30,26 @@ const NotificationPage = () => {
     });
   };
 
+  // API call
+  const effect = useCallback(async () => {
+    await fetchNotifications();
+  }, [filter, muted]);
+
+  const fetchNotifications = async () => {
+    setIsLoading(true)
+    const responseData = await getNotifications();
+    if(responseData?.status_code === 200){
+      setData(responseData?.data);
+      setIsLoading(false);
+    }else{
+      console.log("something went wrong");
+    }
+  };
+
+  useEffect(() => {
+    effect();
+  }, [effect]);
+
   const handleAction = async (event, data) => {};
 
   return (
@@ -51,6 +63,7 @@ const NotificationPage = () => {
               handleAction={handleAction}
               handlePageSizeChange={handlePageSizeChange}
               handlePageChange={handlePageChange}
+              setMuted={setMuted}
             />
           </Card>
         </div>
