@@ -1746,7 +1746,12 @@ button.slip-close-btn {
 .mobile-bar-menu {
   display: none;
 }
+.single-bet-card.bg-shadow {
+    overflow: hidden;
+    border-radius: 6px;
+}
 /* Mobile site css */
+
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 767px) {
   /* Mobile header */
