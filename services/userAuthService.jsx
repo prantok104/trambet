@@ -22,18 +22,19 @@ export async function getUserDetailsData() {
     method: "GET",
     includeAuth: true,
     data: [],
-  }).then((res) => {
-    if (res?.data) {
-      let data = res.data[0];
-      localStorage.setItem("userDetails", JSON.stringify(data));
-      // return data;
-    }
-  }).catch((error) => {
-    // console.log(error);
-  });
+  })
+    .then((res) => {
+      if (res?.status) {
+        let data = res.data[0];
+        return res.data[0];
+      }
+    })
+    .catch((error) => {
+      // console.log(error);
+    });
 }
 
-export async function oneClickRegister(){
+export async function oneClickRegister() {
   return await HttpClientCall({
     endpoint: "oneclick-signup",
     method: "POST",

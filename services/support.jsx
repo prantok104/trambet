@@ -44,10 +44,9 @@ export async function replyTicket(data) {
     });
 }
 
-
 export async function getTicketById(id) {
   return await HttpClientCall({
-    endpoint: `ticket/${id}`,
+    endpoint: `ticket/view/${id}`,
     method: "GET",
     includeAuth: true,
     data: [],
@@ -59,7 +58,6 @@ export async function getTicketById(id) {
       return [];
     });
 }
-
 
 export async function closeTicket(id) {
   return await HttpClientCall({
