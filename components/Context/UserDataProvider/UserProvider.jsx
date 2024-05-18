@@ -13,6 +13,7 @@ export const UserProvider = ({ children }) => {
   // Initial user data
   const [userData, setUserData] = useState(null);
   const [showOneClickModal, setShowOneClickModal] = useState(false);
+  const [userProMuted, setUserProMuted] = useState(true)
 
   // Function to set user data
   const handleUserData = () => {
@@ -28,7 +29,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     handleUserData();
-  }, []);
+  }, [userProMuted]);
 
   const handleOneClickModal = (value) => {
     const data = JSON.parse(localStorage.getItem("oneTimeUserData"));
@@ -45,6 +46,7 @@ export const UserProvider = ({ children }) => {
         setShowOneClickModal,
         showOneClickModal,
         handleOneClickModal,
+        setUserProMuted,
       }}
     >
       {children}
