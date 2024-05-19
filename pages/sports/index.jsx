@@ -13,6 +13,12 @@ import CricketBetCard from "@/components/Bets/CricketBetCard";
 const Sports = () => {
   const categoriesData = [
     {
+      id: 2,
+      name: "Baseball",
+      slug: "baseball",
+      restApi: 1,
+    },
+    {
       id: 5,
       name: "Basketball",
       slug: "bsktbl",
@@ -60,12 +66,7 @@ const Sports = () => {
       slug: "football",
       restApi: 0,
     },
-    {
-      id: 2,
-      name: "Baseball",
-      slug: "baseball",
-      restApi: 1,
-    },
+
     {
       id: 9,
       name: "Rugby Union",
@@ -196,11 +197,13 @@ const Sports = () => {
           objectData?.data?.leagues !== null
         ) {
           setLeague(objectData?.data?.leagues?.league);
+          handleSubCategory(objectData?.data?.leagues?.league[0]?.id);
         } else if (
           objectData?.data?.categories?.category === undefined ||
           objectData?.data?.categories?.category
         ) {
           setLeague(objectData?.data?.categories?.category);
+          handleSubCategory(objectData?.data?.categories?.category[0]?.id);
         }
         setLoading(false);
       })
