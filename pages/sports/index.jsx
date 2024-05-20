@@ -272,6 +272,8 @@ const Sports = () => {
     fetchLeague(categoriesData[0]);
   }, []);
 
+  console.log(odds);
+
   return (
     <>
       <div className="category-sub-category">

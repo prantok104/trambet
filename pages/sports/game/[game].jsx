@@ -157,11 +157,17 @@ const GameDetails = () => {
         <div className="col-md-3">
           <div className="game-details-left-sidebar bg-shadow df-radius">
             <h5 className="detail-category p-3 d-flex align-items-center justify-content-between">
-              Cricket {showSubMenu
-               ? <FaAngleDown onClick={handleSubmenuView} /> : 
-              <FaAngleUp onClick={handleSubmenuView} />}
+              Cricket{" "}
+              {showSubMenu ? (
+                <FaAngleDown onClick={handleSubmenuView} />
+              ) : (
+                <FaAngleUp onClick={handleSubmenuView} />
+              )}
             </h5>
-            <ul className="game-page-sub-category-item" style={{ height: showSubMenu ? 'auto' : '0px' }}>
+            <ul
+              className="game-page-sub-category-item"
+              style={{ height: showSubMenu ? "auto" : "0px" }}
+            >
               {categoryLoader ? (
                 <div className="d-flex align-items-center justify-content-center">
                   <Spinner />
@@ -176,7 +182,7 @@ const GameDetails = () => {
             </ul>
           </div>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-6 ">
           <div
             className="cricket-details-area mb-2"
             // style={{ backgroundImage: `url('https://placehold.co/600x400')` }}
@@ -229,6 +235,8 @@ const GameDetails = () => {
               <OddsBookmark
                 odds={odds?.matches?.match ?? []}
                 isLive={details?.match?.status}
+                category={cat}
+                league={odds?.name}
               />
             )}
           </div>

@@ -524,7 +524,12 @@ const Header = () => {
                                 <Link
                                   key={index}
                                   href={notification.url}
-                                  style={{ color: notification?.is_read == "0" ?  "#6a38e9" : "#000" }}
+                                  style={{
+                                    color:
+                                      notification?.is_read == "0"
+                                        ? "#6a38e9"
+                                        : "#000",
+                                  }}
                                 >
                                   {notification.title}
                                 </Link>
@@ -797,7 +802,8 @@ const Header = () => {
       {/* Registration modal area end */}
 
       {/* Bet slip area start */}
-      {routerCheck?.route !== "/sports/game/[game]" ? (
+      {(routerCheck?.route !== "/sports/game/[game]" &&
+      routerCheck?.route !== "/sports/game_/[game]") ? (
         <div
           className={`betslip-area-start  ${slipShow ? "mobile" : ""}`}
           style={{ height: slipShow ? "auto" : "25px" }}
@@ -807,7 +813,7 @@ const Header = () => {
               slipShow ? "mobile" : ""
             } `}
           >
-            <h6 className="slip-header">Betslip</h6>
+            <h6 className="slip-header">Betslip {routerCheck?.route}</h6>
             <div className="slip-header-icons d-flex align-items-center gap-4">
               <BsArrowsFullscreen
                 onClick={() => handleBetSlipToggle(true)}

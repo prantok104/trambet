@@ -2,7 +2,7 @@ import React from "react";
 import OddsButton from "../Bets/OddsButton";
 import Card from "../Card";
 
-const OddsBookmark = ({ odds, isLive }) => {
+const OddsBookmark = ({category,league, odds, isLive }) => {
   return (
     <div>
       {odds?.odds?.type?.map((item, index) => (
@@ -31,6 +31,11 @@ const OddsBookmark = ({ odds, isLive }) => {
                                   <OddsButton
                                     key={index}
                                     odds={{
+                                      category: category,
+                                      league: league,
+                                      bookmarkId: totalitem?.id,
+                                      matchId: odds?.id,
+                                      odd_details: totalitem?.odd,
                                       id: odditem?.id,
                                       title: `${odditem?.name} (${totalitem?.name})`,
                                       value: odditem?.value,
@@ -55,6 +60,11 @@ const OddsBookmark = ({ odds, isLive }) => {
                               <OddsButton
                                 key={index}
                                 odds={{
+                                  category: category,
+                                  league: league,
+                                  bookmarkId: markerItem?.id,
+                                  matchId: odds?.id,
+                                  odd_details: markerItem?.total?.odd,
                                   id: odd?.id,
                                   title: `${odd?.name} (${markerItem?.total?.name})`,
                                   value: odd?.value,
@@ -78,6 +88,11 @@ const OddsBookmark = ({ odds, isLive }) => {
                                 <OddsButton
                                   key={`odds_item_${index}`}
                                   odds={{
+                                    category: category,
+                                    league: league,
+                                    bookmarkId: markerItem?.id,
+                                    matchId: odds?.id,
+                                    odd_details: markerItem?.odd,
                                     id: item?.id,
                                     title: `${item?.name}`,
                                     value: item?.value,
@@ -120,6 +135,11 @@ const OddsBookmark = ({ odds, isLive }) => {
                                 <OddsButton
                                   key={index}
                                   odds={{
+                                    category: category,
+                                    league: league,
+                                    bookmarkId: totalitem?.id,
+                                    matchId: odds?.id,
+                                    odd_details: totalitem?.odd,
                                     id: odditem?.id,
                                     title: `${odditem?.name} (${totalitem?.name})`,
                                     value: odditem?.value,
@@ -146,6 +166,11 @@ const OddsBookmark = ({ odds, isLive }) => {
                           <OddsButton
                             key={index}
                             odds={{
+                              category: category,
+                              league: league,
+                              bookmarkId: item?.bookmaker?.total?.id,
+                              matchId: odds?.id,
+                              odd_details: item?.bookmaker?.total?.odd,
                               id: odditem?.id,
                               title: `${odditem?.name} (${item?.bookmaker?.total?.name})`,
                               value: odditem?.value,
@@ -169,8 +194,13 @@ const OddsBookmark = ({ odds, isLive }) => {
                         <OddsButton
                           key={`odds_item_${index}`}
                           odds={{
+                            category: category,
+                            league: league,
+                            bookmarkId: item?.bookmaker?.id,
+                            matchId: odds?.id,
+                            odd_details: item?.bookmaker?.odd,
                             id: _item?.id,
-                            title: `${_item?.name}`,
+                            title: `${_item?.name} h`,
                             value: _item?.value,
                             toName: odds?.localteam?.name,
                             twName: odds?.visitorteam?.name,
