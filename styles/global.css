@@ -1744,6 +1744,12 @@ button.slip-close-btn {
   color: #ccc;
   font-size: 12px;
 }
+.disable-odd {background: #6d7999;}
+.disable-odd:hover {
+    background: #6d7999!important;
+    border-color: #6d7999;
+    cursor: no-drop;
+}
 
 .mobile-menu-site,
 .mobile-bar-menu {
