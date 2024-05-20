@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { toast } from "react-toastify";
 
 export const API_HOST =
-  "http://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62";
+  "https://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62";
 export const SEASON = dayjs().year();
 
 export const API_KEY = 'ef2762546f6a447cc37608dc6b5e7b62';
