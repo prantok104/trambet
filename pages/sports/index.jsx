@@ -124,7 +124,7 @@ const Sports = () => {
   ];
   const [categories, setCategories] = useState([]);
   const [filterCategory, setFilterCategory] = useState('');
-  const [activeCategory, setActiveCategory] = useState();
+  const [activeCategory, setActiveCategory] = useState(categoriesData[0]?.slug);
   const [activeSubCategory, setActiveSubCategory] = useState();
   const [sliders, setSliders] = useState([]);
   const [league, setLeague] = useState([]);
@@ -133,52 +133,6 @@ const Sports = () => {
   const [oddsLoading, setOddsLoading] = useState(false);
   const [filterOddsCricket, setFilterOddsCricket] = useState([]);
 
-  const handleSubCategory = (slug) => {
-    setActiveSubCategory(slug);
-    setOddsLoading(true);
-    axios.get(`${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`).then((response) => {
-        setOdds(response?.data?.scores?.categories);
-        setOddsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setOddsLoading(false);
-      });
-    if (activeCategory == "cricket") {
-      setActiveSubCategory(slug);
-      setOdds(filterOddsCricket?.filter(item => item?.id == slug))
-    } else {
-      setActiveSubCategory(slug);
-      setOddsLoading(true);
-      axios.get(`${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`)
-        .then((response) => {
-          setOdds(response?.data?.scores?.categories);
-          setOddsLoading(false);
-        })
-        .catch((error) => {
-          // console.log(error);
-          setOddsLoading(false);
-        });
-    }
-  };
-
-  const sliderEffect = useCallback(async () => {
-    await fetchSlider();
-  }, []);
-
-  const fetchSlider = async () => {
-    const banner = await HttpClientCall({
-      method: "GET",
-      endpoint: "frontend/banner",
-      includeAuth: false,
-      data: [],
-    });
-    setSliders(banner?.data);
-  };
-
-  // const fetchCategory = async () => {
-
-  // };
 
   const fetchLeague = async (data) => {
     setActiveCategory(data?.slug);
@@ -191,7 +145,6 @@ const Sports = () => {
         const stringData = JSON.stringify(response);
         const removeAt = stringData.replace(/@/g, "");
         const objectData = JSON.parse(removeAt);
-        // // console.log(objectData?.data?.leagues?.league);
         if (
           objectData?.data?.leagues !== undefined &&
           objectData?.data?.leagues !== null
@@ -215,7 +168,8 @@ const Sports = () => {
   };
 
   const handleCategory = (slug) => {
-    setActiveCategory(slug);setActiveSubCategory('');
+    setActiveCategory(slug);
+    setActiveSubCategory('');
     setLoading(true);
     let endpoint = `${API_HOST}/${slug}/leagues?json=1&season=${SEASON}`;
     if (slug == "cricket") {
@@ -269,11 +223,55 @@ const Sports = () => {
         });
     }
   };
+
+  const sliderEffect = useCallback(async () => {
+    await fetchSlider();
+  }, []);
+
+  const fetchSlider = async () => {
+    const banner = await HttpClientCall({
+      method: "GET",
+      endpoint: "frontend/banner",
+      includeAuth: false,
+      data: [],
+    });
+    setSliders(banner?.data);
+  };
+
   useEffect(() => {
     sliderEffect();
     setCategories(categoriesData);
     fetchLeague(categoriesData[0]);
   }, []);
+
+  const handleSubCategory = async (slug) => {
+    setActiveSubCategory(slug);
+    setOddsLoading(true);
+    axios.get(`${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`).then((response) => {
+        setOdds(response?.data?.scores?.categories);
+        setOddsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setOddsLoading(false);
+      });
+    if (activeCategory == "cricket") {
+      setActiveSubCategory(slug);
+      setOdds(filterOddsCricket?.filter(item => item?.id == slug))
+    } else {
+      setActiveSubCategory(slug);
+      setOddsLoading(true);
+      axios.get(`${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`)
+        .then((response) => {
+          setOdds(response?.data?.scores?.categories);
+          setOddsLoading(false);
+        })
+        .catch((error) => {
+          // console.log(error);
+          setOddsLoading(false);
+        });
+    }
+  };
 
   return (
     <>
