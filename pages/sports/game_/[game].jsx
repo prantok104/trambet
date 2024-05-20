@@ -1,5 +1,6 @@
 "use client";
 import BetSlip from "@/components/Bets/BetSlip";
+import OddsButton from "@/components/Bets/OddsButton";
 import Card from "@/components/Card";
 import { API_HOST, notify } from "@/components/Helper";
 import Commentaries from "@/components/Sports/Commentaries";
@@ -7,6 +8,7 @@ import CricketSquads from "@/components/Sports/CricketSquads";
 import Innings from "@/components/Sports/Innings";
 import Lineups from "@/components/Sports/Lineups";
 import MatchInfo from "@/components/Sports/MatchInfo";
+import OddsDisplay from "@/components/Sports/OddsDisplay";
 import Wickets from "@/components/Sports/Wickets";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -27,13 +29,11 @@ const GameDetails = () => {
 
   const fetchGameDetails = async () => {
     const endpoint = `${API_HOST}/getodds/soccer?cat=${cat}_10&league=${league}&match=${match}&json=1`;
-    console.log(endpoint);
     await axios
       .get(endpoint)
       .then((response) => {
-        console.log(response);
         if (response?.status == 200) {
-          setDetails(response?.data?.scores?.categories[0].matches[0]);
+          setDetails(response?.data?.scores?.categories[0]);
           setLoading(false);
         }
       })
@@ -44,74 +44,71 @@ const GameDetails = () => {
   };
 
   useEffect(() => {
-    fetchGameDetails();
-  }, [cat, league, match]);
+    if(cat && league && match){
+      fetchGameDetails();
+    }
+  }, [cat,league,match]);
 
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-md-9">
+        <div className="col-md-3"></div>
+        <div className="col-md-6">
           <div className="game-details-center">
             {loading ? (
               <div className="d-flex justify-content-center align-items-center">
                 <Spinner />
               </div>
             ) : (
-              <div className="cricket-tabs-area">
-                <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-                  <Row>
-                    <Col sm={3}>
-                      <Nav variant="pills" className="flex-column">
-                        {details?.odds?.map((item, index) => (
-                          <Nav.Item key={index} className="mb-3">
-                            <Nav.Link eventKey={`link-${index}`}>
-                              {item?.value}
-                            </Nav.Link>
-                          </Nav.Item>
-                        ))}
-                      </Nav>
-                    </Col>
-                    <Col sm={9}>
-                      <Tab.Content>
-                        {details?.odds?.map((item, index) => (
-                          <Tab.Pane eventKey={`link-${index}`} key={index}>
-                            {item?.bookmakers?.map((odd, i) => (
-                              <div className="card mb-2" key={i}>
-                                <div className="card-body">
-                                  <h4 className="text-center">{odd.name}</h4>
-                                  {odd?.odds?.map((o, j) =>
-                                    o.odds !== undefined ? (
-                                      o.odds.map((innerOdd, k) => (
-                                        <>
-                                        <div
-                                          key={k}
-                                          className="d-flex justify-content-between"
-                                        >
-                                          <span>{innerOdd.name}</span>
-                                          <span>{innerOdd.value}</span>
-                                        </div><hr />
-                                        </>
-                                      ))
-                                    ) : (
-                                      <div
-                                        key={j}
-                                        className="d-flex justify-content-between"
-                                      >
-                                        <span>{o.name}</span>
-                                        <span>{o.value}</span>
-                                      </div>
-                                    )
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          </Tab.Pane>
-                        ))}
-                      </Tab.Content>
-                    </Col>
-                  </Row>
-                </Tab.Container>
-              </div>
+              <>
+                <div className="cricket-tabs-area mb-2" style={{ background: `#25365F` }}>
+                  {Array.isArray(details?.matches) &&
+                  details?.matches?.length > 0 ? (
+                    <Card
+                      header={`Game ${details?.matches[0]?.status} | Start time: ${details?.matches[0]?.time} | ${details?.name} | ${details?.matches[0]?.date}`}
+                      bg="transparent"
+                    >
+                      <div className="d-flex align-items-center gap-5">
+                        <div className="team-specification">
+                          <h6 className="df-font mb-2">Local team:</h6>
+                          <h6 className="df-font mb-2 d-flex gap-2">
+                            {details?.matches[0]?.localteam?.name}
+                            <span>
+                              (
+                              {details?.matches[0]?.localteam?.totalscore
+                                ? details?.matches[0]?.localteam?.totalscore
+                                : "0/0"}
+                              )
+                            </span>
+                          </h6>
+                        </div>
+                        <div className="team-specification">
+                          <h6 className="df-font mb-2">Visitor team:</h6>
+                          <h6 className="df-font mb-2 d-flex gap-2">
+                            {details?.matches[0]?.awayteam?.name}
+                            <span>
+                              (
+                              {details?.matches[0]?.awayteam?.totalscore
+                                ? details?.matches[0]?.awayteam?.totalscore
+                                : "0/0"}
+                              )
+                            </span>
+                          </h6>
+                        </div>
+                      </div>
+                    </Card>
+                  ) : (
+                    ""
+                  )}
+                </div>
+
+                <div className="cricket-odds-show">
+                  {Array.isArray(details?.matches) &&
+                  details?.matches?.length > 0
+                    ? <OddsDisplay details={details} cat="hello" />
+                    : "No Data found right now"}
+                </div>
+              </>
             )}
           </div>
         </div>

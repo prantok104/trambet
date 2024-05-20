@@ -28,14 +28,19 @@ const OddsButton = ({ odds }) => {
   };
 
   return (
-    <div className="single-odds-btn">
+    <div className={`single-odds-btn `}>
       <button
-        className={`bet-odds-button ${isClicked ? "active-odds-button" : ""}`}
+        className={`bet-odds-button ${isClicked ? "active-odds-button" : ""} ${
+          odds?.disable ? "disable-odd" : ""
+        }`}
         onClick={handleAddToBetSlip}
+        disabled={odds?.disable}
       >
         {odds?.value}
       </button>
-      <div className={`odds-btn-title ${isClicked ? 'active' : ''}`}>{odds?.title}</div>
+      <div className={`odds-btn-title ${isClicked ? "active" : ""}`}>
+        {odds?.title}
+      </div>
     </div>
   );
 };

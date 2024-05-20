@@ -7,7 +7,9 @@ import { tramcardClaimService, tramcards } from '@/services/tramcardService';
 import dayjs from 'dayjs';
 import { notify } from '@/components/Helper';
 import Loader from '@/components/Loader';
+import { useUserData } from '@/components/Context/UserDataProvider/UserProvider';
 const Tramcard = () => {
+  const { setUserProMuted } = useUserData();
   const [tramcard, setTramcard] = useState({});
   const [loading, setLoading] = useState(true);
   const [muted, setMuted] = useState(true);
@@ -42,23 +44,18 @@ const Tramcard = () => {
 
 
   // Tramcard claim
-  const claimEffect  = useCallback(async () => {
-
-  }, [])
-
   const handleClaimTramcard = async () => {
     setLoading(true);
     const responseData = await tramcardClaimService();
     if(responseData?.status == true){
       setMuted((prevState) => !prevState);
       notify("success", responseData?.user_message);
+      setUserProMuted((prevState) => !prevState);
       setLoading(false)
     }else{
       console.log("Something went wrong");
     }
   }
-
-
   return (
     <>
       {loading ? (
