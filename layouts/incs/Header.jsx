@@ -88,6 +88,15 @@ const Header = () => {
   return (
     <>
       <div className="header">
+        {/* Claim registration bonus area start */}
+        <div className="claim-reg-bonus-area d-flex align-items-center justify-content-between">
+          <h4>
+            Congratulations on claiming your welcome bonus! Enjoy your rewards
+          </h4>
+          <button className="df-btn df-bg">Claim Now</button>
+        </div>
+        {/* Claim registration bonus area end */}
+
         {/* Mobile menu area start */}
         <div className="mobile-menu-site">
           <div className="mobile-menu-area d-flex align-items-center justify-content-between bg-shadow px-2 py-2">
@@ -802,8 +811,8 @@ const Header = () => {
       {/* Registration modal area end */}
 
       {/* Bet slip area start */}
-      {(routerCheck?.route !== "/sports/game/[game]" &&
-      routerCheck?.route !== "/sports/game_/[game]") ? (
+      {routerCheck?.route !== "/sports/game/[game]" &&
+      routerCheck?.route !== "/sports/game_/[game]" ? (
         <div
           className={`betslip-area-start  ${slipShow ? "mobile" : ""}`}
           style={{ height: slipShow ? "auto" : "25px" }}
