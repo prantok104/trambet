@@ -1,3 +1,4 @@
+"use client"
 import { FC, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as Yup from "yup";
@@ -12,8 +13,9 @@ import { getUserDetailsData } from "@/services/userAuthService";
 import Cookies from "js-cookie";
 import { useUserData } from "../Context/UserDataProvider/UserProvider";
 import { notify } from "../Helper";
-
-const LoginPage = ({ setLoginModal }) => {
+import { useRouter } from "next/router";
+const LoginPage = ({ setLoginModal, from }) => {
+  const router = useRouter();
   const { handleUserData } = useUserData();
   const [isLoading, setIsLoading] = useState(false);
   const schema = Yup.object().shape({
@@ -49,6 +51,9 @@ const LoginPage = ({ setLoginModal }) => {
         setIsLoading(false);
         Cookies.set("token", res.access_token);
         localStorage.setItem("token", res.access_token, { expires: 1 / 24 });
+        if (setLoginModal) {
+          setLoginModal(false);
+        }
         Swal.fire({
           icon: "success",
           title: "Login Success",
@@ -58,8 +63,8 @@ const LoginPage = ({ setLoginModal }) => {
         }).then(() => {
           handleUserData();
           getUserDetailsData();
-          if (setLoginModal) {
-            setLoginModal(false);
+          if (from == 'page') {
+            router.replace("/");
           }
         });
       } else if (res.response?.data?.code === 401) {
