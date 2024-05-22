@@ -47,11 +47,12 @@ const GameDetails = () => {
       await fetchTeamSquads();
       await fetchSubcategoryData();
     }
-  }, [cat]);
+  }, [
+    cat
+  ]);
 
   // Fetch Odds data
   const fetchCricketOdds = async () => {
-    setOddsLoader(true);
     const endpoint = `${API_HOST}/getodds/soccer?cat=cricket_10&json=1`;
     await axios
       .get(endpoint)
@@ -88,7 +89,7 @@ const GameDetails = () => {
         }
       })
       .catch((errors) => {
-        notify("error", "Something went wrong.");
+        // notify("error", "Something went wrong.");
         setLoading(false);
       });
   };
@@ -145,6 +146,16 @@ const GameDetails = () => {
   useEffect(() => {
     effect();
   }, [effect]);
+
+  useEffect(() => {
+    if (cat === "cricket") {
+      const intervalId = setInterval(() => {
+        fetchCricketOdds();
+        fetchCricketLive();
+      }, 9500);
+      return () => clearInterval(intervalId); 
+    }
+  }, [cat, fetchCricketLive]);
 
   // Submenu view
   const handleSubmenuView = () => {
