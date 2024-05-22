@@ -40,7 +40,7 @@ const EditProfileForm = () => {
     state: Yup.string().required("This field required").max(50),
     city: Yup.string().required("This field required").max(50),
     zip: Yup.string().required("This field required").max(50),
-    address: Yup.string().required("This field required").max(50),
+    address: Yup.string().required("This field required").max(255),
     occupation: Yup.string().nullable().max(50),
     // image: Yup.mixed(),
   });
