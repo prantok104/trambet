@@ -8,11 +8,13 @@ import { useUserData } from "../Context/UserDataProvider/UserProvider";
 import { HttpClientCall } from "../HTTPClient";
 import { notify } from "../Helper";
 import ImageInputField from "../Form/ImageInputField";
+import Loader from "../Loader";
 
 const EditProfileForm = () => {
   const formikRef = useRef();
-  const { userData } = useUserData();
+  const { userData, setUserProMuted } = useUserData();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
     firstname: "",
     lastname: "",
@@ -25,7 +27,7 @@ const EditProfileForm = () => {
     zip: "",
     address: "",
     occupation: "",
-    attachments: [],
+    image: null,
   });
 
   const validationSchema = Yup.object({
@@ -39,48 +41,68 @@ const EditProfileForm = () => {
     city: Yup.string().required("This field required").max(50),
     zip: Yup.string().required("This field required").max(50),
     address: Yup.string().required("This field required").max(50),
-    occupation: Yup.string().required("This field required").max(50),
-    image: Yup.mixed(),
+    occupation: Yup.string().nullable().max(50),
+    // image: Yup.mixed(),
   });
 
   const handleSubmit = async (
     values,
     { setErrors, setStatus, setSubmitting }
   ) => {
+    setLoading(true)
     try {
       const res = await HttpClientCall({
         method: "POST",
         endpoint: "user-profile-update",
         includeAuth: true,
         data: values,
+        content_type: "multipart/form-data",
       });
       if (res?.status) {
         notify("success", res?.user_message);
+        setUserProMuted((prevState) => !prevState);
+        setLoading(false)
       } else if (res.response.status === 422) {
         Object.keys(res.response.data.errors).forEach((field) => {
           if (typeof res.response.data.errors[field] !== "string") {
             res.response.data.errors[field].forEach((errorMessage) => {
               notify("error", errorMessage);
+              setLoading(false)
             });
           } else {
             notify("error", res.response.data.errors[field]);
+            setLoading(false)
           }
         });
+        setLoading(false)
       }
-    } catch (error) {}
+      
+    } catch (error) {notify("error", error);setLoading(false);}
   };
 
   useEffect(() => {
     if (userData) {
       setInitialValues({
-        ...userData,
-        ...userData?.address,
+        firstname: userData?.firstname,
+        lastname: userData?.lastname,
+        email: userData?.email,
+        mobile: userData?.mobile,
+        dob: userData?.dob,
+        country_code: userData?.country_code,
+        state: userData?.address?.state,
+        city: userData?.address?.city,
+        zip: userData?.address?.zip,
+        address: userData?.address?.address,
+        occupation: userData?.occupation,
+        image: null
       });
       setUser(userData);
     }
   }, [userData]);
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <Formik
       innerRef={formikRef}
       initialValues={initialValues}
@@ -90,7 +112,7 @@ const EditProfileForm = () => {
       className="form-data"
     >
       {({ values, touched, errors }) => (
-        <FormikForm>
+        <FormikForm encType="multipart/form-data">
           <div className="row">
             <div className="col-md-6">
               <InputField label="First name*" name="firstname" />
@@ -113,10 +135,14 @@ const EditProfileForm = () => {
               />
             </div>
             <div className="col-md-4 mt-2">
-              <InputField label="Date of Birth" name="dob" />
+              <InputDateField
+                label="Date of Birth"
+                name="dob"
+                disabled={user?.dob ? true : false}
+              />
             </div>
             <div className="col-md-3 mt-2">
-              <InputDateField label="Country" name="country_code" disabled />
+              <InputField label="Country" name="country_code" disabled />
             </div>
             <div className="col-md-3 mt-2">
               <InputField label="State*" name="state" />

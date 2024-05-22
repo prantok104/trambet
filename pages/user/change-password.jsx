@@ -35,7 +35,7 @@ const ChangePassword = () => {
         data: values,
       });
       if (res?.code === 200) {
-        notify("success", "Password chnage successfuly!");
+        notify("success", "Password change successfuly!");
         setinitialValues({
           current_password: "",
           password: "",

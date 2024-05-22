@@ -4,7 +4,7 @@ import ConstantData from './ConstantData';
 export async function HttpClientCall(props) {
     const baseUrl = ConstantData.API_BASE_URL;
     const headers = {
-        "Content-Type": "application/json",
+        "Content-Type": props?.content_type ? props?.content_type :  "application/json",
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*"
     };
