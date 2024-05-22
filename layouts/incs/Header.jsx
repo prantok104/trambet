@@ -89,7 +89,7 @@ const Header = () => {
     <>
       <div className="header">
         {/* Claim registration bonus area start */}
-        <div className="claim-reg-bonus-area d-flex align-items-center justify-content-between">
+        <div className="claim-reg-bonus-area d-flex align-items-center justify-content-between flex-wrap">
           <h4>
             Congratulations on claiming your welcome bonus! Enjoy your rewards
           </h4>
