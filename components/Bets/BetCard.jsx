@@ -9,6 +9,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 const BetCard = (props) => {
   const [oddsMarket, setOddsMarket] = useState("");
   const [oddsMarketList, setOddsMarketList] = useState([]);
+  const [selectedBookmakerOdds, setSelectedBookmakerOdds] = useState([]);
   const defaultSettings = {
     className: "slider",
     dots: false,
@@ -22,9 +23,12 @@ const BetCard = (props) => {
   };
 
   const handleOddsMarketChange = (event) => {
-    console.log(event?.target?.value);
     event.preventDefault();
-    setOddsMarket(event?.target?.value);
+    const selectedBookmakerId = event?.target?.value;
+    const selectedBookmaker = props.data.odds[0].bookmakers.find(
+      (bookmaker) => bookmaker.id === selectedBookmakerId
+    );
+    setSelectedBookmakerOdds(selectedBookmaker?.odds || []);
   };
 
   const preventDefault = (event) => {
@@ -33,6 +37,7 @@ const BetCard = (props) => {
 
   useEffect(() => {
     setOddsMarketList(props.data.odds[0].bookmakers);
+    setSelectedBookmakerOdds(props.data.odds[0].bookmakers[0]?.odds || []);
   }, []);
   return (
     <div className="single-bet-card ">
@@ -63,7 +68,7 @@ const BetCard = (props) => {
             </div>
             <div className="bet-card-odds-area">
               <Slider {...defaultSettings}>
-                {props.data.odds[0].bookmakers[0]?.odds.map((odd, index) => (
+                {selectedBookmakerOdds.map((odd, index) => (
                   <OddsButton
                     key={index}
                     odds={{
