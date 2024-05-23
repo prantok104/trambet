@@ -11,9 +11,7 @@ const nextConfig = {
         hostname: 'trambet.smshagor.com',
       }
     ],
-  },
-  source: '/:path*',
-  destination: '/',
+  }
 };
 
 export default nextConfig;
