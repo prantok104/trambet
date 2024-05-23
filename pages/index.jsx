@@ -86,7 +86,7 @@ const Home = () => {
                 }}
               >
                 <h1>Welcome bonus 300 BDT on registration</h1>
-                <Link href="/casino">Registration</Link>
+                <Link href="/auth/register">Registration</Link>
               </div>
             </div>
           </div>
