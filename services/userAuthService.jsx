@@ -1,5 +1,4 @@
 import { HttpClientCall } from "@/components/HTTPClient";
-
 export async function userLogout() {
   return await HttpClientCall({
     endpoint: "logout",
@@ -26,7 +25,7 @@ export async function getUserDetailsData() {
     .then((res) => {
       if (res?.status) {
         let data = res.data[0];
-        return res.data[0];
+        return Array.isArray(res.data) ? res.data[0] : res.data;
       }
     })
     .catch((error) => {

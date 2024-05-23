@@ -2,10 +2,26 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import Header from "@/layouts/incs/Header";
 import Footer from "@/layouts/incs/Footer";
-
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 const inter = Inter({ subsets: ["latin"] });
 
 const Layout = ({ title, children }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const authUser = useSelector((state) => state.AuthReducer);
+  const { user } = authUser;
+  
+  // OTP verify process
+  useEffect(() => {
+    if (user && user?.email_verified == 0) {
+      router.replace("/user/otp-verify");
+    }
+  }, [pathname]);
+
+
   return (
     <>
       <Head>

@@ -107,7 +107,7 @@ const Header = () => {
             </div>
 
             <div className="mobile-auth-menus d-flex align-items-center gap-2">
-              {userData && (
+              {userData && userData?.email_verified != 0 && (
                 <ul className="droplist">
                   <li>
                     <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -143,7 +143,7 @@ const Header = () => {
                 </ul>
               )}
               {/* Notification area start */}
-              {userData && (
+              {userData && userData?.email_verified != 0 && (
                 <ul className="droplist">
                   <li>
                     <div>
@@ -193,7 +193,7 @@ const Header = () => {
               {/* Notification area end */}
 
               {/* User profile area start */}
-              {userData && (
+              {userData && userData?.email_verified != 0 && (
                 <ul className="droplist">
                   <li>
                     <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -204,9 +204,6 @@ const Header = () => {
                     <ul className="dropdown-menus">
                       <li>
                         <Link href={"/user/profile"}>My Profile</Link>
-                      </li>
-                      <li>
-                        <Link href={"/user/otp-verify"}>OTP Verify</Link>
                       </li>
                       <li className="sticky-link">
                         <Link
@@ -291,7 +288,7 @@ const Header = () => {
               {/* User profile area end */}
 
               {/* User settings area start */}
-              {userData && (
+              {userData && userData?.email_verified != 0 && (
                 <ul className="droplist">
                   <li>
                     <div className="profile-look">
@@ -370,7 +367,7 @@ const Header = () => {
                   <Navbar />
 
                   <div className="mobile-footer-menu">
-                    {userData && (
+                    {userData && userData?.email_verified != 0 && (
                       <div className="user-id-show">ID: {userData.user_id}</div>
                     )}
                     <div className="mobile-selection">
@@ -464,7 +461,7 @@ const Header = () => {
                   <option value="a">American Odds</option> */}
                 </select>
 
-                {userData && (
+                {userData && userData?.email_verified != 0 && (
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -506,7 +503,7 @@ const Header = () => {
                 </div>
 
                 {/* Notification area start */}
-                {userData && (
+                {userData && userData?.email_verified != 0 && (
                   <ul className="droplist">
                     <li>
                       <div>
@@ -565,7 +562,7 @@ const Header = () => {
                 {/* Notification area end */}
 
                 {/* User profile area start */}
-                {userData && (
+                {userData && userData?.email_verified != 0 && (
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -577,9 +574,6 @@ const Header = () => {
                       <ul className="dropdown-menus">
                         <li>
                           <Link href={"/user/profile"}>My Profile</Link>
-                        </li>
-                        <li>
-                          <Link href={"/user/otp-verify"}>OTP Verify</Link>
                         </li>
                         <li className="sticky-link">
                           <Link
@@ -664,7 +658,7 @@ const Header = () => {
                 {/* User profile area end */}
 
                 {/* User settings area start */}
-                {userData && (
+                {userData && userData?.email_verified != 0 && (
                   <ul className="droplist">
                     <li>
                       <div className="profile-look">

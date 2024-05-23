@@ -1,10 +1,14 @@
 import { userLogout } from "@/services/userAuthService";
-import { createContext, useState, useContext } from "react";
 import LogoutContext from "../../Context/Users/LogoutContext";
+import { AuthUserUpdate } from "@/store/reducers/AuthReducer";
+import { useDispatch } from "react-redux";
+
 
 export const LogoutProvider = ({ children }) => {
+const dispatch = useDispatch();
     const handleLogout = () => {
         userLogout();
+       dispatch(AuthUserUpdate({}));
         // window.location.reload();
     };
 
