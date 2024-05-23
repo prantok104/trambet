@@ -84,6 +84,10 @@ const Header = () => {
   const handleMobileBetSlip = () => {
     setSlipShow((prevState) => !prevState)
   }
+  const handleBetSlipToggleByLink = (e) => {
+    e.preventDefault();
+    setSlipShow((prevState) => !prevState)
+  }
 
   return (
     <>
@@ -248,7 +252,9 @@ const Header = () => {
                         </ul>
                       </li>
                       <li>
-                        <Link href={"/"}>Bet Slip</Link>
+                        <Link href={"#"} onClick={handleBetSlipToggleByLink}>
+                          Bet Slip
+                        </Link>
                       </li>
                       <li>
                         <Link href={"/"}>Bet History</Link>
@@ -618,7 +624,9 @@ const Header = () => {
                           </ul>
                         </li>
                         <li>
-                          <Link href={"/"}>Bet Slip</Link>
+                          <Link href={"#"} onClick={handleBetSlipToggleByLink}>
+                            Bet Slip
+                          </Link>
                         </li>
                         <li>
                           <Link href={"/"}>Bet History</Link>
