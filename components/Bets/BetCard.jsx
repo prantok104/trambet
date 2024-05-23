@@ -22,6 +22,7 @@ const BetCard = (props) => {
   };
 
   const handleOddsMarketChange = (event) => {
+    console.log(event?.target?.value);
     event.preventDefault();
     setOddsMarket(event?.target?.value);
   };
@@ -54,7 +55,7 @@ const BetCard = (props) => {
                 defaultValue={0}
               >
                 {oddsMarketList?.map((bookmaker, index) => (
-                  <option value={index} key={index}>
+                  <option value={bookmaker.id} key={index}>
                     {bookmaker.name}
                   </option>
                 ))}
