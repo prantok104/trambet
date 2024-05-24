@@ -1,3 +1,4 @@
+"use client"
 import Slider from "@/components/Slider";
 import FirstSlider from "@/public/sliders/first.png";
 import SecondSlider from "@/public/sliders/second.png";
@@ -9,13 +10,14 @@ import PromoThree from "@/public/promo/3.png";
 import PromoFour from "@/public/promo/4.png";
 import Link from "next/link";
 import PromoCard from "@/components/PromoCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HttpClientCall } from "@/components/HTTPClient";
 import { Modal } from "react-bootstrap";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 import HomePageCasino from "@/components/Casino/HomePageCasino";
 import HomePageSports from "@/components/Sports/HomePageSports";
 const Home = () => {
+  const buttonRef = useRef(null);
   const { setShowOneClickModal, showOneClickModal, userData } = useUserData()
   const images = [
     { name: "Slide one", src: FirstSlider },
@@ -56,6 +58,26 @@ const Home = () => {
     }
     fetchBannerData();
   }, []);
+
+
+  // Text copy
+
+  const handleCopy = (bettor, pass) => {
+    const textCopy = `Bettor ID: ${bettor}\nPassword: ${pass}`;
+    if (typeof navigator != "undefined") {
+      navigator.clipboard
+        .writeText(textCopy)
+        .then(() => {
+          if (buttonRef.current) {
+            buttonRef.current.textContent = "Copied!"; // Success message
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to copy text (Modern API):", err);
+        });
+    }
+  }
+
   return (
     <>
       <div className="container-fluid">
@@ -118,7 +140,9 @@ const Home = () => {
         {/* Sports area end */}
 
         {/* Live Casino area start */}
-        <div className=" mt-2"><HomePageCasino /></div>
+        <div className=" mt-2">
+          <HomePageCasino />
+        </div>
         {/* Live Casino area end */}
 
         {/* one click registration page area start */}
@@ -128,19 +152,40 @@ const Home = () => {
             setShowOneClickModal(false);
             localStorage.removeItem("oneTimeUserData");
           }}
-          backdrop="static"
-          keyboard={false}
-          className="login-page"
+          size="md"
         >
           <Modal.Header closeButton>
-            <Modal.Title>One Click User Info</Modal.Title>
+            <Modal.Title>
+              <h6>Please keep this message secure for your records</h6>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h5>Please Save this for your future use</h5>
-            <h5 className="fw-bold my-2">
-              Password: {userData?.one_time_pass}
-            </h5>
-            <h5 className="fw-bold">User Id: {userData?.user_id}</h5>
+            <div
+              className="p-4 df-radius mb-2"
+              style={{ background: "#090F1E" }}
+            >
+              <h6 className="mb-3 font-14">
+                Bettor ID:{" "}
+                <span className="mx-3 d-inline-block copy-text">
+                  {userData?.user_id}
+                </span>
+              </h6>
+              <h6 className="font-14">
+                Password:
+                <span className="mx-3 d-inline-block copy-text">
+                  {userData?.one_time_pass}
+                </span>
+              </h6>
+            </div>
+            <div className="text-end">
+              <button
+                ref={buttonRef}
+                onClick={() => handleCopy(userData?.user_id, userData?.one_time_pass)}
+                className="df-btn df-bg"
+              >
+                COPY
+              </button>
+            </div>
           </Modal.Body>
         </Modal>
         {/* one click registration end */}
