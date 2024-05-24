@@ -6,4 +6,5 @@ export default {
   API_BASE_URL: BASE_URL + "/api/" + VERSION,
   IMAGE_BASE_URL: BASE_URL + "/assets/images/",
   USER_IMAGE_URL: BASE_URL + "/assets/profile/user/",
+  TICKET_IMAGE_URL: BASE_URL + "/assets/support/",
 };

@@ -5,7 +5,7 @@ import Support from "@/pages/user/support";
 const OpenTicketPage = () => {
   return (
     <AffiliatLayout>
-      <Support />
+      <Support page="affiliate" />
     </AffiliatLayout>
   );
 };

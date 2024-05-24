@@ -319,8 +319,26 @@ const Header = () => {
                           Security and privacy
                         </Link>
                       </li>
-                      <li>
-                        <Link href={"/user/support"}>Support</Link>
+                      <li className="sticky-link">
+                        <Link
+                          href={"/"}
+                          className="d-flex align-items-center justify-content-between"
+                        >
+                          Support{" "}
+                          <div>
+                            <FontAwesomeIcon icon={faAngleDown} />
+                          </div>
+                        </Link>
+                        <ul className="sticky-items">
+                          <li>
+                            <Link href={"/user/support"}>Open New Ticket</Link>
+                          </li>
+                          <li>
+                            <Link href={"/user/support/tickets"}>
+                              All Tickets
+                            </Link>
+                          </li>
+                        </ul>
                       </li>
                       <li>
                         <Link href={"/affiliate"}>Affiliate Profile</Link>
@@ -691,8 +709,28 @@ const Header = () => {
                             Security and privacy
                           </Link>
                         </li>
-                        <li>
-                          <Link href={"/user/support"}>Support</Link>
+                        <li className="sticky-link">
+                          <Link
+                            href={"/"}
+                            className="d-flex align-items-center justify-content-between"
+                          >
+                            Support{" "}
+                            <div>
+                              <FontAwesomeIcon icon={faAngleDown} />
+                            </div>
+                          </Link>
+                          <ul className="sticky-items">
+                            <li>
+                              <Link href={"/user/support"}>
+                                Open New Ticket
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href={"/user/support/tickets"}>
+                                All Tickets
+                              </Link>
+                            </li>
+                          </ul>
                         </li>
                         <li>
                           <Link href={"/affiliate"}>Affiliate Profile</Link>
@@ -824,7 +862,7 @@ const Header = () => {
               slipShow ? "mobile" : ""
             } `}
           >
-            <h6 className="slip-header">Betslip {routerCheck?.route}</h6>
+            <h6 className="slip-header">Betslip </h6>
             <div className="slip-header-icons d-flex align-items-center gap-4">
               <BsArrowsFullscreen
                 onClick={() => handleBetSlipToggle(true)}

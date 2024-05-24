@@ -3,8 +3,7 @@ import React, { useMemo } from "react";
 import { rowIndex } from "@/components/Helper";
 import { RiComputerLine } from "react-icons/ri";
 import Link from "next/link";
-import dayjs from "dayjs";
-
+import dayjs from 'dayjs'
   const priority = [
     { name: "Low", value: 1, bg: "bg-danger" },
     { name: "Medium", value: 2, bg: "bg-warning" },
@@ -24,16 +23,13 @@ const Myticket = ({
   handlePageChange,
   page = {},
 }) => {
-
-
-
   const columns = useMemo(
     () => [
       rowIndex(rows),
       {
         name: "Subject",
         selector: (row) => `[Ticket#${row?.ticket}] ${row?.subject}`,
-        sortable: false,
+        sortable: true,
         minWidth: "250px",
       },
       {
@@ -62,15 +58,14 @@ const Myticket = ({
       },
       {
         name: "Last Reply",
-        selector: (row) =>
-          dayjs(row?.last_reply).format("DD MMM, YYYY hh:mm:s"),
+        selector: (row) => dayjs(row?.last_reply).format('DD MMM, YYYY hh:mm:s'),
         sortable: true,
       },
       {
         name: "Action",
         selector: (row) => (
           <div className="d-flex justify-content-center gap-2">
-            <Link href={`/user/support/ticket/message/${row?.ticket}?page=affiliate`}>
+            <Link href={`/user/support/ticket/message/${row?.ticket}?page=user`}>
               <button className="btn btn-primary btn-sm d-flex justify-content-center">
                 <RiComputerLine />
               </button>
