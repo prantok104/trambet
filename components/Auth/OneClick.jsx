@@ -16,13 +16,7 @@ import Cookies from "js-cookie";
 import { Modal } from "react-bootstrap";
 
 const OneClickRegister = () => {
-  const {
-    setShowOneClickModal,
-    handleUserData,
-    handleOneClickModal,
-    showOneClickModal,
-    userData,
-  } = useUserData();
+  const { handleUserData, handleOneClickModal } = useUserData();
   const validationSchema = Yup.object({
     country: Yup.string().required("Country is required").max(50),
     currency: Yup.string().required("Currency is required").max(50),
@@ -38,6 +32,7 @@ const OneClickRegister = () => {
   const [currencyList, setCurrencyList] = useState([]);
   const [isCountryLoading, setIsCountryLoading] = useState(false);
   const [isCurrencyLoading, setIsCurrencyLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -68,14 +63,21 @@ const OneClickRegister = () => {
   async function currencyData() {
     setIsCurrencyLoading(true);
     await HttpClientCall({
-      endpoint: "country",
+      endpoint: "currency",
       method: "GET",
       includeAuth: false,
       data: [],
     })
       .then((response) => {
         setIsCurrencyLoading(false);
-        setCurrencyList(response.data);
+        setCurrencyList(
+          response.data?.map((item) => {
+            return {
+              name: item?.code,
+              code: item?.code,
+            };
+          })
+        );
       })
       .catch((error) => {
         return [];
@@ -88,8 +90,7 @@ const OneClickRegister = () => {
   }, []);
 
   const handleSubmit = async (values) => {
-    // // console.log(values);
-    // return
+    setLoading(true);
     const countryName = countryList.filter((item) => item.code === country);
     const data = {
       country_code: country,
@@ -107,6 +108,7 @@ const OneClickRegister = () => {
       data: data,
     }).then((res) => {
       if (res.status) {
+        setLoading(false);
         handleOneClickModal(true);
         localStorage.setItem("oneTimeUserData", JSON.stringify(true));
         Cookies.set("token", res.access_token, { expires: 1 / 24 });
@@ -115,22 +117,22 @@ const OneClickRegister = () => {
         handleUserData();
         router.push("/");
       } else if (res.response.status === 422) {
+        setLoading(false);
         Object.keys(res.response.data.errors).forEach((field) => {
           res.response.data.errors[field].forEach((errorMessage) => {
             notify("error", errorMessage);
           });
         });
       } else {
+        setLoading(false);
         notify("error", "User registration failed");
       }
     });
   };
 
-  let content = "";
-  if (isCountryLoading || isCurrencyLoading) {
-    content = <Loader />;
-  } else {
-    content = (
+  return (
+    <>
+      {isCountryLoading || isCurrencyLoading || loading ? <Loader /> : ""}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -226,10 +228,8 @@ const OneClickRegister = () => {
           );
         }}
       </Formik>
-    );
-  }
-
-  return <>{content}</>;
+    </>
+  );
 };
 
 export default OneClickRegister;

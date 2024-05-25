@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Slider from "@/components/Slider";
 import FirstSlider from "@/public/sliders/first.png";
 import SecondSlider from "@/public/sliders/second.png";
@@ -16,9 +16,11 @@ import { Modal } from "react-bootstrap";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 import HomePageCasino from "@/components/Casino/HomePageCasino";
 import HomePageSports from "@/components/Sports/HomePageSports";
+import { useSelector } from "react-redux";
 const Home = () => {
+  const { user } = useSelector((state) => state.AuthReducer);
   const buttonRef = useRef(null);
-  const { setShowOneClickModal, showOneClickModal, userData } = useUserData()
+  const { setShowOneClickModal, showOneClickModal, userData } = useUserData();
   const images = [
     { name: "Slide one", src: FirstSlider },
     { name: "Slide two", src: SecondSlider },
@@ -27,21 +29,45 @@ const Home = () => {
   ];
 
   const promoCards = [
-    { title: "Sports", sub_title: "Live Games 24/7", href: "/sports", image: PromoOne },
-    { title: "Live Games", sub_title: "Free turnaments", href: "/sports/live", image: PromoFour },
-    { title: "Upcoming Games", sub_title: "Over 250 sports", href: "/sports/upcoming", image: PromoThree },
-    { title: "Casino", sub_title: "Over 3000 games", href: "/", image: PromoTwo },
-    { title: "Live Casino", sub_title: "Live dealers", href: "/", image: PromoThree },
+    {
+      title: "Sports",
+      sub_title: "Live Games 24/7",
+      href: "/sports",
+      image: PromoOne,
+    },
+    {
+      title: "Live Games",
+      sub_title: "Free turnaments",
+      href: "/sports/live",
+      image: PromoFour,
+    },
+    {
+      title: "Upcoming Games",
+      sub_title: "Over 250 sports",
+      href: "/sports/upcoming",
+      image: PromoThree,
+    },
+    {
+      title: "Casino",
+      sub_title: "Over 3000 games",
+      href: "/casino/live",
+      image: PromoTwo,
+    },
+    {
+      title: "Live Casino",
+      sub_title: "Live dealers",
+      href: "/casino/live",
+      image: PromoThree,
+    },
   ];
   const [sliders, setSliders] = useState([]);
 
-  
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("oneTimeUserData"));
     if (data) {
-        setShowOneClickModal(true)
+      setShowOneClickModal(true);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     async function fetchBannerData() {
@@ -59,7 +85,6 @@ const Home = () => {
     fetchBannerData();
   }, []);
 
-
   // Text copy
 
   const handleCopy = (bettor, pass) => {
@@ -76,7 +101,7 @@ const Home = () => {
           console.error("Failed to copy text (Modern API):", err);
         });
     }
-  }
+  };
 
   return (
     <>
@@ -99,7 +124,7 @@ const Home = () => {
                 }}
               >
                 <h1>Cashback up to 30% on casinos</h1>
-                <Link href="/casino">Go to Casino</Link>
+                <Link href="/casino/live">Go to Casino</Link>
               </div>
               <div
                 className="single-goal-section"
@@ -108,7 +133,7 @@ const Home = () => {
                 }}
               >
                 <h1>Welcome bonus 300 BDT on registration</h1>
-                <Link href="/auth/register">Registration</Link>
+                {user ? "" : <Link href="/auth/register">Registration</Link>}
               </div>
             </div>
           </div>
@@ -180,7 +205,9 @@ const Home = () => {
             <div className="text-end">
               <button
                 ref={buttonRef}
-                onClick={() => handleCopy(userData?.user_id, userData?.one_time_pass)}
+                onClick={() =>
+                  handleCopy(userData?.user_id, userData?.one_time_pass)
+                }
                 className="df-btn df-bg"
               >
                 COPY

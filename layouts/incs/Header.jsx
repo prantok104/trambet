@@ -32,11 +32,12 @@ import { useUserData } from "@/components/Context/UserDataProvider/UserProvider"
 import { useRouter as useRouterChecker } from "next/router";
 import { AuthUserLogout } from "@/store/reducers/AuthReducer";
 import { useDispatch } from "react-redux";
+import { notificationRead } from "@/services/notification";
 const Header = () => {
   const dispatch = useDispatch();
   const routerCheck = useRouterChecker();
   const betSlipReducer = useSelector((state) => state.betSlipReducer);
-  // const { userData } = useUserData();
+  const { setUserProMuted } = useUserData();
   const {user} = useSelector((state) => state.AuthReducer);
   const userData =user;
   const [loginModal, setLoginModal] = useState(false);
@@ -95,16 +96,33 @@ const Header = () => {
     setSlipShow((prevState) => !prevState)
   }
 
+  const handleClaimBonus = () => {
+      router.replace('/user/bonus')
+  }
+
+  const handleNotificationRefresh = async (id) => {
+     const resposneData = await notificationRead(id);
+    if(resposneData?.status){
+      setUserProMuted(prevState => !prevState);
+    }
+  }
+
   return (
     <>
       <div className="header">
         {/* Claim registration bonus area start */}
-        <div className="claim-reg-bonus-area d-flex align-items-center justify-content-between flex-wrap">
-          <h4>
-            Congratulations on claiming your welcome bonus! Enjoy your rewards
-          </h4>
-          <button className="df-btn df-bg">Claim Now</button>
-        </div>
+        {userData?.is_welcome_message == "0" ? (
+          <div className="claim-reg-bonus-area d-flex align-items-center justify-content-between flex-wrap">
+            <h4>
+              Congratulations on claiming your welcome bonus! Enjoy your rewards
+            </h4>
+            <button onClick={handleClaimBonus} className="df-btn df-bg">
+              Claim Now
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
         {/* Claim registration bonus area end */}
 
         {/* Mobile menu area start */}
@@ -177,7 +195,13 @@ const Header = () => {
                         userData.notifications?.latest.length > 0 ? (
                           userData.notifications?.latest.map(
                             (notification, index) => (
-                              <Link key={index} href={notification.url}>
+                              <Link
+                                onClick={() =>
+                                  handleNotificationRefresh(notification?.id)
+                                }
+                                key={index}
+                                href={notification.url}
+                              >
                                 {notification.title}
                               </Link>
                             )
@@ -271,10 +295,10 @@ const Header = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link href={"/"}>Bonues</Link>
+                        <Link href={"/user/bonus"}>Bonues</Link>
                       </li>
                       <li>
-                        <Link href={"/user/tramcard"}>Tramcard</Link>
+                        <Link href={"/user/tramcards"}>Tramcard</Link>
                       </li>
                       <li>
                         <Link href={"/user/affiliate/applications-list"}>
@@ -560,6 +584,9 @@ const Header = () => {
                             userData.notifications?.latest.map(
                               (notification, index) => (
                                 <Link
+                                  onClick={() =>
+                                    handleNotificationRefresh(notification?.id)
+                                  }
                                   key={index}
                                   href={notification.url}
                                   style={{
@@ -663,10 +690,10 @@ const Header = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Bonues</Link>
+                          <Link href={"/user/bonus"}>Bonues</Link>
                         </li>
                         <li>
-                          <Link href={"/user/tramcard"}>Tramcard</Link>
+                          <Link href={"/user/tramcards"}>Tramcard</Link>
                         </li>
                         <li>
                           <Link href={"/user/affiliate/applications-list"}>
