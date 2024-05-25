@@ -5,7 +5,7 @@ import { rowIndex } from "@/components/Helper";
 import { Modal } from "react-bootstrap";
 import dayjs from "dayjs";
 import { notificationRead } from "@/services/notification";
-
+import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 const NotificationTable = ({
   rows,
   isLoading,
@@ -17,6 +17,7 @@ const NotificationTable = ({
   const [modal, setModal] = useState(false);
   const [data, setData] = useState({});
   const [change, setChange] = useState(true);
+  const { setUserProMuted } = useUserData();
   const handleNotification = async (row) => {
     setModal(true);
     await handleNotificationRead(row?.id);
@@ -26,6 +27,9 @@ const NotificationTable = ({
 
   const handleNotificationRead = async (id) => {
     const resposneData = await notificationRead(id);
+    if(resposneData?.status){
+      setUserProMuted(prevState => !prevState);
+    }
   };
 
   const columns = useMemo(
@@ -45,13 +49,13 @@ const NotificationTable = ({
           </span>
         ),
         sortable: false,
-        minWidth: "75%",
+        minWidth: "70%",
       },
       {
         name: "Date time",
-        selector: (row) => dayjs(row?.created_at).format("DD MMM, YYYY hh:mm"),
+        selector: (row) => dayjs(row?.created_at).format("DD MMM, YYYY hh:mm:ss a"),
         sortable: false,
-        minWidth: "15%",
+        minWidth: "20%",
       },
     ],
     [rows]

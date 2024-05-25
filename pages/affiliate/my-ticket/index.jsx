@@ -7,8 +7,7 @@ import Card from "@/components/Card";
 import InputField from "@/components/Form/InputField";
 import { Form as FormikForm, Formik } from "formik";
 import * as Yup from "yup";
-import Website from "@/models/Website";
-import { getMyTickets, getWebsites } from "@/services/affiliate";
+import { getMyTickets } from "@/services/affiliate";
 
 const MyTicketPage = () => {
   const innerRef = useRef();
@@ -24,13 +23,6 @@ const MyTicketPage = () => {
   const validationSchema = Yup.object({
     search: Yup.string(),
   });
-
-  const rows = {
-    data: [{ year: 40 }, { year: 20 }],
-    current_page: 1,
-    per_page: 10,
-    total: 11,
-  };
 
   const handleAction = async (event, data) => {};
   const [data, setData] = useState([]);

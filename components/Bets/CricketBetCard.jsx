@@ -45,7 +45,7 @@ const CricketBetCard = (props) => {
                   : "Upcoming"
               }
               date={
-                (props?.data?.match.date || "") +
+                (props?.data?.match?.date || "") +
                 " " +
                 (props?.data?.match?.time || "")
               }

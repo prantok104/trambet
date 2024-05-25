@@ -56,7 +56,7 @@ const NotificationPage = () => {
     <div className="container">
       <div className="row">
         <div className="col-md-12">
-          <Card header="Notifications (10)">
+          <Card header="Notifications">
             <NotificationTable
               isLoading={isLoading}
               rows={data}

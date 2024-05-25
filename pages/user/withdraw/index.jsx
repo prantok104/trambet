@@ -11,9 +11,9 @@ const [paymentMethod, setPaymentMethod] = useState([]);
 const paymentMethodData = async () => {
   await getPaymentMethods().then((res) => {
     if(res.status === true){
-      setPaymentMethod(res.data);
+      setPaymentMethod(res?.data);
      } else {
-       notify("error", res.response.data.message);
+       notify("error", res?.response?.data?.message);
      }
   });
  }

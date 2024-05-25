@@ -62,14 +62,21 @@ const AffiliateRegisterForm = () => {
   async function currencyData() {
     setIsCurrencyLoading(true);
     await HttpClientCall({
-      endpoint: "country",
+      endpoint: "currency",
       method: "GET",
       includeAuth: false,
       data: [],
     })
       .then((response) => {
         setIsCurrencyLoading(false);
-        setCurrencyList(response.data);
+        setCurrencyList(
+          response.data?.map((item) => {
+            return {
+              name: item?.code,
+              code: item?.code,
+            };
+          })
+        );
       })
       .catch((error) => {
         return [];

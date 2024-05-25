@@ -1,15 +1,18 @@
-import WarningCard from './../../../components/Warning';
-import AlertCard from './../../../components/AlertCard';
-import Image from 'next/image';
-import ProgressBar from 'react-bootstrap/ProgressBar';
-import { useCallback, useEffect, useState } from 'react';
-import { tramcardClaimService, tramcards } from '@/services/tramcardService';
-import dayjs from 'dayjs';
-import { notify } from '@/components/Helper';
-import Loader from '@/components/Loader';
-import { useUserData } from '@/components/Context/UserDataProvider/UserProvider';
+import WarningCard from "../../../components/Warning";
+import AlertCard from "../../../components/AlertCard";
+import Image from "next/image";
+import ProgressBar from "react-bootstrap/ProgressBar";
+import { useCallback, useEffect, useState } from "react";
+import { tramcardClaimService, tramcards } from "@/services/tramcardService";
+import dayjs from "dayjs";
+import { notify } from "@/components/Helper";
+import Loader from "@/components/Loader";
+import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
+import { useSelector } from "react-redux";
 const Tramcard = () => {
   const { setUserProMuted } = useUserData();
+  const { user } = useSelector((state) => state.AuthReducer);
+  const userData = user;
   const [tramcard, setTramcard] = useState({});
   const [loading, setLoading] = useState(true);
   const [muted, setMuted] = useState(true);
@@ -19,14 +22,14 @@ const Tramcard = () => {
     await fetchTramcard();
   }, [muted]);
   const fetchTramcard = async () => {
-    setLoading(true)
+    setLoading(true);
     const responseData = await tramcards();
     if (responseData?.status == true) {
       setTramcard(responseData?.data);
-      setLoading(false)
-    }else{
-      console.log("Something went wrong.")
-      setLoading(false)
+      setLoading(false);
+    } else {
+      console.log("Something went wrong.");
+      setLoading(false);
     }
   };
 
@@ -41,21 +44,20 @@ const Tramcard = () => {
   }, 0);
   const progressPercentage = progressBarValue * 25;
 
-
-
   // Tramcard claim
   const handleClaimTramcard = async () => {
     setLoading(true);
     const responseData = await tramcardClaimService();
-    if(responseData?.status == true){
+    if (responseData?.status == true) {
       setMuted((prevState) => !prevState);
       notify("success", responseData?.user_message);
       setUserProMuted((prevState) => !prevState);
-      setLoading(false)
-    }else{
-      console.log("Something went wrong");
+      setLoading(false);
+    } else {
+      setLoading(false);
+     notify("error", "Something went wrong");
     }
-  }
+  };
   return (
     <>
       {loading ? (
@@ -70,7 +72,7 @@ const Tramcard = () => {
                     <div className="mb-2">
                       <AlertCard
                         message="Congratulations! You got a tramcard, Enjoy the game."
-                        bg="linear-gradient(86.37deg, #d062ff 2.96%, #7bb0ff 99.68%),linear-gradient(90deg, #ed6ea0 0%, #ec8c69 100%)"
+                        bg="linear-gradient(86.37deg, #8833ad 2.96%, #03204a 99.68%), linear-gradient(90deg, #ed6ea0 0%, #ec8c69 100%)"
                       />
                     </div>
                   </div>
@@ -78,7 +80,7 @@ const Tramcard = () => {
                 <div className="col-md-4">
                   <div className="tramcard-image">
                     <Image
-                      src="https://trambet.smshagor.com/core/public/storage/event/tramcard/1710409203.png"
+                      src={tramcard?.image}
                       alt="Tramcard"
                       width="350"
                       height="230"
@@ -115,7 +117,7 @@ const Tramcard = () => {
                     {tramcard?.duration_text != "Life time" ? (
                       <div className="tramcard-valid-time">
                         Date:{" "}
-                        {dayjs(tramcard?.valid_time).format(
+                        {dayjs(tramcard?.valid).format(
                           "DD MMM, YYYY hh:mm:s a"
                         )}
                       </div>
@@ -127,13 +129,24 @@ const Tramcard = () => {
                       tramcard?.rule_3 != "0" &&
                       tramcard?.rule_4 != "0" &&
                       tramcard?.is_win != "0" && (
-                        <button
-                          onClick={handleClaimTramcard}
-                          className="tramcard-claim-btn df-btn"
-                        >
-                          Claim Now ({Number(tramcard?.amount).toFixed(2)}{" "}
-                          {tramcard?.currency})
-                        </button>
+                        <>
+                          {userData?.kv != "1" ? (
+                            <Link
+                              className="df-btn df-bg"
+                              href="/user/kyc-verification"
+                            >
+                              KYC Verification
+                            </Link>
+                          ) : (
+                            <button
+                              onClick={handleClaimTramcard}
+                              className="tramcard-claim-btn df-btn"
+                            >
+                              Claim Now ({Number(tramcard?.amount).toFixed(2)}{" "}
+                              {tramcard?.currency})
+                            </button>
+                          )}
+                        </>
                       )}
                   </div>
                 </div>
@@ -213,5 +226,5 @@ const Tramcard = () => {
       )}
     </>
   );
-}
+};
 export default Tramcard;

@@ -30,10 +30,16 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 import { useRouter as useRouterChecker } from "next/router";
+import { AuthUserLogout } from "@/store/reducers/AuthReducer";
+import { useDispatch } from "react-redux";
+import { notificationRead } from "@/services/notification";
 const Header = () => {
+  const dispatch = useDispatch();
   const routerCheck = useRouterChecker();
   const betSlipReducer = useSelector((state) => state.betSlipReducer);
-  const { userData } = useUserData();
+  const { setUserProMuted } = useUserData();
+  const {user} = useSelector((state) => state.AuthReducer);
+  const userData =user;
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
   const [slipShow, setSlipShow] = useState(false);
@@ -67,6 +73,7 @@ const Header = () => {
     localStorage.removeItem("userDetails")
     localStorage.removeItem("token")
     Cookies.remove("token")
+    dispatch(AuthUserLogout(null));
     router.push("/auth/login")
   };
 
@@ -84,10 +91,40 @@ const Header = () => {
   const handleMobileBetSlip = () => {
     setSlipShow((prevState) => !prevState)
   }
+  const handleBetSlipToggleByLink = (e) => {
+    e.preventDefault();
+    setSlipShow((prevState) => !prevState)
+  }
+
+  const handleClaimBonus = () => {
+      router.replace('/user/bonus')
+  }
+
+  const handleNotificationRefresh = async (id) => {
+     const resposneData = await notificationRead(id);
+    if(resposneData?.status){
+      setUserProMuted(prevState => !prevState);
+    }
+  }
 
   return (
     <>
       <div className="header">
+        {/* Claim registration bonus area start */}
+        {userData?.is_welcome_message == "0" ? (
+          <div className="claim-reg-bonus-area d-flex align-items-center justify-content-between flex-wrap">
+            <h4>
+              Congratulations on claiming your welcome bonus! Enjoy your rewards
+            </h4>
+            <button onClick={handleClaimBonus} className="df-btn df-bg">
+              Claim Now
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
+        {/* Claim registration bonus area end */}
+
         {/* Mobile menu area start */}
         <div className="mobile-menu-site">
           <div className="mobile-menu-area d-flex align-items-center justify-content-between bg-shadow px-2 py-2">
@@ -98,7 +135,7 @@ const Header = () => {
             </div>
 
             <div className="mobile-auth-menus d-flex align-items-center gap-2">
-              {userData && (
+              {userData && userData?.email_verified != 0 && (
                 <ul className="droplist">
                   <li>
                     <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -134,7 +171,7 @@ const Header = () => {
                 </ul>
               )}
               {/* Notification area start */}
-              {userData && (
+              {userData && userData?.email_verified != 0 && (
                 <ul className="droplist">
                   <li>
                     <div>
@@ -158,7 +195,13 @@ const Header = () => {
                         userData.notifications?.latest.length > 0 ? (
                           userData.notifications?.latest.map(
                             (notification, index) => (
-                              <Link key={index} href={notification.url}>
+                              <Link
+                                onClick={() =>
+                                  handleNotificationRefresh(notification?.id)
+                                }
+                                key={index}
+                                href={notification.url}
+                              >
                                 {notification.title}
                               </Link>
                             )
@@ -184,7 +227,7 @@ const Header = () => {
               {/* Notification area end */}
 
               {/* User profile area start */}
-              {userData && (
+              {userData && userData?.email_verified != 0 && (
                 <ul className="droplist">
                   <li>
                     <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -195,9 +238,6 @@ const Header = () => {
                     <ul className="dropdown-menus">
                       <li>
                         <Link href={"/user/profile"}>My Profile</Link>
-                      </li>
-                      <li>
-                        <Link href={"/user/otp-verify"}>OTP Verify</Link>
                       </li>
                       <li className="sticky-link">
                         <Link
@@ -242,7 +282,9 @@ const Header = () => {
                         </ul>
                       </li>
                       <li>
-                        <Link href={"/"}>Bet Slip</Link>
+                        <Link href={"#"} onClick={handleBetSlipToggleByLink}>
+                          Bet Slip
+                        </Link>
                       </li>
                       <li>
                         <Link href={"/"}>Bet History</Link>
@@ -253,10 +295,10 @@ const Header = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link href={"/"}>Bonues</Link>
+                        <Link href={"/user/bonus"}>Bonues</Link>
                       </li>
                       <li>
-                        <Link href={"/user/tramcard"}>Tramcard</Link>
+                        <Link href={"/user/tramcards"}>Tramcard</Link>
                       </li>
                       <li>
                         <Link href={"/user/affiliate/applications-list"}>
@@ -282,7 +324,7 @@ const Header = () => {
               {/* User profile area end */}
 
               {/* User settings area start */}
-              {userData && (
+              {userData && userData?.email_verified != 0 && (
                 <ul className="droplist">
                   <li>
                     <div className="profile-look">
@@ -297,18 +339,38 @@ const Header = () => {
                       <li>
                         <Link href={"/"}>2FA Verification</Link>
                       </li>
-                      <li>
-                        <Link href={"/user/kyc-verification"}>
-                          KYC Verification
-                        </Link>
-                      </li>
+                      {userData?.kv != "1" && (
+                        <li>
+                          <Link href={"/user/kyc-verification"}>
+                            KYC Verification
+                          </Link>
+                        </li>
+                      )}
                       <li>
                         <Link href={"/policy/privacy-policy"}>
                           Security and privacy
                         </Link>
                       </li>
-                      <li>
-                        <Link href={"/user/support"}>Support</Link>
+                      <li className="sticky-link">
+                        <Link
+                          href={"/"}
+                          className="d-flex align-items-center justify-content-between"
+                        >
+                          Support{" "}
+                          <div>
+                            <FontAwesomeIcon icon={faAngleDown} />
+                          </div>
+                        </Link>
+                        <ul className="sticky-items">
+                          <li>
+                            <Link href={"/user/support"}>Open New Ticket</Link>
+                          </li>
+                          <li>
+                            <Link href={"/user/support/tickets"}>
+                              All Tickets
+                            </Link>
+                          </li>
+                        </ul>
                       </li>
                       <li>
                         <Link href={"/affiliate"}>Affiliate Profile</Link>
@@ -361,7 +423,7 @@ const Header = () => {
                   <Navbar />
 
                   <div className="mobile-footer-menu">
-                    {userData && (
+                    {userData && userData?.email_verified != 0 && (
                       <div className="user-id-show">ID: {userData.user_id}</div>
                     )}
                     <div className="mobile-selection">
@@ -455,7 +517,7 @@ const Header = () => {
                   <option value="a">American Odds</option> */}
                 </select>
 
-                {userData && (
+                {userData && userData?.email_verified != 0 && (
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -497,7 +559,7 @@ const Header = () => {
                 </div>
 
                 {/* Notification area start */}
-                {userData && (
+                {userData && userData?.email_verified != 0 && (
                   <ul className="droplist">
                     <li>
                       <div>
@@ -522,6 +584,9 @@ const Header = () => {
                             userData.notifications?.latest.map(
                               (notification, index) => (
                                 <Link
+                                  onClick={() =>
+                                    handleNotificationRefresh(notification?.id)
+                                  }
                                   key={index}
                                   href={notification.url}
                                   style={{
@@ -556,7 +621,7 @@ const Header = () => {
                 {/* Notification area end */}
 
                 {/* User profile area start */}
-                {userData && (
+                {userData && userData?.email_verified != 0 && (
                   <ul className="droplist">
                     <li>
                       <div className="d-flex align-items-center gap-2 bettor-id-look">
@@ -568,9 +633,6 @@ const Header = () => {
                       <ul className="dropdown-menus">
                         <li>
                           <Link href={"/user/profile"}>My Profile</Link>
-                        </li>
-                        <li>
-                          <Link href={"/user/otp-verify"}>OTP Verify</Link>
                         </li>
                         <li className="sticky-link">
                           <Link
@@ -615,7 +677,9 @@ const Header = () => {
                           </ul>
                         </li>
                         <li>
-                          <Link href={"/"}>Bet Slip</Link>
+                          <Link href={"#"} onClick={handleBetSlipToggleByLink}>
+                            Bet Slip
+                          </Link>
                         </li>
                         <li>
                           <Link href={"/"}>Bet History</Link>
@@ -626,10 +690,10 @@ const Header = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Bonues</Link>
+                          <Link href={"/user/bonus"}>Bonues</Link>
                         </li>
                         <li>
-                          <Link href={"/user/tramcard"}>Tramcard</Link>
+                          <Link href={"/user/tramcards"}>Tramcard</Link>
                         </li>
                         <li>
                           <Link href={"/user/affiliate/applications-list"}>
@@ -655,7 +719,7 @@ const Header = () => {
                 {/* User profile area end */}
 
                 {/* User settings area start */}
-                {userData && (
+                {userData && userData?.email_verified != 0 && (
                   <ul className="droplist">
                     <li>
                       <div className="profile-look">
@@ -670,18 +734,40 @@ const Header = () => {
                         <li>
                           <Link href={"/"}>2FA Verification</Link>
                         </li>
-                        <li>
-                          <Link href={"/user/kyc-verification"}>
-                            KYC Verification
-                          </Link>
-                        </li>
+                        {userData?.kv != "1" && (
+                          <li>
+                            <Link href={"/user/kyc-verification"}>
+                              KYC Verification
+                            </Link>
+                          </li>
+                        )}
                         <li>
                           <Link href={"/policy/privacy-policy"}>
                             Security and privacy
                           </Link>
                         </li>
-                        <li>
-                          <Link href={"/user/support"}>Support</Link>
+                        <li className="sticky-link">
+                          <Link
+                            href={"/"}
+                            className="d-flex align-items-center justify-content-between"
+                          >
+                            Support{" "}
+                            <div>
+                              <FontAwesomeIcon icon={faAngleDown} />
+                            </div>
+                          </Link>
+                          <ul className="sticky-items">
+                            <li>
+                              <Link href={"/user/support"}>
+                                Open New Ticket
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href={"/user/support/tickets"}>
+                                All Tickets
+                              </Link>
+                            </li>
+                          </ul>
                         </li>
                         <li>
                           <Link href={"/affiliate"}>Affiliate Profile</Link>
@@ -802,8 +888,8 @@ const Header = () => {
       {/* Registration modal area end */}
 
       {/* Bet slip area start */}
-      {(routerCheck?.route !== "/sports/game/[game]" &&
-      routerCheck?.route !== "/sports/game_/[game]") ? (
+      {routerCheck?.route !== "/sports/game/[game]" &&
+      routerCheck?.route !== "/sports/game_/[game]" ? (
         <div
           className={`betslip-area-start  ${slipShow ? "mobile" : ""}`}
           style={{ height: slipShow ? "auto" : "25px" }}
@@ -813,7 +899,7 @@ const Header = () => {
               slipShow ? "mobile" : ""
             } `}
           >
-            <h6 className="slip-header">Betslip {routerCheck?.route}</h6>
+            <h6 className="slip-header">Betslip </h6>
             <div className="slip-header-icons d-flex align-items-center gap-4">
               <BsArrowsFullscreen
                 onClick={() => handleBetSlipToggle(true)}

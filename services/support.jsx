@@ -5,6 +5,7 @@ export async function createNewSupportTicket(data) {
     method: "POST",
     includeAuth: true,
     data: data,
+    content_type: "multipart/form-data",
   })
     .then((response) => {
       return response;
@@ -65,6 +66,22 @@ export async function closeTicket(id) {
     method: "POST",
     includeAuth: true,
     data: {},
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
+
+
+export async function getMyTickets(page, per_page, search) {
+  return await HttpClientCall({
+    endpoint: `ticket/all/${page}/${per_page}?search=${search}`,
+    method: "GET",
+    includeAuth: true,
+    data: [],
   })
     .then((response) => {
       return response;

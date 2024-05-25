@@ -85,6 +85,14 @@ li {
   margin: 0;
   padding: 0;
 }
+.claim-reg-bonus-area{
+  border-bottom: 1px solid #1E263D;
+  padding: 5px 15px ;
+  background:linear-gradient(86.37deg, #8833ad 2.96%, #03204a 99.68%), linear-gradient(90deg, #ed6ea0 0%, #ec8c69 100%);
+}
+.claim-reg-bonus-area h4{
+  font-size: 12px;
+}
 .loading-page-start {
   width: 100%;
   height: 100vh;

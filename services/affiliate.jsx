@@ -199,7 +199,7 @@ export async function getMyTickets(page, per_page, search) {
     data: [],
   })
     .then((response) => {
-      return response.data;
+      return response;
     })
     .catch((error) => {
       return [];

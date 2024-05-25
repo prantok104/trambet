@@ -1,10 +1,8 @@
 import { getUserDetailsData } from "@/services/userAuthService";
 import Cookies from "js-cookie";
-
+import { useDispatch } from "react-redux";
+import { AuthUserUpdate } from "@/store/reducers/AuthReducer";
 const { createContext, useState, useContext, useEffect } = require("react");
-const initialValues = {
-  isOpenModa: false,
-};
 // Create a context for user data
 const UserContext = createContext();
 
@@ -13,7 +11,9 @@ export const UserProvider = ({ children }) => {
   // Initial user data
   const [userData, setUserData] = useState(null);
   const [showOneClickModal, setShowOneClickModal] = useState(false);
-  const [userProMuted, setUserProMuted] = useState(true)
+  const [userProMuted, setUserProMuted] = useState(true);
+
+  const dispatch = useDispatch();
 
   // Function to set user data
   const handleUserData = () => {
@@ -21,6 +21,7 @@ export const UserProvider = ({ children }) => {
     if (token) {
       getUserDetailsData().then((res) => {
         setUserData(res);
+        dispatch(AuthUserUpdate(res))
       });
     } else {
       setUserData(null);
@@ -37,6 +38,8 @@ export const UserProvider = ({ children }) => {
       setShowOneClickModal(data);
     }
   };
+  
+
 
   return (
     <UserContext.Provider

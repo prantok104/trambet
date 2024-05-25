@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   distDir: 'dist',
-  output: 'export',
+  // output: 'export',
   images: {
     unoptimized: true,
     remotePatterns: [
