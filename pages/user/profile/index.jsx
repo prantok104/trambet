@@ -18,8 +18,11 @@ const UserProfile = () => {
         </div>
         <div className="col-md-9">
           <div className="user-profile-update-area">
-            {userData?.kv !=  1 ? (
+            {userData?.kv ==  0 ? (
               <WarningCard message="Hello Sir, Please update your KYC verification. Otherwise you have no access to the withdrawal process or bonus process." />
+            ) : ""}
+            {userData?.kv ==  2 ? (
+              <WarningCard message="Hello Sir, Thanks for your submitting KYC data. Please wait for verification." />
             ) : ""}
             <Card header={"Profile update"}>
               <EditProfileForm />

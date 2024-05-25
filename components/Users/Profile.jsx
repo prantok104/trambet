@@ -8,7 +8,10 @@ import { useRouter } from "next/router";
 import { useUserData } from "../Context/UserDataProvider/UserProvider";
 import ConstantData from "@/components/ConstantData";
 import dayjs from "dayjs";
+import { AuthUserLogout } from "@/store/reducers/AuthReducer";
+import { useDispatch } from "react-redux";
 const ProfileCard = () => {
+  const dispatch = useDispatch();
   const { userData } = useUserData();
   const [user, setUser] = useState(null);
   const router = useRouter();
@@ -21,6 +24,7 @@ const ProfileCard = () => {
     localStorage.removeItem("userDetails");
     localStorage.removeItem("token");
     Cookies.remove("token");
+    dispatch(AuthUserLogout(null));
     router.push("/auth/login");
   };
 

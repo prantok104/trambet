@@ -13,14 +13,25 @@ const Layout = ({ title, children }) => {
   const pathname = usePathname();
   const authUser = useSelector((state) => state.AuthReducer);
   const { user } = authUser;
-  
+
   // OTP verify process
   useEffect(() => {
+    if (
+      (pathname === "/auth/login" ||
+        pathname === "/auth/one-click" ||
+        pathname === "auth/register" ||
+        pathname === "/register/affiliate") &&
+      user
+    ) {
+      router.replace("/");
+    }
+    if (pathname === "/user/withdraw" && user && user?.kv != "1") {
+      router.replace("/user/kyc-verification");
+    }
     if (user && user?.email_verified == 0) {
       router.replace("/user/otp-verify");
     }
   }, [pathname]);
-
 
   return (
     <>

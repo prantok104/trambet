@@ -30,10 +30,15 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 import { useRouter as useRouterChecker } from "next/router";
+import { AuthUserLogout } from "@/store/reducers/AuthReducer";
+import { useDispatch } from "react-redux";
 const Header = () => {
+  const dispatch = useDispatch();
   const routerCheck = useRouterChecker();
   const betSlipReducer = useSelector((state) => state.betSlipReducer);
-  const { userData } = useUserData();
+  // const { userData } = useUserData();
+  const {user} = useSelector((state) => state.AuthReducer);
+  const userData =user;
   const [loginModal, setLoginModal] = useState(false);
   const [registrationModal, setRegistrationModal] = useState(false);
   const [slipShow, setSlipShow] = useState(false);
@@ -67,6 +72,7 @@ const Header = () => {
     localStorage.removeItem("userDetails")
     localStorage.removeItem("token")
     Cookies.remove("token")
+    dispatch(AuthUserLogout(null));
     router.push("/auth/login")
   };
 
@@ -309,11 +315,13 @@ const Header = () => {
                       <li>
                         <Link href={"/"}>2FA Verification</Link>
                       </li>
-                      <li>
-                        <Link href={"/user/kyc-verification"}>
-                          KYC Verification
-                        </Link>
-                      </li>
+                      {userData?.kv != "1" && (
+                        <li>
+                          <Link href={"/user/kyc-verification"}>
+                            KYC Verification
+                          </Link>
+                        </li>
+                      )}
                       <li>
                         <Link href={"/policy/privacy-policy"}>
                           Security and privacy
@@ -699,11 +707,13 @@ const Header = () => {
                         <li>
                           <Link href={"/"}>2FA Verification</Link>
                         </li>
-                        <li>
-                          <Link href={"/user/kyc-verification"}>
-                            KYC Verification
-                          </Link>
-                        </li>
+                        {userData?.kv != "1" && (
+                          <li>
+                            <Link href={"/user/kyc-verification"}>
+                              KYC Verification
+                            </Link>
+                          </li>
+                        )}
                         <li>
                           <Link href={"/policy/privacy-policy"}>
                             Security and privacy
