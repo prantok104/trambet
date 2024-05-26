@@ -44,6 +44,12 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                                       isLive: isLive,
                                       market: markerItem?.name,
                                       oddsName: `${odditem?.name} (${totalitem?.name})`,
+                                      disable:
+                                        odditem?.stop == "True"
+                                          ? true
+                                          : item?.stop == "True"
+                                          ? true
+                                          : false,
                                     }}
                                   />
                                 ))}
@@ -66,13 +72,19 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                                   matchId: odds?.id,
                                   odd_details: markerItem?.total?.odd,
                                   id: odd?.id,
-                                  title: `${odd?.name} (${markerItem?.total?.name})`,
+                                  title: `${odd?.name} (${markerItem?.total?.name}) `,
                                   value: odd?.value,
                                   toName: odds?.localteam?.name,
                                   twName: odds?.visitorteam?.name,
                                   isLive: isLive,
                                   market: markerItem?.name,
                                   oddsName: `${odd?.name} (${markerItem?.total?.name})`,
+                                  disable:
+                                    odd?.stop == "True"
+                                      ? true
+                                      : item?.stop == "True"
+                                      ? true
+                                      : false,
                                 }}
                               />
                             ))}
@@ -84,7 +96,7 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                         {markerItem.hasOwnProperty("odd") ? (
                           Array.isArray(markerItem?.odd) ? (
                             <div className="d-flex align-items-center flex-wrap">
-                              {markerItem?.odd?.map((item, index) => (
+                              {markerItem?.odd?.map((mitem, index) => (
                                 <OddsButton
                                   key={`odds_item_${index}`}
                                   odds={{
@@ -93,14 +105,20 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                                     bookmarkId: markerItem?.id,
                                     matchId: odds?.id,
                                     odd_details: markerItem?.odd,
-                                    id: item?.id,
-                                    title: `${item?.name}`,
-                                    value: item?.value,
+                                    id: mitem?.id,
+                                    title: `${mitem?.name} `,
+                                    value: mitem?.value,
                                     toName: odds?.localteam?.name,
                                     twName: odds?.visitorteam?.name,
                                     isLive: isLive,
                                     market: markerItem?.name,
-                                    oddsName: `${item?.name}`,
+                                    oddsName: `${mitem?.name}`,
+                                    disable:
+                                      mitem?.stop == "True"
+                                        ? true
+                                        : item?.stop == "True"
+                                        ? true
+                                        : false,
                                   }}
                                 />
                               ))}
@@ -148,6 +166,12 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                                     isLive: isLive,
                                     market: item?.bookmaker?.name,
                                     oddsName: `${odditem?.name} (${totalitem?.name})`,
+                                    disable:
+                                      odditem?.stop == "True"
+                                        ? true
+                                        : item?.stop == "True"
+                                        ? true
+                                        : false,
                                   }}
                                 />
                               ))}
@@ -179,6 +203,12 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                               isLive: isLive,
                               market: item?.bookmaker?.name,
                               oddsName: `${odditem?.name} (${item?.bookmaker?.total?.name})`,
+                              disable:
+                                odditem?.stop == "True"
+                                  ? true
+                                  : item?.stop == "True"
+                                  ? true
+                                  : false,
                             }}
                           />
                         ))}
@@ -207,6 +237,12 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                             isLive: isLive,
                             market: item?.bookmaker?.name,
                             oddsName: _item?.name,
+                            disable:
+                              _item?.stop == "True"
+                                ? true
+                                : item?.stop == "True"
+                                ? true
+                                : false,
                           }}
                         />
                       ))}

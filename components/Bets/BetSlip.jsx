@@ -12,11 +12,14 @@ import { GoTrash } from "react-icons/go";
 import { clearBetSlip } from "@/store/reducers/betSlipReducer";
 import Cookies from "js-cookie";
 import Link from "next/link";
-import { useUserData } from "../Context/UserDataProvider/UserProvider";
+import {
+  useUserData,
+} from "../Context/UserDataProvider/UserProvider";
 import { notify } from "../Helper";
 import {betPlacement} from '@/services/BetService'
+import Loader from '@/components/Loader'
 const BetSlip = () => {
-  const { userData } = useUserData();
+  const { userData, setUserProMuted } = useUserData();
   const dispatch = useDispatch();
   const {user} = useSelector((state) =>state.AuthReducer)
   const isAuthenticate = user;
@@ -29,6 +32,7 @@ const BetSlip = () => {
     stake_amount: new Array(bets?.length || 0).fill(0),
     final_stake_amount: 0,
   });
+  const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
     bet_type: Yup.string().required(""),
@@ -88,11 +92,11 @@ const BetSlip = () => {
           odds_point: item?.value,
           stake_amount: values?.stake_amount[index],
           return_amount: values?.stake_amount[index],
-          checker: item?.isLive ? "LIVE" : "UPCOMING",
+          checker: item?.isLive,
           amount_type: values?.bet_balance_type,
           status: "pending",
           api_source_type: "Goal Score",
-          is_live: item?.isLive ? item?.isLive: false,
+          is_live: item?.isLive == 'LIVE' ? true: false,
           team1: item?.toName,
           team2: item?.twName,
           odd_name: item?.oddsName,
@@ -100,199 +104,227 @@ const BetSlip = () => {
           market_name: item?.market
         })),
       };
+      setLoading(true);
       const responseData = await betPlacement(payload);
       if(responseData?.status){
-        notify('success', responseData?.user_message)
+        notify('success', responseData?.user_message);
+        setLoading(false);
+        setUserProMuted((prevState) => !prevState);
+        dispatch(clearBetSlip([]));
       }else{
         notify("error", responseData?.user_message);
+        setLoading(false);
       }
   }
 
   return (
-    <div className="betslip-container p-2 text-center">
-      <Formik
-        innerRef={innerRef}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        enableReinitialize
-        onSubmit={handleBetSubmit}
-      >
-        {({ values }) => (
-          <FormikForm>
-            <>
-              <div className="bet-types-button mb-2 d-flex align-items-center gap-2 justify-content-center">
-                <RadioField
-                  label="Single bet"
-                  id="single_bet"
-                  name="bet_type"
-                  value="1"
-                />
-                <RadioField
-                  label="Multiple bet"
-                  id="multiple_bet"
-                  name="bet_type"
-                  value="2"
-                />
-              </div>
-              {userData && (
-                <div className="bet-types-button bet-balance-buttons d-flex align-items-center gap-2 justify-content-center">
+    <>
+    {loading ? <Loader /> : ''}
+      <div className="betslip-container p-2 text-center">
+        <Formik
+          innerRef={innerRef}
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          enableReinitialize
+          onSubmit={handleBetSubmit}
+        >
+          {({ values }) => (
+            <FormikForm>
+              <>
+                <div className="bet-types-button mb-2 d-flex align-items-center gap-2 justify-content-center">
                   <RadioField
-                    label={`Deposit (${Number(userData?.balance)?.toFixed(2)})`}
-                    id="deposit_btn"
-                    name="bet_balance_type"
+                    label="Single bet"
+                    id="single_bet"
+                    name="bet_type"
                     value="1"
                   />
                   <RadioField
-                    label={`Bonus (${Number(userData?.bonus_account).toFixed(
-                      2
-                    )})`}
-                    id="bonus_btn"
-                    name="bet_balance_type"
+                    label="Multiple bet"
+                    id="multiple_bet"
+                    name="bet_type"
                     value="2"
                   />
-                  <RadioField
-                    label={`Tramcard (${Number(userData?.tramcard).toFixed(
-                      2
-                    )})`}
-                    id="tramcard_btn"
-                    name="bet_balance_type"
-                    value="3"
-                  />
                 </div>
-              )}
-              <div className="bet-slip-best-show">
-                {bets?.length > 0 ? (
-                  bets?.map((item, index) => (
-                    <BetSlipItem
-                      key={index}
-                      index={item?.id}
-                      toImage={""}
-                      toName={item?.toName}
-                      market={item?.market}
-                      oddsName={item?.oddsName}
-                      value={item?.value}
-                      isLive={item?.isLive}
-                      twImage={""}
-                      twName={item?.twName}
-                      stakeInput={
-                        <InputField
-                          name={`stake_amount[${index}]`}
-                          type="number"
-                          min={0}
-                          defaultValue={0}
-                        />
-                      }
-                      returnAmount={Number(
-                        Number(
-                          values?.stake_amount?.length > 0
-                            ? values?.stake_amount[index]
-                            : 0
-                        ) * Number(item?.value) ?? 0
-                      ).toFixed(2)}
-                      betType={values?.bet_type}
+                {userData && (
+                  <div className="bet-types-button bet-balance-buttons d-flex align-items-center gap-2 justify-content-center">
+                    <RadioField
+                      label={`Deposit (${Number(userData?.balance)?.toFixed(
+                        2
+                      )})`}
+                      id="deposit_btn"
+                      name="bet_balance_type"
+                      value="1"
                     />
-                  ))
-                ) : (
-                  <div className="no-slip-item-found d-flex align-items-center justify-content-center flex-column gap-3">
-                    <FaFile style={{ fontSize: 100, opacity: 0.4 }} />
-                    No bet selected right now
+                    <RadioField
+                      label={`Bonus (${Number(userData?.bonus_account).toFixed(
+                        2
+                      )})`}
+                      id="bonus_btn"
+                      name="bet_balance_type"
+                      value="2"
+                    />
+                    <RadioField
+                      label={`Tramcard (${Number(userData?.tramcard).toFixed(
+                        2
+                      )})`}
+                      id="tramcard_btn"
+                      name="bet_balance_type"
+                      value="3"
+                    />
                   </div>
                 )}
-              </div>
-
-              <div className="bet-slip-final-bet betslip-single-bet-item mt-2">
-                <>
-                  {isAuthenticate ? (
-                    <div>
-                      <h6 className="df-font">{`Singles (  ${bets?.length} )`}</h6>
-                      <div className="bet-slip-stake-amount d-flex align-items-center justify-content-between gap-2 mt-2">
-                        <div className="return-amount">
-                          Return BDT :{" "}
-                          {values?.bet_type === "1"
-                            ? Number(
-                                bets?.reduce(
-                                  (acc, ele) => acc + Number(ele.value),
-                                  0
-                                ) *
-                                  Number(
-                                    values?.final_stake_amount > 0
-                                      ? values?.final_stake_amount
-                                      : 0
-                                  ) || 0
-                              ).toFixed(2)
-                            : Number(
-                                bets?.reduce(
-                                  (acc, ele) => acc * Number(ele.value),
-                                  1
-                                ) *
-                                  Number(
-                                    values?.final_stake_amount > 0
-                                      ? values?.final_stake_amount
-                                      : 0
-                                  )
-                              ).toFixed(2)}
-                        </div>
-                        <div className="bet-slip-stake d-flex align-items-center gap-2 ">
-                          <div className="stake-text">STAKE: </div>
+                <div className="bet-slip-best-show">
+                  {bets?.length > 0 ? (
+                    bets?.map((item, index) => (
+                      <BetSlipItem
+                        key={index}
+                        index={item?.id}
+                        toImage={""}
+                        toName={item?.toName}
+                        market={item?.market}
+                        oddsName={item?.oddsName}
+                        value={item?.value}
+                        isLive={item?.isLive}
+                        twImage={""}
+                        twName={item?.twName}
+                        stakeInput={
                           <InputField
-                            name={`final_stake_amount`}
+                            name={`stake_amount[${index}]`}
                             type="number"
-                            value={
-                              bets?.length > 0 ? values.final_stake_amount : 0
-                            }
-                            onChange={handleFinalStakeChange}
                             min={0}
-                            disabled={!bets?.length}
+                            defaultValue={0}
                           />
-                        </div>
-                      </div>
-                      <div className="bet-slip-submit-button d-flex align-items-center justify-content-between gap-2">
-                        <div className="bet-trash-btn">
-                          <GoTrash onClick={handleRemoveAllBets} />
-                        </div>
-                        {/* {values?.stake_amount?.reduce(
-                          (acc, amount) => Number(acc) + Number(amount),
-                          0
-                        ) || 0} */}
-                        <div className="bet-submit-btn container-fluid p-0 mt-2">
-                          <Button
-                            type="submit"
-                            className="btn-sm container-fluid df-font p-2"
-                          >
-                            PLACE BET
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
+                        }
+                        returnAmount={Number(
+                          Number(
+                            values?.stake_amount?.length > 0
+                              ? values?.stake_amount[index]
+                              : 0
+                          ) * Number(item?.value) ?? 0
+                        ).toFixed(2)}
+                        betType={values?.bet_type}
+                      />
+                    ))
                   ) : (
-                    <div className="d-flex align-items-center gap-3 justify-content-center">
-                      <Link
-                        href="/auth/login"
-                        className="df-btn bg-shadow text-decoration-none df-bg reg-btn"
-                      >
-                        Login
-                      </Link>
-                      <Link
-                        href="/auth/register"
-                        className="df-btn bg-shadow text-decoration-none df-bg reg-btn"
-                      >
-                        Complete Register
-                      </Link>
-                      <Link
-                        href="/auth/one-click"
-                        className="df-btn bg-shadow text-decoration-none df-bg reg-btn"
-                      >
-                        Quick Registration
-                      </Link>
+                    <div className="no-slip-item-found d-flex align-items-center justify-content-center flex-column gap-3">
+                      <FaFile style={{ fontSize: 100, opacity: 0.4 }} />
+                      No bet selected right now
                     </div>
                   )}
-                </>
-              </div>
-            </>
-          </FormikForm>
-        )}
-      </Formik>
-    </div>
+                </div>
+
+                <div className="bet-slip-final-bet betslip-single-bet-item mt-2">
+                  <>
+                    {isAuthenticate ? (
+                      <div>
+                        <h6 className="df-font">{`Singles (  ${bets?.length} )`}</h6>
+                        <div className="bet-slip-stake-amount d-flex align-items-center justify-content-between gap-2 mt-2">
+                          <div className="return-amount">
+                            Return BDT :{" "}
+                            {values?.bet_type === "1"
+                              ? Number(
+                                  bets?.reduce(
+                                    (acc, ele) => acc + Number(ele.value),
+                                    0
+                                  ) *
+                                    Number(
+                                      values?.final_stake_amount > 0
+                                        ? values?.final_stake_amount
+                                        : 0
+                                    ) || 0
+                                ).toFixed(2)
+                              : Number(
+                                  bets?.reduce(
+                                    (acc, ele) => acc * Number(ele.value),
+                                    1
+                                  ) *
+                                    Number(
+                                      values?.final_stake_amount > 0
+                                        ? values?.final_stake_amount
+                                        : 0
+                                    )
+                                ).toFixed(2)}
+                          </div>
+                          <div className="bet-slip-stake d-flex align-items-center gap-2 ">
+                            <div className="stake-text">STAKE: </div>
+                            <InputField
+                              name={`final_stake_amount`}
+                              type="number"
+                              value={
+                                bets?.length > 0 ? values.final_stake_amount : 0
+                              }
+                              onChange={handleFinalStakeChange}
+                              min={0}
+                              disabled={!bets?.length}
+                            />
+                          </div>
+                        </div>
+                        <div className="bet-slip-submit-button d-flex align-items-center justify-content-between gap-2">
+                          <div className="bet-trash-btn">
+                            <GoTrash onClick={handleRemoveAllBets} />
+                          </div>
+                          <div className="bet-submit-btn container-fluid p-0 mt-2">
+                            <Button
+                              type="submit"
+                              className="btn-sm container-fluid df-font p-2"
+                              disabled={
+                                values?.bet_balance_type == "1"
+                                  ? Number(isAuthenticate?.balance) <
+                                      values?.stake_amount?.reduce(
+                                        (acc, amount) =>
+                                          Number(acc) + Number(amount),
+                                        0
+                                      ) || 0
+                                  : values?.bet_balance_type == "2"
+                                  ? Number(isAuthenticate?.bonus_account) <
+                                      values?.stake_amount?.reduce(
+                                        (acc, amount) =>
+                                          Number(acc) + Number(amount),
+                                        0
+                                      ) || 0
+                                  : Number(isAuthenticate?.tramcard) <
+                                      values?.stake_amount?.reduce(
+                                        (acc, amount) =>
+                                          Number(acc) + Number(amount),
+                                        0
+                                      ) || 0
+                              }
+                            >
+                              PLACE BET
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="d-flex align-items-center gap-3 justify-content-center">
+                        <Link
+                          href="/auth/login"
+                          className="df-btn bg-shadow text-decoration-none df-bg reg-btn"
+                        >
+                          Login
+                        </Link>
+                        <Link
+                          href="/auth/register"
+                          className="df-btn bg-shadow text-decoration-none df-bg reg-btn"
+                        >
+                          Complete Register
+                        </Link>
+                        <Link
+                          href="/auth/one-click"
+                          className="df-btn bg-shadow text-decoration-none df-bg reg-btn"
+                        >
+                          Quick Registration
+                        </Link>
+                      </div>
+                    )}
+                  </>
+                </div>
+              </>
+            </FormikForm>
+          )}
+        </Formik>
+      </div>
+    </>
   );
 };
 

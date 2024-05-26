@@ -47,9 +47,7 @@ const GameDetails = () => {
       await fetchTeamSquads();
       await fetchSubcategoryData();
     }
-  }, [
-    cat
-  ]);
+  }, [cat]);
 
   // Fetch Odds data
   const fetchCricketOdds = async () => {
@@ -152,15 +150,15 @@ const GameDetails = () => {
       const intervalId = setInterval(() => {
         fetchCricketOdds();
         fetchCricketLive();
-      }, 9500);
-      return () => clearInterval(intervalId); 
+      }, 60000);
+      return () => clearInterval(intervalId);
     }
   }, [cat, fetchCricketLive]);
 
   // Submenu view
   const handleSubmenuView = () => {
-    setShowSubMenu((prevState) => !prevState)
-  }
+    setShowSubMenu((prevState) => !prevState);
+  };
 
   return (
     <div className="container-fluid">
@@ -245,7 +243,7 @@ const GameDetails = () => {
             ) : (
               <OddsBookmark
                 odds={odds?.matches?.match ?? []}
-                isLive={details?.match?.status}
+                isLive={details?.match?.status == "In Progress" ? 'LIVE' : 'Upcoming'}
                 category={cat}
                 league={odds?.name}
               />

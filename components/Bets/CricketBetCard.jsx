@@ -81,11 +81,12 @@ const CricketBetCard = (props) => {
                           toName: props.data.match?.localteam?.name,
                           twName: props.data.match?.visitorteam?.name,
                           isLive: odd?.match?.matchinfo?.info[0]?.value
-                            ? "live"
+                            ? "LIVE"
                             : "Upcoming",
                           market:
                             props.data.match?.odds?.type[0].bookmaker?.name,
                           oddsName: odd.name,
+                          disable: odd?.stop == "True" ? true: false
                         }}
                       />
                     )
