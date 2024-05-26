@@ -287,7 +287,7 @@ const Header = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link href={"/"}>Bet History</Link>
+                        <Link href={"/user/bet/history"}>Bet History</Link>
                       </li>
                       <li>
                         <Link href={"/user/casino-history"}>
@@ -682,7 +682,7 @@ const Header = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link href={"/"}>Bet History</Link>
+                          <Link href={"/user/bet/history"}>Bet History</Link>
                         </li>
                         <li>
                           <Link href={"/user/casino-history"}>

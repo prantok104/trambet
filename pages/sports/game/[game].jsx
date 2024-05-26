@@ -150,7 +150,7 @@ const GameDetails = () => {
       const intervalId = setInterval(() => {
         fetchCricketOdds();
         fetchCricketLive();
-      }, 9500);
+      }, 60000);
       return () => clearInterval(intervalId);
     }
   }, [cat, fetchCricketLive]);
@@ -243,7 +243,7 @@ const GameDetails = () => {
             ) : (
               <OddsBookmark
                 odds={odds?.matches?.match ?? []}
-                isLive={details?.match?.status}
+                isLive={details?.match?.status == "In Progress" ? 'LIVE' : 'Upcoming'}
                 category={cat}
                 league={odds?.name}
               />

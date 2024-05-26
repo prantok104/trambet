@@ -49,7 +49,7 @@ const OddsDisplay = ({ details, cat }) => {
               value: oddsItem.value,
               toName: details.matches[0].localteam?.name,
               twName: details.matches[0].awayteam?.name,
-              isLive: oddsItem.status === "Not Started" ? true : false,
+              isLive: oddsItem.status === "Not Started" ? "Upcoming" : 'LIVE',
               market: markerItem.name,
               oddsName: `${oddsItem.name}`,
               disable: oddsItem?.stop == "True" ? true: false

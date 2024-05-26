@@ -14,3 +14,18 @@ export async function betPlacement(data) {
       return [];
     });
 }
+
+export async function betsHisotry(page, per_page) {
+  return await HttpClientCall({
+    endpoint: `bet-history/${page}/${per_page}`,
+    method: "GET",
+    includeAuth: true,
+    data: [],
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
