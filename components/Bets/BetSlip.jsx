@@ -13,10 +13,13 @@ import { clearBetSlip } from "@/store/reducers/betSlipReducer";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useUserData } from "../Context/UserDataProvider/UserProvider";
+import { notify } from "../Helper";
+import {betPlacement} from '@/services/BetService'
 const BetSlip = () => {
   const { userData } = useUserData();
   const dispatch = useDispatch();
-  const isAuthenticate = Cookies.get("token");
+  const {user} = useSelector((state) =>state.AuthReducer)
+  const isAuthenticate = user;
   const betSlip = useSelector((state) => state.betSlipReducer);
   const { bets } = betSlip;
   const innerRef = useRef(null);
@@ -68,6 +71,43 @@ const BetSlip = () => {
     dispatch(clearBetSlip([]));
   };
 
+
+  const handleBetSubmit = async (values) => {
+      const payload = {
+        stake_amount:
+          values?.stake_amount?.reduce(
+            (acc, amount) => Number(acc) + Number(amount),
+            0
+          ) || 0,
+        amount_type: values?.bet_balance_type,
+        bet_type: values?.bet_type,
+        bets: bets?.map((item, index) => ({
+          ...item,
+          oddId: item?.id,
+          odds: item?.value,
+          odds_point: item?.value,
+          stake_amount: values?.stake_amount[index],
+          return_amount: values?.stake_amount[index],
+          checker: item?.isLive ? "LIVE" : "UPCOMING",
+          amount_type: values?.bet_balance_type,
+          status: "pending",
+          api_source_type: "Goal Score",
+          is_live: item?.isLive ? item?.isLive: false,
+          team1: item?.toName,
+          team2: item?.twName,
+          odd_name: item?.oddsName,
+          leauge: item?.league,
+          market_name: item?.market
+        })),
+      };
+      const responseData = await betPlacement(payload);
+      if(responseData?.status){
+        notify('success', responseData?.user_message)
+      }else{
+        notify("error", responseData?.user_message);
+      }
+  }
+
   return (
     <div className="betslip-container p-2 text-center">
       <Formik
@@ -75,6 +115,7 @@ const BetSlip = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         enableReinitialize
+        onSubmit={handleBetSubmit}
       >
         {({ values }) => (
           <FormikForm>
@@ -102,7 +143,9 @@ const BetSlip = () => {
                     value="1"
                   />
                   <RadioField
-                    label={`Bonus (${Number(userData?.bonus_account).toFixed(2)})`}
+                    label={`Bonus (${Number(userData?.bonus_account).toFixed(
+                      2
+                    )})`}
                     id="bonus_btn"
                     name="bet_balance_type"
                     value="2"
@@ -158,7 +201,7 @@ const BetSlip = () => {
               </div>
 
               <div className="bet-slip-final-bet betslip-single-bet-item mt-2">
-                {/* <>
+                <>
                   {isAuthenticate ? (
                     <div>
                       <h6 className="df-font">{`Singles (  ${bets?.length} )`}</h6>
@@ -207,8 +250,15 @@ const BetSlip = () => {
                         <div className="bet-trash-btn">
                           <GoTrash onClick={handleRemoveAllBets} />
                         </div>
+                        {/* {values?.stake_amount?.reduce(
+                          (acc, amount) => Number(acc) + Number(amount),
+                          0
+                        ) || 0} */}
                         <div className="bet-submit-btn container-fluid p-0 mt-2">
-                          <Button className="btn-sm container-fluid df-font p-2">
+                          <Button
+                            type="submit"
+                            className="btn-sm container-fluid df-font p-2"
+                          >
                             PLACE BET
                           </Button>
                         </div>
@@ -236,7 +286,7 @@ const BetSlip = () => {
                       </Link>
                     </div>
                   )}
-                </> */}
+                </>
               </div>
             </>
           </FormikForm>

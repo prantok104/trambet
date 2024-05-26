@@ -61,7 +61,10 @@ const GameDetails = () => {
               </div>
             ) : (
               <>
-                <div className="cricket-tabs-area mb-2" style={{ background: `#25365F` }}>
+                <div
+                  className="cricket-tabs-area mb-2"
+                  style={{ background: `#25365F` }}
+                >
                   {Array.isArray(details?.matches) &&
                   details?.matches?.length > 0 ? (
                     <Card
@@ -104,9 +107,11 @@ const GameDetails = () => {
 
                 <div className="cricket-odds-show">
                   {Array.isArray(details?.matches) &&
-                  details?.matches?.length > 0
-                    ? <OddsDisplay details={details} cat="hello" />
-                    : "No Data found right now"}
+                  details?.matches?.length > 0 ? (
+                    <OddsDisplay details={details} cat={cat} />
+                  ) : (
+                    "No Data found right now"
+                  )}
                 </div>
               </>
             )}
