@@ -12,7 +12,10 @@ import { GoTrash } from "react-icons/go";
 import { clearBetSlip } from "@/store/reducers/betSlipReducer";
 import Cookies from "js-cookie";
 import Link from "next/link";
-import { useUserData } from "../Context/UserDataProvider/UserProvider";
+import {
+  useUserData,
+  setUserProMuted,
+} from "../Context/UserDataProvider/UserProvider";
 import { notify } from "../Helper";
 import {betPlacement} from '@/services/BetService'
 const BetSlip = () => {
@@ -102,7 +105,9 @@ const BetSlip = () => {
       };
       const responseData = await betPlacement(payload);
       if(responseData?.status){
-        notify('success', responseData?.user_message)
+        notify('success', responseData?.user_message);
+        dispatch(clearBetSlip([]));
+        setUserProMuted((prevState) => !prevState);
       }else{
         notify("error", responseData?.user_message);
       }
