@@ -39,8 +39,8 @@ export function rowIndex(rows) {
     return {
         name: '#',
         cell: (row, index) => (Number(rows?.current_page ?? 1) - 1) * Number(rows?.per_page ?? 10) + (index + 1),
-        maxwidth: '60px',
-        minwidth: '60px',
+        maxwidth: '40px',
+        minwidth: '40px',
     };
 }
 

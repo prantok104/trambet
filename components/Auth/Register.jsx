@@ -16,6 +16,8 @@ import { useUserData } from "../Context/UserDataProvider/UserProvider";
 import Cookies from "js-cookie";
 
 const Register = () => {
+  const router = useRouter();
+  console.log(router);
   const { handleUserData } = useUserData();
   const validationSchema = Yup.object({
     email: Yup.string().required("Email is required").max(100),
@@ -34,7 +36,7 @@ const Register = () => {
   const [mobile, setMobile] = useState("");
   const [country, setCountry] = useState("BD");
   const [curr, setCurrency] = useState("BDT");
-  const [promo, setPromo] = useState("");
+  const [promo, setPromo] = useState('');
   const [agree, setAgree] = useState();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -42,6 +44,7 @@ const Register = () => {
   const [currencyList, setCurrencyList] = useState([]);
   const [isCountryLoading, setIsCountryLoading] = useState(false);
   const [isCurrencyLoading, setIsCurrencyLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   async function countryData() {
     setIsCountryLoading(true);
@@ -97,11 +100,11 @@ const Register = () => {
     currencyData();
   }, []);
 
-  const router = useRouter();
   const handleSubmit = async (
     values,
     { setErrors, setStatus, setSubmitting }
   ) => {
+    setLoading(true)
     const countryName = countryList.filter((item) => item.code === country);
     const data = {
       email: email,
@@ -115,6 +118,7 @@ const Register = () => {
       agree: agree,
       country:
         countryName.length && countryName[0].name ? countryName[0].name : null,
+      reference: router?.query?.reference,
     };
     HttpClientCall({
       method: "POST",
@@ -122,6 +126,7 @@ const Register = () => {
       includeAuth: false,
       data: data,
     }).then((res) => {
+      setLoading(false)
       if (res.status === true) {
         localStorage.setItem("token", res.access_token);
         localStorage.setItem("token", res.access_token);
@@ -132,6 +137,7 @@ const Register = () => {
         } else {
           toast.success("Successfully Registration completed");
         }
+        router.replace("/user/otp-verify");
       } else if (res.response.status === 422) {
         Object.keys(res.response.data.errors).forEach((field) => {
           if (typeof res.response.data.errors[field] !== "string") {
@@ -148,11 +154,10 @@ const Register = () => {
     });
   };
 
-  let content = "";
-  if (isCountryLoading || isCurrencyLoading) {
-    content = <Loader />;
-  } else {
-    content = (
+
+  return (
+    <>
+      {isCountryLoading || isCountryLoading || loading ? <Loader /> : ""}
       <Formik
         // innerRef={formikRef}
         initialValues={initialValues}
@@ -281,10 +286,8 @@ const Register = () => {
           );
         }}
       </Formik>
-    );
-  }
-
-  return content;
+    </>
+  );
 };
 
 export default Register;

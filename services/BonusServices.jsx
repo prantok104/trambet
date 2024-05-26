@@ -29,3 +29,18 @@ export async function bonusClaimService(id) {
       return [];
     });
 }
+
+export async function bonusReferralClaimService(id) {
+  return await HttpClientCall({
+    endpoint: `referral-claim/${id}`,
+    method: "GET",
+    includeAuth: true,
+    data: [],
+  })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return [];
+    });
+}

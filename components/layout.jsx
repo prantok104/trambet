@@ -25,6 +25,10 @@ const Layout = ({ title, children }) => {
     ) {
       router.replace("/");
     }
+
+    if (router?.asPath.startsWith("/?reference=") && !user) {
+      router.replace(`/auth/register${router.asPath}`)
+    }
     if (pathname === "/user/withdraw" && user && user?.kv != "1") {
       router.replace("/user/kyc-verification");
     }
