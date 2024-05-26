@@ -3,12 +3,13 @@ import AlertCard from "./../../../components/AlertCard";
 import Image from "next/image";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { useCallback, useEffect, useState } from "react";
-import { bonusClaimService, bonuslog } from "@/services/BonusServices";
+import { bonusClaimService,bonusReferralClaimService, bonuslog } from "@/services/BonusServices";
 import dayjs from "dayjs";
 import { notify } from "@/components/Helper";
 import Loader from "@/components/Loader";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 const BonusCard = () => {
   const { setUserProMuted } = useUserData();
   const [bonus, setBonus] = useState({});
@@ -63,6 +64,21 @@ if(bonus?.active){
       notify("error", "Something went wrong");
     }
   };
+
+  // Referral cliam
+  const handleReferralClaim = async (id) => {
+   setLoading(true);
+    const responseData = await bonusReferralClaimService(id);
+    if (responseData?.status == true) {
+      setMuted((prevState) => !prevState);
+      notify("success", responseData?.user_message);
+      setUserProMuted((prevState) => !prevState);
+      setLoading(false);
+    } else {
+      setLoading(false);
+      notify("error", "Something went wrong");
+    }
+  }
   return (
     <>
       {loading ? (
@@ -223,6 +239,32 @@ if(bonus?.active){
                       </div>
                     </div>
                   </div>
+                </div>
+
+                <div className="col-md-12 mt-2">
+                  {bonus?.referrals?.length > 0 ? (
+                    <>
+                      <h5>Waiting for active referral tramcard bonus</h5> <hr />
+                      <ul className="p-0 mb-2">
+                        {bonus.referrals?.map((item, index) => (
+                          <li
+                            key={index}
+                            style="width: 100%; display: flex; align-items: center; gap: 43px; font-size: 14px; background: #1E263D; padding: 8px; border-bottom: 1px solid #1E263D;"
+                          >
+                            <span>
+                              Congratulations on receiving your referral bonus,
+                              Enjoy your referral bonus of {item?.username}{" "}
+                              bettor. Happy betting ahead!
+                            </span>
+
+                            <button onClick={() => handleReferralClaim(item?.id)} className="df-btn df-bg">Claim Now</button>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </>
             ) : (
