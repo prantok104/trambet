@@ -47,9 +47,7 @@ const GameDetails = () => {
       await fetchTeamSquads();
       await fetchSubcategoryData();
     }
-  }, [
-    cat
-  ]);
+  }, [cat]);
 
   // Fetch Odds data
   const fetchCricketOdds = async () => {
@@ -153,14 +151,14 @@ const GameDetails = () => {
         fetchCricketOdds();
         fetchCricketLive();
       }, 9500);
-      return () => clearInterval(intervalId); 
+      return () => clearInterval(intervalId);
     }
   }, [cat, fetchCricketLive]);
 
   // Submenu view
   const handleSubmenuView = () => {
-    setShowSubMenu((prevState) => !prevState)
-  }
+    setShowSubMenu((prevState) => !prevState);
+  };
 
   return (
     <div className="container-fluid">

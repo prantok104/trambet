@@ -86,6 +86,7 @@ const CricketBetCard = (props) => {
                           market:
                             props.data.match?.odds?.type[0].bookmaker?.name,
                           oddsName: odd.name,
+                          disable: odd?.stop == "True" ? true: false
                         }}
                       />
                     )

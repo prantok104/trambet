@@ -255,14 +255,32 @@ const BetSlip = () => {
                         <div className="bet-trash-btn">
                           <GoTrash onClick={handleRemoveAllBets} />
                         </div>
-                        {/* {values?.stake_amount?.reduce(
-                          (acc, amount) => Number(acc) + Number(amount),
-                          0
-                        ) || 0} */}
                         <div className="bet-submit-btn container-fluid p-0 mt-2">
                           <Button
                             type="submit"
                             className="btn-sm container-fluid df-font p-2"
+                            disabled={
+                              values?.bet_balance_type == "1"
+                                ? Number(isAuthenticate?.balance) <
+                                    values?.stake_amount?.reduce(
+                                      (acc, amount) =>
+                                        Number(acc) + Number(amount),
+                                      0
+                                    ) || 0
+                                : values?.bet_balance_type == "2"
+                                ? Number(isAuthenticate?.bonus_account) <
+                                    values?.stake_amount?.reduce(
+                                      (acc, amount) =>
+                                        Number(acc) + Number(amount),
+                                      0
+                                    ) || 0
+                                : Number(isAuthenticate?.tramcard) <
+                                    values?.stake_amount?.reduce(
+                                      (acc, amount) =>
+                                        Number(acc) + Number(amount),
+                                      0
+                                    ) || 0
+                            }
                           >
                             PLACE BET
                           </Button>
