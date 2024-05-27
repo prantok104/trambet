@@ -61,7 +61,7 @@ const BetHistoryModel = ({
       },
       {
         name: "Odds Name",
-        selector: (row) => row?.odd_name,
+        selector: (row) => row?.odds_name,
         sortable: false,
         minWidth: "120px",
       },
