@@ -286,7 +286,7 @@ const Sports = () => {
                 }`}
                 onClick={() => handleCategory(item?.slug)}
               >
-                <span className="games-count">{item?.length}</span>
+                {/* <span className="games-count">{item?.length}</span> */}
                 <div
                   className="text-white"
                   dangerouslySetInnerHTML={{ __html: item?.icon }}
@@ -322,7 +322,7 @@ const Sports = () => {
                         onClick={() => handleSubCategory(item?.id)}
                       >
                         <span>{item?.name}</span>
-                        <span className="games-count">{matchedItems?.length}</span>
+                        {/* <span className="games-count">{matchedItems?.length}</span> */}
                       </li>
                     );
                   })
@@ -335,7 +335,7 @@ const Sports = () => {
                       onClick={() => handleSubCategory(item?.id)}
                     >
                       <span>{item?.name}</span>
-                      <span className="games-count">0</span>
+                      {/* <span className="games-count">0</span> */}
                     </li>
                   ))}
             </ul>
