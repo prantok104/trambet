@@ -75,7 +75,12 @@ const CricketBetCard = (props) => {
                       <OddsButton
                         key={index}
                         odds={{
+                          category: "cricket",
+                          league: props?.data?.name,
+                          matchId: props?.data?.match?.id,
                           id: odd?.id,
+                          bookmarkId: odd?.bookmaker?.id,
+                          odd_details: odd?.bookmaker?.odd,
                           title: odd.name,
                           value: odd.value,
                           toName: props.data.match?.localteam?.name,
@@ -86,7 +91,7 @@ const CricketBetCard = (props) => {
                           market:
                             props.data.match?.odds?.type[0].bookmaker?.name,
                           oddsName: odd.name,
-                          disable: odd?.stop == "True" ? true: false
+                          disable: odd?.stop == "True" ? true : false,
                         }}
                       />
                     )
