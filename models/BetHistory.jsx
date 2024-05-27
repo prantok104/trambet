@@ -71,8 +71,21 @@ const BetHistoryModel = ({
         sortable: false,
       },
       {
-        name: "Stauts",
-        selector: (row) => row?.status,
+        name: "Status",
+        selector: (row) => {
+          switch (row?.status) {
+            case "1":
+              return "Win";
+            case "2":
+              return "Pending";
+            case "3":
+              return "Lose";
+            case "4":
+              return "Refunded";
+            default:
+              return "Unknown";
+          }
+        },
         sortable: false,
       },
     ],
