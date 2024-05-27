@@ -79,8 +79,10 @@ const CricketBetCard = (props) => {
                           league: props?.data?.name,
                           matchId: props?.data?.match?.id,
                           id: odd?.id,
-                          bookmarkId: odd?.bookmaker?.id,
-                          odd_details: odd?.bookmaker?.odd,
+                          bookmarkId:
+                            props.data.match?.odds?.type[0].bookmaker?.id,
+                          odd_details:
+                            props.data.match?.odds?.type[0].bookmaker?.odd,
                           title: odd.name,
                           value: odd.value,
                           toName: props.data.match?.localteam?.name,
