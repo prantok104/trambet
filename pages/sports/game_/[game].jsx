@@ -44,8 +44,13 @@ const GameDetails = () => {
   };
 
   useEffect(() => {
+    
     if(cat && league && match){
+      const interValId = setInterval(() => {
+        
       fetchGameDetails();
+      }, 60000);
+      return () => clearInterval(interValId);
     }
   }, [cat,league,match]);
 
