@@ -230,7 +230,7 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                             matchId: odds?.id,
                             odd_details: item?.bookmaker?.odd,
                             id: _item?.id,
-                            title: `${_item?.name} h`,
+                            title: `${_item?.name}`,
                             value: _item?.value,
                             toName: odds?.localteam?.name,
                             twName: odds?.visitorteam?.name,
