@@ -6,7 +6,7 @@ import OddsButton from "./OddsButton";
 import Slider from "react-slick";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
-const BetCard = (props) => {
+const BetCardLive = (props) => {
   console.log(props);
   const [oddsMarket, setOddsMarket] = useState("");
   const [oddsMarketList, setOddsMarketList] = useState([]);
@@ -37,8 +37,8 @@ const BetCard = (props) => {
   };
 
   useEffect(() => {
-    setOddsMarketList(props.data.odds[0].bookmakers);
-    setSelectedBookmakerOdds(props.data.odds[0].bookmakers[0]?.odds || []);
+    // setOddsMarketList(props.data.odds[0].bookmakers);
+    // setSelectedBookmakerOdds(props.data.odds[0].bookmakers[0]?.odds || []);
   }, []);
   return (
     <div className="single-bet-card ">
@@ -53,7 +53,7 @@ const BetCard = (props) => {
             <ImageCard team={props?.data?.awayteam} />
           </div>
           <div className="bet-card-body">
-            <div className="bet-card-odds-markets">
+            {/* <div className="bet-card-odds-markets">
               <select
                 className="odds-market-selection"
                 onClick={preventDefault}
@@ -66,9 +66,9 @@ const BetCard = (props) => {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
             <div className="bet-card-odds-area">
-              <Slider {...defaultSettings}>
+              {/* <Slider {...defaultSettings}>
                 {selectedBookmakerOdds.map((odd, index) => (
                   <OddsButton
                     key={index}
@@ -79,7 +79,7 @@ const BetCard = (props) => {
                     }}
                   />
                 ))}
-              </Slider>
+              </Slider> */}
             </div>
           </div>
         </div>
@@ -88,4 +88,4 @@ const BetCard = (props) => {
   );
 };
 
-export default BetCard;
+export default BetCardLive;
