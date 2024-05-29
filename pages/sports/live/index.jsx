@@ -154,10 +154,7 @@ const Sports = () => {
       .catch((error) => {
         notify("error", "No league found for this category");
         setLeague([]);
-      });
-
-      
-      
+      }); 
   };
 
   const sliderEffect = useCallback(async () => {
