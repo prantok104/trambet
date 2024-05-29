@@ -48,9 +48,9 @@ const BetCardLive = (props) => {
             <ImageCard team={props?.data?.localteam} />
             <TimeCard
               status={props?.data?.status}
-              date={(props.data.date || "") + " " + (props.data.time || "")}
+              date={(props?.data?.date || "") + " " + (props?.data?.time || "")}
             />
-            <ImageCard team={props?.data?.awayteam} />
+            <ImageCard team={props?.data?.awayteam || props?.data?.visitorteam} />
           </div>
           <div className="bet-card-body">
             {/* <div className="bet-card-odds-markets">

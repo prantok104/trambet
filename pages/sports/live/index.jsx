@@ -184,8 +184,16 @@ const Sports = () => {
     setActiveSubCategory(slug);
     setOddsLoading(true);
     //filter data from setLeague
-    const leagueData = league?.filter((item) => item?.id == slug);
-    setOdds(leagueData);
+    if(activeCategory === "soccernew"){
+      const leagueData = league?.filter((item) => item?.id == slug);
+      let matches = Array.isArray(leagueData[0]?.matches) ? leagueData[0]?.matches : [leagueData[0]?.matches];
+      setOdds(matches);
+    }else {
+      const leagueData = league?.filter((item) => item?.id == slug);
+      setOdds(leagueData);
+    }
+    // const leagueData = league?.filter((item) => item?.id == slug);
+    // setOdds(leagueData);
     setOddsLoading(false);
   };
 
