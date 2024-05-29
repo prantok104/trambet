@@ -37,17 +37,17 @@ const BetCardLive = (props) => {
     event.preventDefault();
   };
 
-  const fetchTeamLogo = async() => {
-    await axios.get("http://data2.goalserve.com:8084/api/v1/logotips/soccer/teams?k=ef2762546f6a447cc37608dc6b5e7b62&ids=9002,9240",{headers: {"Access-Control-Allow-Origin": "*"}
-    }).then((response) => {
-      console.log(response);
-    } ).catch((error) => {
-      console.log(error);
-    } )
-  }
+  // const fetchTeamLogo = async() => {
+  //   await axios.get("http://data2.goalserve.com:8084/api/v1/logotips/soccer/teams?k=ef2762546f6a447cc37608dc6b5e7b62&ids=9002,9240",{headers: {"Access-Control-Allow-Origin": "*"}
+  //   }).then((response) => {
+  //     console.log(response);
+  //   } ).catch((error) => {
+  //     console.log(error);
+  //   } )
+  // }
 
   useEffect(() => {
-    fetchTeamLogo();
+    // fetchTeamLogo();
   }, []);
   return (
     <div className="single-bet-card ">
