@@ -146,18 +146,15 @@ const Sports = () => {
         const removeAt = stringData.replace(/@/g, "");
         const objectData = JSON.parse(removeAt);
         setLeague(objectData?.data?.scores?.category);
-
         const leagueData = objectData?.data?.scores?.category?.filter((item) => item.id == objectData?.data?.scores?.category[0].id);
+        console.log(leagueData);
         setOdds(leagueData);
         setLoading(false);
       })
       .catch((error) => {
         notify("error", "No league found for this category");
         setLeague([]);
-      });
-
-      
-      
+      }); 
   };
 
   const sliderEffect = useCallback(async () => {
@@ -184,8 +181,22 @@ const Sports = () => {
     setActiveSubCategory(slug);
     setOddsLoading(true);
     //filter data from setLeague
-    const leagueData = league?.filter((item) => item?.id == slug);
-    setOdds(leagueData);
+    if(activeCategory === "soccernew"){
+      const leagueData = league?.filter((item) => item?.id == slug);
+      let matches = Array.isArray(leagueData[0]?.matches) ? leagueData[0]?.matches : [leagueData[0]?.matches];
+      setOdds(matches);
+    }else {
+      const leagueData = league?.filter((item) => item?.id == slug);
+      // console.log(leagueData);
+      const makeString = JSON.stringify(leagueData);
+      const awayTeamIds = leagueData.flatMap(league => league.match.map(match => match.awayteam.id));
+      const localTeamIds = leagueData.flatMap(league => league.match.map(match => match.localteam.id));
+
+      const allTeamIds = [...awayTeamIds, ...localTeamIds];
+      console.log(allTeamIds);
+      
+      setOdds(leagueData);
+    }
     setOddsLoading(false);
   };
 
