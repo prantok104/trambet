@@ -41,7 +41,7 @@ const SquadsPlayerForCricket = ({ team, item = {} }) => {
           </tr>
         </thead>
         <tbody>
-          {item?.map((data, index) => (
+          {Array.isArray(item) ? item?.map((data, index) => (
             <tr key={`cricket_squads_${index}`}>
               <td>{++index}</td>
               <td>
@@ -54,7 +54,7 @@ const SquadsPlayerForCricket = ({ team, item = {} }) => {
               <td>{data.t20 ? "Yes" : "No"}</td>
               <td>{data.test ? "Yes" : "No"}</td>
             </tr>
-          ))}
+          )) : ''}
         </tbody>
       </table>
 
