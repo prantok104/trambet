@@ -9,6 +9,8 @@ import axios from "axios";
 import { API_HOST, SEASON, notify } from "@/components/Helper";
 import { Spinner } from "react-bootstrap";
 import CricketBetCard from "@/components/Bets/CricketBetCard";
+import { set } from "lodash";
+import BetCardLive from "../../../components/Bets/BetCardLive";
 
 const Sports = () => {
   const categoriesData = [
@@ -123,7 +125,7 @@ const Sports = () => {
     },
   ];
   const [categories, setCategories] = useState([]);
-  const [filterCategory, setFilterCategory] = useState('');
+  const [filterCategory, setFilterCategory] = useState("");
   const [activeCategory, setActiveCategory] = useState(categoriesData[0]?.slug);
   const [activeSubCategory, setActiveSubCategory] = useState();
   const [sliders, setSliders] = useState([]);
@@ -132,74 +134,21 @@ const Sports = () => {
   const [odds, setOdds] = useState([]);
   const [oddsLoading, setOddsLoading] = useState(false);
   const [filterOddsCricket, setFilterOddsCricket] = useState([]);
+  const [filterOddsSoccer, setFilterOddsSoccer] = useState([]);
 
-
-  const fetchLeague = async (data) => {
-    setActiveCategory(data?.slug);
-
-    let endpoint = `${API_HOST}/${data.slug}/leagues?json=1&season=${SEASON}`;
-
-    axios
-      .get(endpoint)
+  const handleFetchLeague = async (slug) => {
+    setActiveCategory(slug);
+    setLoading(true);
+    let endpoint = `${API_HOST}/${slug}/home?json=1`;
+    axios.get(endpoint)
       .then((response) => {
         const stringData = JSON.stringify(response);
         const removeAt = stringData.replace(/@/g, "");
         const objectData = JSON.parse(removeAt);
-        if (
-          objectData?.data?.leagues !== undefined &&
-          objectData?.data?.leagues !== null
-        ) {
-          setLeague(objectData?.data?.leagues?.league);
-          handleSubCategory(objectData?.data?.leagues?.league[0]?.id);
-        } else if (
-          objectData?.data?.categories?.category === undefined ||
-          objectData?.data?.categories?.category
-        ) {
-          setLeague(objectData?.data?.categories?.category);
-          handleSubCategory(objectData?.data?.categories?.category[0]?.id);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        notify("error", "No league found for this category");
-        setLeague([]);
-      });
-    // // console.log(league);
-  };
+        setLeague(objectData?.data?.scores?.category);
 
-  const handleCategory = (slug) => {
-    setActiveCategory(slug);
-    setActiveSubCategory('');
-    setLoading(true);
-    let endpoint = `${API_HOST}/${slug}/leagues?json=1&season=${SEASON}`;
-    if (slug == "cricket") {
-      endpoint = `${API_HOST}/cricketfixtures/tours/tours?json=1&season=${SEASON}`;
-    }
-
-    // League fetch
-    axios
-      .get(endpoint)
-      .then((response) => {
-        if (slug == "cricket") {
-          setLeague(response?.data?.fixtures?.category);
-        } else {
-          const stringData = JSON.stringify(response);
-          const removeAt = stringData.replace(/@/g, "");
-          const objectData = JSON.parse(removeAt);
-          setFilterCategory(objectData);
-          if (
-            objectData?.data?.leagues !== undefined &&
-            objectData?.data?.leagues !== null
-          ) {
-            setLeague(objectData?.data?.leagues?.league);
-          } else if (
-            objectData?.data?.categories?.category === undefined ||
-            objectData?.data?.categories?.category
-          ) {
-            setLeague(objectData?.data?.categories?.category);
-          }
-        }
-
+        const leagueData = objectData?.data?.scores?.category?.filter((item) => item.id == objectData?.data?.scores?.category[0].id);
+        setOdds(leagueData);
         setLoading(false);
       })
       .catch((error) => {
@@ -207,21 +156,8 @@ const Sports = () => {
         setLeague([]);
       });
 
-    // Upcoming game fetch only for cricket
-    if (slug == "cricket") {
-      setOddsLoading(true);
-      axios
-        .get(`${API_HOST}/cricket/schedule1?json=1`)
-        .then((response) => {
-          setOdds(response?.data?.fixtures?.category);
-          setFilterOddsCricket(response?.data?.fixtures?.category);
-          setOddsLoading(false);
-        })
-        .catch((error) => {
-          notify("error", "No Cricket match found.");
-          setOdds([]);
-        });
-    }
+      
+      
   };
 
   const sliderEffect = useCallback(async () => {
@@ -240,39 +176,20 @@ const Sports = () => {
 
   useEffect(() => {
     sliderEffect();
+    handleFetchLeague(categoriesData[0]?.slug);
     setCategories(categoriesData);
-    fetchLeague(categoriesData[0]);
   }, []);
 
   const handleSubCategory = async (slug) => {
     setActiveSubCategory(slug);
     setOddsLoading(true);
-    axios.get(`${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`).then((response) => {
-        setOdds(response?.data?.scores?.categories);
-        setOddsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setOddsLoading(false);
-      });
-    if (activeCategory == "cricket") {
-      setActiveSubCategory(slug);
-      setOdds(filterOddsCricket?.filter(item => item?.id == slug))
-    } else {
-      setActiveSubCategory(slug);
-      setOddsLoading(true);
-      axios.get(`${API_HOST}/getodds/soccer?cat=${activeCategory}_10&league=${slug}&json=1`)
-        .then((response) => {
-          setOdds(response?.data?.scores?.categories);
-          setOddsLoading(false);
-        })
-        .catch((error) => {
-          // console.log(error);
-          setOddsLoading(false);
-        });
-    }
+    //filter data from setLeague
+    const leagueData = league?.filter((item) => item?.id == slug);
+    setOdds(leagueData);
+    setOddsLoading(false);
   };
 
+  //   console.log(odds.matches);
   return (
     <>
       <div className="category-sub-category">
@@ -284,7 +201,7 @@ const Sports = () => {
                 className={`d-flex align-items-center justify-content-center gap-1 flex-column ${
                   activeCategory == item?.slug ? "active" : ""
                 }`}
-                onClick={() => handleCategory(item?.slug)}
+                onClick={() => handleFetchLeague(item?.slug)}
               >
                 {/* <span className="games-count">{item?.length}</span> */}
                 <div
@@ -307,12 +224,11 @@ const Sports = () => {
           ) : (
             <ul className="sports-sub-category">
               {activeCategory == "cricket"
-                ?
-                  league?.map((item, index) => {
-                     const oddsCricketCopy = [...filterOddsCricket];
-                     const matchedItems = oddsCricketCopy?.filter(
-                       (_item) => _item.id === item?.id
-                     );
+                ? league?.map((item, index) => {
+                    const oddsCricketCopy = [...filterOddsCricket];
+                    const matchedItems = oddsCricketCopy?.filter(
+                      (_item) => _item.id === item?.id
+                    );
                     return (
                       <li
                         key={`sports_sub_categories${index}`}
@@ -398,25 +314,36 @@ const Sports = () => {
                 ))
               ) : (
                 odds?.map((odd, oddIndex) =>
-                  odd.matches?.map((item, index) => (
-                    <div
-                      className="col-md-3 mb-4"
-                      key={`bet_card_${oddIndex}_${index}`}
-                    >
-                      <BetCard
-                        data={item}
-                        href={`/sports/game_/${item?.id}?cat=${activeCategory}&league=${odd?.id}&match=${item?.id}`}
-                        category={activeCategory}
-                        subCategories={activeSubCategory}
-                      />
-                    </div>
-                  ))
+                    Array.isArray(odd.match) ? odd.match.map((item, index) => (
+                        <div
+                          className="col-md-3 mb-4"
+                          key={`bet_card_${oddIndex}_${index}`}
+                        >
+                          <BetCardLive
+                            data={item}
+                            href={`/sports/game_/${item?.id}?cat=${activeCategory}&league=${odd?.id}&match=${item?.id}`}
+                            category={activeCategory}
+                            subCategories={activeSubCategory}
+                          />
+                        </div>
+                      )) : (
+                        <div
+                          className="col-md-3 mb-4"
+                          key={`bet_card_${oddIndex}`}
+                        >
+                          <BetCardLive
+                            data={odd.match}
+                            href={`/sports/game_/${odd?.id}?cat=${activeCategory}&league=${odd?.id}&match=${odd?.id}`}
+                            category={activeCategory}
+                            subCategories={activeSubCategory}
+                          />
+                        </div>
+                      )
                 )
               )}
             </>
           </div>
         </div>
-        {/* Sport item area end */}
       </div>
     </>
   );
