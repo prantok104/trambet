@@ -7,7 +7,7 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
     <div>
       {odds?.odds?.type?.map((item, index) => (
         <div key={index} style={{ marginBottom: "10px" }}>
-          <Card header={`${index}.${item?.value}`}>
+          <Card header={`${item?.value}`}>
             {Array.isArray(item?.bookmaker) ? (
               <div className="d-flex flex-wrap gap-2">
                 {item?.bookmaker?.map((markerItem, index) => (
@@ -15,9 +15,9 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                     key={`bookmarker_name_${index}`}
                     style={{ minWidth: "120px" }}
                   >
-                    <h6 className="df-font" style={{ paddingLeft: "5px" }}>
+                    {/* <h6 className="df-font" style={{ paddingLeft: "5px" }}>
                       {markerItem?.name}
-                    </h6>
+                    </h6> */}
                     {markerItem?.hasOwnProperty("total") ? (
                       Array.isArray(markerItem?.total) ? (
                         markerItem?.total?.map((totalitem, index) => (
@@ -137,9 +137,9 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
             ) : (
               <div className="without_total_odd">
                 <>
-                  <h6 className="df-font" style={{ paddingLeft: "5px" }}>
+                  {/* <h6 className="df-font" style={{ paddingLeft: "5px" }}>
                     {item?.bookmaker?.name}
-                  </h6>
+                  </h6> */}
                   {item?.bookmaker?.hasOwnProperty("total") ? (
                     Array.isArray(item?.bookmaker?.total) ? (
                       item?.bookmaker?.total?.map((totalitem, index) => (

@@ -62,7 +62,7 @@ const OddsDisplay = ({ details, cat }) => {
 
   return details?.matches?.length > 0
     ? details.matches[0].odds.map((item, index) => (
-        <div key={index} style={{ marginBottom: "10px" }}>
+        <div key={index} style={{ marginBottom: "5px" }}>
           <Card header={`${item.value}`}>
             <div className="d-flex flex-wrap gap-2">
               {item.bookmakers.map((markerItem, markerIndex) => (
@@ -70,9 +70,9 @@ const OddsDisplay = ({ details, cat }) => {
                   key={`bookmarker_name_${index}_${markerIndex}`}
                   style={{ minWidth: "120px" }}
                 >
-                  <h6 className="df-font" style={{ paddingLeft: "5px" }}>
+                  {/* <h6 className="df-font" style={{ paddingLeft: "5px" }}>
                     {markerItem.name}
-                  </h6>
+                  </h6> */}
                   <div className="d-flex align-items-center flex-wrap">
                     {renderOdds(
                       markerItem.odds,
