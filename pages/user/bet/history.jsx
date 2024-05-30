@@ -69,7 +69,7 @@ const BetHistory = () => {
 
   return (
     <div className="container-fluid">
-      <Breadcrumb title="Deposit history" path="Home => Bet => bet history" />
+      <Breadcrumb title="Bet history" path="Home => Bet => bet history" />
       <div className="mt-2">
         <Card
           header="History"
