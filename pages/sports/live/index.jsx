@@ -146,8 +146,8 @@ const Sports = () => {
         const removeAt = stringData.replace(/@/g, "");
         const objectData = JSON.parse(removeAt);
         setLeague(objectData?.data?.scores?.category);
-
         const leagueData = objectData?.data?.scores?.category?.filter((item) => item.id == objectData?.data?.scores?.category[0].id);
+        console.log(leagueData);
         setOdds(leagueData);
         setLoading(false);
       })
@@ -187,10 +187,16 @@ const Sports = () => {
       setOdds(matches);
     }else {
       const leagueData = league?.filter((item) => item?.id == slug);
+      // console.log(leagueData);
+      const makeString = JSON.stringify(leagueData);
+      const awayTeamIds = leagueData.flatMap(league => league.match.map(match => match.awayteam.id));
+      const localTeamIds = leagueData.flatMap(league => league.match.map(match => match.localteam.id));
+
+      const allTeamIds = [...awayTeamIds, ...localTeamIds];
+      console.log(allTeamIds);
+      
       setOdds(leagueData);
     }
-    // const leagueData = league?.filter((item) => item?.id == slug);
-    // setOdds(leagueData);
     setOddsLoading(false);
   };
 

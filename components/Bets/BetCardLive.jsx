@@ -8,7 +8,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import axios from "axios";
 
 const BetCardLive = (props) => {
-  console.log(props);
+  // console.log(props);
   const [oddsMarket, setOddsMarket] = useState("");
   const [oddsMarketList, setOddsMarketList] = useState([]);
   const [selectedBookmakerOdds, setSelectedBookmakerOdds] = useState([]);
@@ -54,7 +54,7 @@ const BetCardLive = (props) => {
       <Link href={props?.href} className="p-3 bg-shadow df-radius">
         <div className="bet-card-area-start">
           <div className="bet-card-header d-flex align-items-center justify-content-between gap-2">
-            <ImageCard team={props?.data?.localteam} />
+            <ImageCard team={props?.data?.localteam} category={props?.category}/>
             <TimeCard
               status={props?.data?.status}
               date={(props?.data?.date || "") + " " + (props?.data?.time || "")}
