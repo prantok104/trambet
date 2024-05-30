@@ -7,7 +7,6 @@ import Slider from "react-slick";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const BetCard = (props) => {
-  console.log(props);
   const [oddsMarket, setOddsMarket] = useState("");
   const [oddsMarketList, setOddsMarketList] = useState([]);
   const [selectedBookmakerOdds, setSelectedBookmakerOdds] = useState([]);
@@ -29,6 +28,7 @@ const BetCard = (props) => {
     const selectedBookmaker = props.data.odds[0].bookmakers.find(
       (bookmaker) => bookmaker.id === selectedBookmakerId
     );
+    setOddsMarket(selectedBookmaker);
     setSelectedBookmakerOdds(selectedBookmaker?.odds || []);
   };
 
@@ -69,16 +69,36 @@ const BetCard = (props) => {
             </div>
             <div className="bet-card-odds-area">
               <Slider {...defaultSettings}>
-                {selectedBookmakerOdds.map((odd, index) => (
-                  <OddsButton
-                    key={index}
-                    odds={{
-                      id: index,
-                      title: odd.name,
-                      value: odd.value,
-                    }}
-                  />
-                ))}
+
+
+                {selectedBookmakerOdds.map((odd, index) => {
+                  return (
+                    <OddsButton
+                      key={index}
+                      odds={{
+                        category: props?.category,
+                        league: props?.subCategories,
+                        bookmarkId: props?.data?.odds[0].bookmakers[0]?.id,
+                        matchId: props?.matchId,
+                        odd_details: props?.data?.odds[0].bookmakers[0]?.odds,
+                        id: `${index}_${props?.matchId}`,
+                        title: odd.name,
+                        value: odd.value,
+                        toName: props?.data?.localteam?.name,
+                        twName: props?.data?.awayteam?.name,
+                        isLive:
+                          props?.data?.status == "In progress"
+                            ? "LIVE"
+                            : "UPCOMING",
+                        market: Object.keys(oddsMarket).includes("name")
+                          ? oddsMarket.name
+                          : props?.data?.odds[0].bookmakers[0]?.name,
+                        oddsName: odd?.name,
+                        disable: odd?.stop == "True" ? true : false,
+                      }}
+                    />
+                  );
+                })}
               </Slider>
             </div>
           </div>

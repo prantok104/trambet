@@ -307,12 +307,11 @@ const Sports = () => {
           ) : (
             <ul className="sports-sub-category">
               {activeCategory == "cricket"
-                ?
-                  league?.map((item, index) => {
-                     const oddsCricketCopy = [...filterOddsCricket];
-                     const matchedItems = oddsCricketCopy?.filter(
-                       (_item) => _item.id === item?.id
-                     );
+                ? league?.map((item, index) => {
+                    const oddsCricketCopy = [...filterOddsCricket];
+                    const matchedItems = oddsCricketCopy?.filter(
+                      (_item) => _item.id === item?.id
+                    );
                     return (
                       <li
                         key={`sports_sub_categories${index}`}
@@ -407,7 +406,11 @@ const Sports = () => {
                         data={item}
                         href={`/sports/game_/${item?.id}?cat=${activeCategory}&league=${odd?.id}&match=${item?.id}`}
                         category={activeCategory}
-                        subCategories={activeSubCategory}
+                        subCategories={
+                          league?.find((item) => item?.id == activeSubCategory)
+                            ?.name
+                        }
+                        matchId={item?.id}
                       />
                     </div>
                   ))
