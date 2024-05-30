@@ -3,7 +3,7 @@ import Card from "@/components/Card";
 import Breadcrumb from "@/components/Breadcrumb";
 import Myticket from "@/components/Users/Support/Myticket";
 import { getMyTickets } from "@/services/support";
-const tickets = () => {
+const Tickets = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState({
@@ -74,4 +74,4 @@ const tickets = () => {
   );
 };
 
-export default tickets;
+export default Tickets;
