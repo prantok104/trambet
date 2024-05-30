@@ -1,6 +1,7 @@
 import DataTableComponent from "@/components/DataTableComponent";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { rowIndex } from "@/components/Helper";
+import { Button, Modal, Table } from "react-bootstrap";
 const BetHistoryModel = ({
   rows,
   isLoading,
@@ -8,6 +9,13 @@ const BetHistoryModel = ({
   handlePageChange,
   page = {},
 }) => {
+   const [showModal, setModal] = useState(false);
+   const [data, setData] = useState({});
+   const handleMultiBetShow = (row) => {
+      setModal(true);
+      setData(row)
+   }
+
   const columns = useMemo(
     () => [
       rowIndex(rows),
@@ -20,10 +28,27 @@ const BetHistoryModel = ({
         name: "Category",
         selector: (row) => row?.category,
         sortable: true,
+        minWidth: "120px",
       },
       {
         name: "Bet Number",
         selector: (row) => row?.bet_number,
+        sortable: false,
+        minWidth: "150px",
+      },
+      {
+        name: "Bet Count",
+        selector: (row) =>
+          row?.type == "Single" ? (
+            "1"
+          ) : (
+            <span
+              style={{ color: "#9E8FFF", cursor: "pointer" }}
+              onClick={() => handleMultiBetShow(row)}
+            >
+              {row?.bet_details?.length}
+            </span>
+          ),
         sortable: false,
       },
       {
@@ -80,21 +105,65 @@ const BetHistoryModel = ({
   );
 
   return (
-    <div>
+    <>
       <div>
-        <DataTableComponent
-          title=""
-          progressPending={isLoading}
-          columns={columns}
-          data={rows?.data}
-          pagination
-          paginationServer
-          paginationTotalRows={rows?.paginationData?.totalItems}
-          onChangeRowsPerPage={handlePageSizeChange}
-          onChangePage={handlePageChange}
-        />
+        <div>
+          <DataTableComponent
+            title=""
+            progressPending={isLoading}
+            columns={columns}
+            data={rows?.data}
+            pagination
+            paginationServer
+            paginationTotalRows={rows?.pagination?.totalItems}
+            onChangeRowsPerPage={handlePageSizeChange}
+            onChangePage={handlePageChange}
+          />
+        </div>
       </div>
-    </div>
+
+      <Modal
+        show={showModal}
+        onHide={() => setModal(false)}
+        backdrop="static"
+        keyboard={false}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>All Bets</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Table className="table table-dark">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>League</th>
+                <th>Team One</th>
+                <th>Team two</th>
+                <th>Odds</th>
+                <th>Stake</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.bet_details?.map((item, index) =>
+                item?.details ? (
+                  <tr key={index}>
+                    <th>{JSON.parse(item?.details).category}</th>
+                    <th>{JSON.parse(item?.details).league}</th>
+                    <th>{JSON.parse(item?.details).team1}</th>
+                    <th>{JSON.parse(item?.details).team2}</th>
+                    <th>{JSON.parse(item?.details).odds}</th>
+                    <th>{JSON.parse(item?.details).stake_amount}</th>
+                  </tr>
+                ) : (
+                  ""
+                )
+              )}
+            </tbody>
+          </Table>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 export default BetHistoryModel;
