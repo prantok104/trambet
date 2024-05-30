@@ -9,6 +9,7 @@ import { notify } from "@/components/Helper";
 import Loader from "@/components/Loader";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 const Tramcard = () => {
   const { setUserProMuted } = useUserData();
   const { user } = useSelector((state) => state.AuthReducer);

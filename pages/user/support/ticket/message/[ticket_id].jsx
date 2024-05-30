@@ -286,8 +286,9 @@ const Messaging = () => {
                         <div>{reply?.message}</div>
                         {reply?.attachments?.length > 0 ? (
                           <div className="d-flex gap-2 flex-wrap mt-2">
-                            {reply?.attachments?.map((item) => (
+                            {reply?.attachments?.map((item, keyValue) => (
                               <Image
+                              key={keyValue}
                                 src={`${ConstantData.TICKET_IMAGE_URL}${item?.attachment}`}
                                 alt="replay_image"
                                 width={0}
