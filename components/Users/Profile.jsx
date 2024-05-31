@@ -62,15 +62,9 @@ const ProfileCard = () => {
       <ul className="balance-enquary">
         <li className="balance-text">Balance</li>
         <li>
-          <strong>Deposit: </strong>{" "}
+          <strong>Balance: </strong>{" "}
           <span>
             {Number(user?.balance).toFixed(2)} {user?.currency}
-          </span>
-        </li>
-        <li>
-          <strong>Withdrawal: </strong>{" "}
-          <span>
-            {Number(user?.withdrawal).toFixed(2)} {user?.currency}
           </span>
         </li>
         <li>
