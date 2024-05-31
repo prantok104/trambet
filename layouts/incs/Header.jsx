@@ -528,24 +528,18 @@ const Header = () => {
                       </div>
                       <ul className="dropdown-menus" style={{ width: "200px" }}>
                         <li>
-                          <Link href={"/"}>
+                          <Link href={"/user/deposit"}>
                             Deposit: + {Number(userData?.balance).toFixed(2)}
                           </Link>
                         </li>
                         <li>
-                          <Link href={"/"}>
-                            Withdrawal: +{" "}
-                            {Number(userData.withdrawal).toFixed(2)}
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href={"/"}>
+                          <Link href={"/user/bonus"}>
                             Bonus: +{" "}
                             {Number(userData?.bonus_account).toFixed(2)}
                           </Link>
                         </li>
                         <li>
-                          <Link href={"/"}>
+                          <Link href={"/user/tramcards"}>
                             Tramcard: + {Number(userData?.tramcard).toFixed(2)}
                           </Link>
                         </li>
