@@ -7,30 +7,30 @@ import { Form } from "react-bootstrap";
 const MobCashAgent = () => {
   const [search, setSearch] = useState("");
   const [agents, setAgents] = useState([
-    {
-      id: 130,
-      identity: "124571",
-      address: "Guabari, Borobihanali-6250, Bagmara, Rajshahi",
-      telegram_link: "t.me/prantomoly",
-    },
-    {
-      id: 195,
-      identity: "124588",
-      address: "gazipur sadar kapasia bazar",
-      telegram_link: "Marly102",
-    },
-    {
-      id: 196,
-      identity: "124589",
-      address: "sylhet",
-      telegram_link: "t.me/Bob_bp",
-    },
-    {
-      id: 202,
-      identity: "124595",
-      address: "adf",
-      telegram_link: "ad",
-    },
+    // {
+    //   id: 130,
+    //   identity: "124571",
+    //   address: "Guabari, Borobihanali-6250, Bagmara, Rajshahi",
+    //   telegram_link: "t.me/prantomoly",
+    // },
+    // {
+    //   id: 195,
+    //   identity: "124588",
+    //   address: "gazipur sadar kapasia bazar",
+    //   telegram_link: "Marly102",
+    // },
+    // {
+    //   id: 196,
+    //   identity: "124589",
+    //   address: "sylhet",
+    //   telegram_link: "t.me/Bob_bp",
+    // },
+    // {
+    //   id: 202,
+    //   identity: "124595",
+    //   address: "adf",
+    //   telegram_link: "ad",
+    // },
   ]);
 
   const getAgents = async () => {
