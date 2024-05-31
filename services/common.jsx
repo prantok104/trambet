@@ -74,3 +74,18 @@ export async function getCurrencyList() {
             return [];
         });
 }
+
+export async function getDepositBonus() {
+  return await HttpClientCall({
+    endpoint: "deposit-bonus",
+    method: "GET",
+    includeAuth: false,
+    data: [],
+  })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return [];
+    });
+}
