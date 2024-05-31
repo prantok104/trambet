@@ -336,9 +336,9 @@ const Header = () => {
                           Change Password
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link href={"/"}>2FA Verification</Link>
-                      </li>
+                      </li> */}
                       {userData?.kv != "1" && (
                         <li>
                           <Link href={"/user/kyc-verification"}>
@@ -731,9 +731,9 @@ const Header = () => {
                             Change Password
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <Link href={"/"}>2FA Verification</Link>
-                        </li>
+                        </li> */}
                         {userData?.kv != "1" && (
                           <li>
                             <Link href={"/user/kyc-verification"}>
