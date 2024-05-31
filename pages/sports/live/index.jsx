@@ -135,7 +135,6 @@ const Sports = () => {
   const [oddsLoading, setOddsLoading] = useState(false);
   const [filterOddsCricket, setFilterOddsCricket] = useState([]);
   const [filterOddsSoccer, setFilterOddsSoccer] = useState([]);
-  const [teamIds, setTeamIds] = useState("");
 
   const handleFetchLeague = async (slug) => {
     setActiveCategory(slug);
@@ -148,7 +147,7 @@ const Sports = () => {
         const objectData = JSON.parse(removeAt);
         setLeague(objectData?.data?.scores?.category);
         const leagueData = objectData?.data?.scores?.category?.filter((item) => item.id == objectData?.data?.scores?.category[0].id);
-        // console.log(leagueData);
+        console.log(leagueData);
         setOdds(leagueData);
         setLoading(false);
       })
@@ -188,49 +187,18 @@ const Sports = () => {
       setOdds(matches);
     }else {
       const leagueData = league?.filter((item) => item?.id == slug);
+      // console.log(leagueData);
+      const makeString = JSON.stringify(leagueData);
+      const awayTeamIds = leagueData.flatMap(league => league.match.map(match => match.awayteam.id));
+      const localTeamIds = leagueData.flatMap(league => league.match.map(match => match.localteam.id));
 
-      await getTeamImage(leagueData);
+      const allTeamIds = [...awayTeamIds, ...localTeamIds];
+      console.log(allTeamIds);
       
       setOdds(leagueData);
     }
     setOddsLoading(false);
   };
-
-  const [teamImageList, setTeamImageList] = useState([]);
-  const getTeamImage = async (leagueData) => {  
-      let awayTeamIds = [];
-      let localTeamIds = [];
-      
-      if (Array.isArray(leagueData)) {
-        awayTeamIds = leagueData.flatMap(league => 
-          Array.isArray(league.match) 
-            ? league.match.map(match => match.awayteam.id)
-            : [league.match.awayteam.id]
-        );
-        localTeamIds = leagueData.flatMap(league => 
-          Array.isArray(league.match) 
-            ? league.match.map(match => match.localteam.id)
-            : [league.match.localteam.id]
-        );
-      } else if (typeof leagueData === 'object' && leagueData !== null) {
-        awayTeamIds = Array.isArray(leagueData.match) 
-          ? leagueData.match.map(match => match.awayteam.id)
-          : [leagueData.match.awayteam.id];
-        localTeamIds = Array.isArray(leagueData.match) 
-          ? leagueData.match.map(match => match.localteam.id)
-          : [leagueData.match.localteam.id];
-      }
-      const allTeamIds = [...awayTeamIds, ...localTeamIds];
-      const res = await HttpClientCall({
-        method: "GET",
-        endpoint: "leaugeLogo/" + activeCategory + "/" + allTeamIds.join(","),
-        includeAuth: false,
-        data: [],
-      });
-      if (res.status) {
-        setTeamImageList(res?.data);
-      }
-  }
 
   //   console.log(odds.matches);
   return (
@@ -367,7 +335,6 @@ const Sports = () => {
                             href={`/sports/game_/${item?.id}?cat=${activeCategory}&league=${odd?.id}&match=${item?.id}`}
                             category={activeCategory}
                             subCategories={activeSubCategory}
-                            teamImageData={teamImageList}
                           />
                         </div>
                       )) : (
@@ -380,7 +347,6 @@ const Sports = () => {
                             href={`/sports/game_/${odd?.id}?cat=${activeCategory}&league=${odd?.id}&match=${odd?.id}`}
                             category={activeCategory}
                             subCategories={activeSubCategory}
-                            teamImageData={teamImageList}
                           />
                         </div>
                       )
