@@ -6,9 +6,10 @@ import OddsButton from "./OddsButton";
 import Slider from "react-slick";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import axios from "axios";
+import { HttpClientCall } from "../HTTPClient";
 
 const BetCardLive = (props) => {
-  // console.log(props);
+  console.log("props", props);
   const [oddsMarket, setOddsMarket] = useState("");
   const [oddsMarketList, setOddsMarketList] = useState([]);
   const [selectedBookmakerOdds, setSelectedBookmakerOdds] = useState([]);
@@ -46,20 +47,35 @@ const BetCardLive = (props) => {
   //   } )
   // }
 
+  // const [teamImageList, setTeamImageList] = useState([]);
+  // const teamImage = async (teamId, cat) => {
+  //   if (teamId && cat) {
+  //     const res = await HttpClientCall({
+  //       method: "GET",
+  //       endpoint: "leaugeLogo/" + cat + "/" + teamId,
+  //       includeAuth: false,
+  //       data: [],
+  //     });
+  //     if (res.status) {
+  //       setTeamImageList(res?.data);
+  //     }
+  //   }
+  // };
+
   useEffect(() => {
-    // fetchTeamLogo();
+    // teamImage(props?.teamIds, props?.category);
   }, []);
   return (
     <div className="single-bet-card ">
       <Link href={props?.href} className="p-3 bg-shadow df-radius">
         <div className="bet-card-area-start">
           <div className="bet-card-header d-flex align-items-center justify-content-between gap-2">
-            <ImageCard team={props?.data?.localteam} category={props?.category}/>
+            <ImageCard team={props?.data?.localteam} imagelist={props?.teamImageData}/>
             <TimeCard
               status={props?.data?.status}
               date={(props?.data?.date || "") + " " + (props?.data?.time || "")}
             />
-            <ImageCard team={props?.data?.awayteam || props?.data?.visitorteam} />
+            <ImageCard team={props?.data?.awayteam || props?.data?.visitorteam} imagelist={props?.teamImageData}/>
           </div>
           <div className="bet-card-body">
             {/* <div className="bet-card-odds-markets">
