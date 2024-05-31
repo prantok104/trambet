@@ -10,6 +10,9 @@ const ProviderCard = ({ providers }) => {
   // // console.log(providers);
   const formikRef = useRef();
   const navigate = useRouter();
+  const {
+    query: { bonus }
+  } = navigate;
   const [modalView, setModalView] = useState(false);
   const [provider, setProvider] = useState({});
   const [amount, setAmount] = useState(0);
@@ -35,7 +38,10 @@ const ProviderCard = ({ providers }) => {
     if (values?.amount > 0) {
       const stateData = { amount: values?.amount };
       localStorage.setItem("deposit_payment", JSON.stringify(values));
-      navigate.push(`/user/deposit/now`);
+      navigate.push({
+        pathname: `/user/deposit/now`,
+        query: {bonus: bonus}
+      });
     }
   };
 

@@ -1,15 +1,16 @@
-"use client"
+"use client";
 import Card from "@/components/Card";
-import { getDepositBonus } from "@/services/common";
+import { checkAPI, getDepositBonus } from "@/services/common";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { FaArrowRightLong } from "react-icons/fa6";
-import Loader from '@/components/Loader';
+import Loader from "@/components/Loader";
 import ConstantData from "@/components/ConstantData";
+import { useRouter } from "next/router";
 const Promotion = () => {
-
+  const navigate = useRouter();
   const [modal, setModal] = useState(false);
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(true);
@@ -20,26 +21,32 @@ const Promotion = () => {
   }, []);
 
   const fetchPromotions = async () => {
-      setLoading(true)
-      const responseData = await getDepositBonus();
-      if(responseData?.status == true){
-        setLoading(false)
-        setPromotions(responseData?.data)
-      }
-      setLoading(false)
-  }
+    setLoading(true);
+    const responseData = await getDepositBonus();
+    if (responseData?.status == true) {
+      setLoading(false);
+      setPromotions(responseData?.data);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     effect();
-  }, [effect])
-
+  }, [effect]);
 
   const handleDetails = (item) => {
     setDetails(item);
     setModal(true);
-  }
+  };
 
- const imageUrl = ConstantData.DEPOSIT_BONUS_IMAGE_URL;
+  const handleDeposit = (id) => {
+    navigate.replace({
+      pathname: "/user/deposit",
+      query: { bonus: id },
+    });
+  };
+
+  const imageUrl = ConstantData.DEPOSIT_BONUS_IMAGE_URL;
   return (
     <>
       {loading ? (
@@ -122,15 +129,16 @@ const Promotion = () => {
                       <li>
                         Bonus claim {details?.maximum_claim_in_day} in a day
                       </li>
-                      <li>
-                        Bonus Expired on {details?.valid_time} days
-                      </li>
+                      <li>Bonus Expired on {details?.valid_time} days</li>
                     </ul>
                   </div>
 
-                  {/* <button className="tramcard-claim-btn df-btn mt-2">
-                    Claim Now (300.00 BDT)
-                  </button> */}
+                  <button
+                    onClick={() => handleDeposit(details?.id)}
+                    className="tramcard-claim-btn df-btn mt-2"
+                  >
+                    Claim with deposit
+                  </button>
                 </div>
               </Card>
             </Modal.Body>
