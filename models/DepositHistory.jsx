@@ -18,7 +18,7 @@ const DepositHistory = ({
         sortable: true,
       },
       {
-        name: "TRX. No.",
+        name: "Deposit No.",
         selector: (row) => row?.trx,
         sortable: false,
       },
@@ -28,7 +28,7 @@ const DepositHistory = ({
         sortable: false,
       },
       {
-        name: "Deposit No",
+        name: "TRX. No.",
         selector: (row) => row?.deposit_no,
         sortable: false,
       },

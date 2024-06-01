@@ -65,7 +65,7 @@ const GameDetails = () => {
         }
       })
       .catch((errors) => {
-        console.log(errors);
+        // console.log(errors);
         setOddsLoader(false);
       });
   };
@@ -105,7 +105,7 @@ const GameDetails = () => {
         }
       })
       .catch((errors) => {
-        console.log(errors);
+        // console.log(errors);
         setSquadLoader(false);
       });
   };
@@ -117,7 +117,7 @@ const GameDetails = () => {
       .get(endpoint)
       .then((response) => {
         if (response?.status == 200) {
-          console.log(response);
+          // console.log(response);
           setLeagueImage(response?.data);
         }
       })

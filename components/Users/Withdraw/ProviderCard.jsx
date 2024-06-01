@@ -6,6 +6,8 @@ import InputField from "@/components/Form/InputField";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import ConstantData from "@/components/ConstantData";
+import { useUserData } from "../../Context/UserDataProvider/UserProvider";
+import { notify } from "@/components/Helper";
 const ProviderCard = ({ providers }) => {
   // // console.log(providers);
   const formikRef = useRef();
@@ -14,11 +16,18 @@ const ProviderCard = ({ providers }) => {
   const [provider, setProvider] = useState({});
   const [amount, setAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
+  const { userData, setUserProMuted } = useUserData();
   const handleProviderModal = (item) => {
-    setProvider(item);
-    setAmount(item?.minimum_deposit_amount);
-    setMaxAmount(item?.maximum_deposit_amount);
-    setModalView(true);
+    console.log(userData)
+    if(userData.withdraw > 0){
+      notify("error", "You need to complete atlast 1 game");
+    } else{
+      setProvider(item);
+      setAmount(item?.minimum_deposit_amount);
+      setMaxAmount(item?.maximum_deposit_amount);
+      setModalView(true);
+    }
+    
   };
 
   const validationSchema = Yup.object({
