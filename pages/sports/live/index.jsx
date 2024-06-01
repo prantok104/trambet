@@ -135,6 +135,7 @@ const Sports = () => {
   const [oddsLoading, setOddsLoading] = useState(false);
   const [filterOddsCricket, setFilterOddsCricket] = useState([]);
   const [filterOddsSoccer, setFilterOddsSoccer] = useState([]);
+  const [teamIds, setTeamIds] = useState("");
 
   const handleFetchLeague = async (slug) => {
     setActiveCategory(slug);
@@ -147,7 +148,7 @@ const Sports = () => {
         const objectData = JSON.parse(removeAt);
         setLeague(objectData?.data?.scores?.category);
         const leagueData = objectData?.data?.scores?.category?.filter((item) => item.id == objectData?.data?.scores?.category[0].id);
-        console.log(leagueData);
+        // console.log(leagueData);
         setOdds(leagueData);
         setLoading(false);
       })
@@ -187,13 +188,8 @@ const Sports = () => {
       setOdds(matches);
     }else {
       const leagueData = league?.filter((item) => item?.id == slug);
-      // console.log(leagueData);
-      const makeString = JSON.stringify(leagueData);
-      const awayTeamIds = leagueData.flatMap(league => league.match.map(match => match.awayteam.id));
-      const localTeamIds = leagueData.flatMap(league => league.match.map(match => match.localteam.id));
 
-      const allTeamIds = [...awayTeamIds, ...localTeamIds];
-      console.log(allTeamIds);
+      await getTeamImage(leagueData);
       
       setOdds(leagueData);
     }
@@ -371,6 +367,7 @@ const Sports = () => {
                             href={`/sports/game_/${item?.id}?cat=${activeCategory}&league=${odd?.id}&match=${item?.id}`}
                             category={activeCategory}
                             subCategories={activeSubCategory}
+                            teamImageData={teamImageList}
                           />
                         </div>
                       )) : (
@@ -383,6 +380,7 @@ const Sports = () => {
                             href={`/sports/game_/${odd?.id}?cat=${activeCategory}&league=${odd?.id}&match=${odd?.id}`}
                             category={activeCategory}
                             subCategories={activeSubCategory}
+                            teamImageData={teamImageList}
                           />
                         </div>
                       )
