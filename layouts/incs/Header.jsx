@@ -379,9 +379,14 @@ const Header = () => {
                           </li>
                         </ul>
                       </li>
-                      <li>
-                        <Link href={"/affiliate"}>Affiliate Profile</Link>
-                      </li>
+                      {userData?.is_affiliate == "1" ? (
+                        <li>
+                          <Link href={"/affiliate"}>Affiliate Profile</Link>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+
                       <li className="sticky-link">
                         <Link
                           href={"/"}
@@ -560,7 +565,6 @@ const Header = () => {
                     </li>
                   </ul>
                 )}
-
 
                 <div className="header-timer">
                   <Clock />
@@ -781,9 +785,14 @@ const Header = () => {
                             </li>
                           </ul>
                         </li>
-                        <li>
-                          <Link href={"/affiliate"}>Affiliate Profile</Link>
-                        </li>
+                        {userData?.is_affiliate == "1" ? (
+                          <li>
+                            <Link href={"/affiliate"}>Affiliate Profile</Link>
+                          </li>
+                        ) : (
+                          ""
+                        )}
+
                         <li className="sticky-link">
                           <Link
                             href={"/"}

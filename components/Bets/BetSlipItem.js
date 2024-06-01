@@ -88,7 +88,7 @@ const BetSlipItem = ({
             <BetItemImageCard src={toImage} alt={toName} title={toName} />
             <div className="betslip-single-bet-item-center-item">
               <div className="check-is-live">{isLive}</div>
-              <h6>{market}</h6>
+              {/* <h6>{market}</h6> */}
               <h6 className="d-flex align-items-center justify-content-center gap-2 my-1">
                 <div className="slip-odds-value">{value}</div>{" "}
               </h6>
