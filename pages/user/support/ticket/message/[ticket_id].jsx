@@ -22,6 +22,7 @@ import * as Yup from "yup";
 import dayjs from "dayjs";
 import Image from "next/image";
 import ConstantData from "@/components/ConstantData";
+import { useSelector } from "react-redux";
 const Messaging = () => {
   const innerRef = useRef();
   const router = useRouter();
@@ -30,6 +31,7 @@ const Messaging = () => {
   const [ticketDetails, setTicketDetails] = useState({});
   const [loading, setLoading] = useState(true);
   const [mute, setMute] = useState(true);
+  const { user } = useSelector((state) => state.AuthReducer);
   const initialValues = {
     message: "",
     attachments: [],
@@ -266,7 +268,7 @@ const Messaging = () => {
                       header={
                         <div className="d-flex align-items-center justify-content-between">
                           <p style={{ textTransform: "capitalize" }}>
-                            {reply?.ticket?.name}
+                            {reply?.admin ? reply?.admin?.name : 'You'}
                           </p>
                           <div
                             className="d-flex align-items-center gap-2"
@@ -288,7 +290,7 @@ const Messaging = () => {
                           <div className="d-flex gap-2 flex-wrap mt-2">
                             {reply?.attachments?.map((item, keyValue) => (
                               <Image
-                              key={keyValue}
+                                key={keyValue}
                                 src={`${ConstantData.TICKET_IMAGE_URL}${item?.attachment}`}
                                 alt="replay_image"
                                 width={0}
