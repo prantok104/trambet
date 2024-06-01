@@ -67,6 +67,12 @@ const ProfileCard = () => {
             {Number(user?.balance).toFixed(2)} {user?.currency}
           </span>
         </li>
+        {/* <li>
+          <strong>Withdrawal: </strong>{" "}
+          <span>
+            {Number(user?.withdrawal).toFixed(2)} {user?.currency}
+          </span>
+        </li> */}
         <li>
           <strong>Bonus: </strong>{" "}
           <span>
