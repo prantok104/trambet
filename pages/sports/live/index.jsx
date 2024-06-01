@@ -148,7 +148,6 @@ const Sports = () => {
         const objectData = JSON.parse(removeAt);
         setLeague(objectData?.data?.scores?.category);
         const leagueData = objectData?.data?.scores?.category?.filter((item) => item.id == objectData?.data?.scores?.category[0].id);
-        // console.log(leagueData);
         setOdds(leagueData);
         setLoading(false);
       })
@@ -246,7 +245,7 @@ const Sports = () => {
                 }`}
                 onClick={() => handleFetchLeague(item?.slug)}
               >
-                {/* <span className="games-count">{item?.length}</span> */}
+                
                 <div
                   className="text-white"
                   dangerouslySetInnerHTML={{ __html: item?.icon }}
@@ -281,7 +280,7 @@ const Sports = () => {
                         onClick={() => handleSubCategory(item?.id)}
                       >
                         <span>{item?.name}</span>
-                        {/* <span className="games-count">{matchedItems?.length}</span> */}
+                       
                       </li>
                     );
                   })
