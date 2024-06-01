@@ -8,6 +8,15 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoaderPage from "./LoaderPage";
 import { LanguageProvider } from "@/components/Context/LanguageProvider";
+import { ToastContainer } from "react-toastify";
+import { LogoutProvider } from "@/components/Context/Provider/Users/LogoutProvider";
+
+import "react-toastify/dist/ReactToastify.css";
+import { Provider } from "react-redux";
+import store from "@/store";
+import {
+  UserProvider,
+} from "@/components/Context/UserDataProvider/UserProvider";
 
 export default function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
@@ -27,16 +36,24 @@ export default function App({ Component, pageProps }) {
       router.events.off("routeChangeError", handleComplete);
     };
   }, []);
+
   return (
     <>
       {loading ? (
         <LoaderPage />
       ) : (
-        <LanguageProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </LanguageProvider>
+        <Provider store={store}>
+          <UserProvider>
+            <LanguageProvider>
+              <LogoutProvider>
+                <Layout>
+                  <ToastContainer />
+                  <Component {...pageProps} />
+                </Layout>
+              </LogoutProvider>
+            </LanguageProvider>
+          </UserProvider>
+        </Provider>
       )}
     </>
   );

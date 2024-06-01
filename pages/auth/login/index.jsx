@@ -8,7 +8,7 @@ const Login = () => {
           <div className="p-3 bg-shadow df-radius">
             <h6>Login to your account</h6>
             <hr />
-            <LoginForm />
+            <LoginForm from="page" />
           </div>
         </div>
       </div>

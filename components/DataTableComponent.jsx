@@ -35,23 +35,20 @@ const customStyles = {
 
 export default function DataTableComponent({ ...config }) {
     return (
-      <div
-        suppressHydrationWarning={true}
-      >
+      <div suppressHydrationWarning>
         <DataTable
           progressComponent={
-            <div sx={{ height: "100px" }} suppressHydrationWarning={true}>
+            <div sx={{ height: "100px" }} suppressHydrationWarning>
               <Spinner animation="border" variant="success" />
             </div>
           }
           {...config}
           customStyles={customStyles}
           paginationRowsPerPageOptions={
-            config?.paginationRowsPerPageOptions ?? [
-              10, 15, 20, 25, 50, 75, 100, 200, 300, 400, 500,
-            ]
+            (config && config.paginationRowsPerPageOptions) ? config.paginationRowsPerPageOptions : [10, 15, 20, 25, 50, 75, 100, 200, 300, 400, 500]
           }
-          theme={'dark'}
+          theme={"dark"}
+          paginationServer={true}
         />
       </div>
     );

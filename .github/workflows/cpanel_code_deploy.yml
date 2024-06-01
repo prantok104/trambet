@@ -1,0 +1,31 @@
+name: Deploy to Cpanel
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+          
+      - name: Build Project
+        run: |
+          npm install 
+          npm run build
+
+      - name: Deploy to Cpanel
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ftp.smshagor.com
+          username: smshagor
+          password: 3mF(G#p(H,O)
+          server-dir: frontend.smshagor.com/
+          local-dir: ./dist/

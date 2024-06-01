@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebookF,
@@ -16,6 +16,7 @@ import Itf from "@/public/casino/itf.svg";
 import Nhl from "@/public/casino/nhl.svg";
 import Ufc from "@/public/casino/ufc.svg";
 import Wta from "@/public/casino/wta.svg";
+import TawkTo from "next-tawkto";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -25,6 +26,11 @@ const Footer = () => {
     { name: "linkedin", icon: faLinkedinIn, href: "/" },
     { name: "instagram", icon: faInstagram, href: "/" },
   ];
+
+  // Tawk to chat 
+  useEffect(() => {
+      var tawk = new TawkTo('65b49c278d261e1b5f587405', '1hl4o3ved')
+  }, [])
 
   return (
     <>
@@ -47,10 +53,10 @@ const Footer = () => {
                   <Link href="/">Home</Link>
                 </li>
                 <li>
-                  <Link href="/">News and Updates</Link>
+                  <Link href="/news">News and Updates</Link>
                 </li>
                 <li>
-                  <Link href="/">Contacts</Link>
+                  <Link href="/contact">Contacts</Link>
                 </li>
               </ul>
             </div>
@@ -58,13 +64,13 @@ const Footer = () => {
               <h6>Company Policy</h6>
               <ul className="footer-menu">
                 <li>
-                  <Link href="/">Privacy Policy</Link>
+                  <Link href="/policy/privacy-policy" >Privacy Policy</Link>
                 </li>
                 <li>
-                  <Link href="/">Terms of Service</Link>
+                  <Link href="/policy/terms-of-service">Terms of Service</Link>
                 </li>
                 <li>
-                  <Link href="/">Refund Policy</Link>
+                  <Link href="/policy/refund-policy">Refund Policy</Link>
                 </li>
               </ul>
             </div>
@@ -77,8 +83,9 @@ const Footer = () => {
           <div className="row d-flex align-items-center py-4 media-link-area">
             <div className="col-md-3">
               <div className="social-media-link d-flex align-items-center gap-2">
-                {socialLinks?.map((item) => (
+                {socialLinks?.map((item, index) => (
                   <Link
+                    key={index}
                     href={item.href}
                     title={item?.name}
                     className={item?.name}

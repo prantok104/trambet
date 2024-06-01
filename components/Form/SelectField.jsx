@@ -16,7 +16,7 @@ const SelectField = ({ label, options, ...props }) => {
         id={props.id || props.name}
         {...field}
         {...props}
-        isInvalid={meta.touched && meta.error}
+        isInvalid={meta.error}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -24,7 +24,7 @@ const SelectField = ({ label, options, ...props }) => {
           </option>
         ))}
       </Form.Control>
-      {meta.touched && meta.error ? (
+      {meta.touched || meta.error ? (
         <Form.Control.Feedback type="invalid">
           {meta.error}
         </Form.Control.Feedback>

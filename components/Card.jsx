@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Card = ({header="Card Header",filter, children}) => {
+const Card = ({header,filter, children, ...otherProps}) => {
   return (
-    <div className="card">
-      <div className="card-header">
+    <div className="card" style={{ background: otherProps?.bg, marginTop: otherProps?.mt }} >
+      {header || filter ? <div className="card-header">
          {header}
          {filter??''}
-      </div>
+      </div>: ''}
         <div className='card-body'>
            {children??'content'}
       </div>
