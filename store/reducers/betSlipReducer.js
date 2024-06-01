@@ -26,10 +26,13 @@ const betSlipReducer = createSlice({
     },
     openSlip(state, action){
       state.slip = false
+    },
+    toggleSlip(state, action){
+      state.slip = action.payload
     }
   },
 });
 
 export default betSlipReducer.reducer;
 
-export const { addBetToSlip, removeBetFromSlip, clearBetSlip, bets } = betSlipReducer.actions;
+export const { addBetToSlip, removeBetFromSlip, clearBetSlip,toggleSlip, bets } = betSlipReducer.actions;
