@@ -16,7 +16,7 @@ const ResetPassword = () => {
    });
    
    const handleRecovery = (values) => {
-      console.log(values);
+      // console.log(values);
       navigate.push({
          pathname: '/password/recovery-password',
          query: {

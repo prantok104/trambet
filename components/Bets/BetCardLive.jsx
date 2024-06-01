@@ -9,7 +9,7 @@ import axios from "axios";
 import { HttpClientCall } from "../HTTPClient";
 
 const BetCardLive = (props) => {
-  console.log("props", props);
+  // console.log("props", props);
   const [oddsMarket, setOddsMarket] = useState("");
   const [oddsMarketList, setOddsMarketList] = useState([]);
   const [selectedBookmakerOdds, setSelectedBookmakerOdds] = useState([]);

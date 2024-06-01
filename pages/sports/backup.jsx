@@ -252,7 +252,7 @@ const Sports = () => {
         setOddsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         setOddsLoading(false);
       });
     if (activeCategory == "cricket") {

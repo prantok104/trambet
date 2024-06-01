@@ -203,14 +203,14 @@ const Sports = () => {
       
       if (Array.isArray(leagueData)) {
         awayTeamIds = leagueData.flatMap(league => 
-          Array.isArray(league.match) 
-            ? league.match.map(match => match.awayteam.id)
-            : [league.match.awayteam.id]
+          Array.isArray(league?.match) 
+            ? league?.match.map(match => match?.awayteam?.id)
+            : [league?.match?.awayteam?.id]
         );
-        localTeamIds = leagueData.flatMap(league => 
+        localTeamIds = leagueData?.flatMap(league => 
           Array.isArray(league.match) 
-            ? league.match.map(match => match.localteam.id)
-            : [league.match.localteam.id]
+            ? league?.match.map(match => match?.localteam?.id)
+            : [league?.match?.localteam?.id]
         );
       } else if (typeof leagueData === 'object' && leagueData !== null) {
         awayTeamIds = Array.isArray(leagueData.match) 

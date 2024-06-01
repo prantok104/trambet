@@ -23,7 +23,7 @@ const ImageCard = ({
   };
   
   useEffect(() => {
-    teamImage(team?.id, imagelist);
+    teamImage(team?.id, imagelist || []);
   }, []);
   return (
     <div className="bet-card-image text-center">
