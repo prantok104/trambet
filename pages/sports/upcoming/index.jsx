@@ -148,7 +148,6 @@ const Sports = () => {
         const objectData = JSON.parse(removeAt);
         setLeague(objectData?.data?.scores?.category);
         const leagueData = objectData?.data?.scores?.category?.filter((item) => item.id == objectData?.data?.scores?.category[0].id);
-        // console.log(leagueData);
         setOdds(leagueData);
         setLoading(false);
       })

@@ -293,7 +293,6 @@ const Sports = () => {
                       onClick={() => handleSubCategory(item?.id)}
                     >
                       <span>{item?.name}</span>
-                      {/* <span className="games-count">0</span> */}
                     </li>
                   ))}
             </ul>
