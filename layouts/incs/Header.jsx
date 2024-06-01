@@ -80,7 +80,7 @@ const Header = () => {
 
   const handleBetSlipToggle = (value) => {
     setSlipShow(value)
-    dispatch(toggleSlip(betSlipReducer?.slip));
+    dispatch(toggleSlip(value));
   }
   useEffect(() => {
     setSlipShow(betSlipReducer?.slip)
@@ -560,7 +560,7 @@ const Header = () => {
                     </li>
                   </ul>
                 )}
-                
+
 
                 <div className="header-timer">
                   <Clock />
