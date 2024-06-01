@@ -6,7 +6,7 @@ import OddsButton from "./OddsButton";
 import Slider from "react-slick";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import axios from "axios";
-import { HttpClientCall } from "../HTTPClient";
+
 
 const BetCardLive = (props) => {
   // console.log("props", props);
@@ -37,30 +37,6 @@ const BetCardLive = (props) => {
   const preventDefault = (event) => {
     event.preventDefault();
   };
-
-  // const fetchTeamLogo = async() => {
-  //   await axios.get("http://data2.goalserve.com:8084/api/v1/logotips/soccer/teams?k=ef2762546f6a447cc37608dc6b5e7b62&ids=9002,9240",{headers: {"Access-Control-Allow-Origin": "*"}
-  //   }).then((response) => {
-  //     console.log(response);
-  //   } ).catch((error) => {
-  //     console.log(error);
-  //   } )
-  // }
-
-  // const [teamImageList, setTeamImageList] = useState([]);
-  // const teamImage = async (teamId, cat) => {
-  //   if (teamId && cat) {
-  //     const res = await HttpClientCall({
-  //       method: "GET",
-  //       endpoint: "leaugeLogo/" + cat + "/" + teamId,
-  //       includeAuth: false,
-  //       data: [],
-  //     });
-  //     if (res.status) {
-  //       setTeamImageList(res?.data);
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     // teamImage(props?.teamIds, props?.category);
