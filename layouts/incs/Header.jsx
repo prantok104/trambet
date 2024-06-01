@@ -31,6 +31,7 @@ import Cookies from "js-cookie";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
 import { useRouter as useRouterChecker } from "next/router";
 import { AuthUserLogout } from "@/store/reducers/AuthReducer";
+import { toggleSlip } from "@/store/reducers/betSlipReducer";
 import { useDispatch } from "react-redux";
 import { notificationRead } from "@/services/notification";
 const Header = () => {
@@ -79,6 +80,7 @@ const Header = () => {
 
   const handleBetSlipToggle = (value) => {
     setSlipShow(value)
+    dispatch(toggleSlip(value));
   }
   useEffect(() => {
     setSlipShow(betSlipReducer?.slip)
@@ -147,15 +149,15 @@ const Header = () => {
                     <ul className="dropdown-menus">
                       <li>
                         <Link href={"/"}>
-                          Deposit: + {Number(userData?.balance).toFixed(2)}
+                          Balance: + {Number(userData?.balance).toFixed(2)}
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link href={"/"}>
                           Withdrawal: +{" "}
                           {Number(userData?.withdrawal).toFixed(2)}
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
                         <Link href={"/"}>
                           Bonus: + {Number(userData?.bonus_account).toFixed(2)}
@@ -300,11 +302,16 @@ const Header = () => {
                       <li>
                         <Link href={"/user/tramcards"}>Tramcard</Link>
                       </li>
-                      <li>
-                        <Link href={"/user/affiliate/applications-list"}>
-                          Apply for Affiliate
-                        </Link>
-                      </li>
+                      {userData?.is_affiliate != "1" ? (
+                        <li>
+                          <Link href={"/user/affiliate/applications-list"}>
+                            Apply for Affiliate
+                          </Link>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+
                       <li>
                         <Link
                           href="#"
@@ -529,15 +536,15 @@ const Header = () => {
                       <ul className="dropdown-menus" style={{ width: "200px" }}>
                         <li>
                           <Link href={"/"}>
-                            Deposit: + {Number(userData?.balance).toFixed(2)}
+                            Balance: + {Number(userData?.balance).toFixed(2)}
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <Link href={"/"}>
                             Withdrawal: +{" "}
                             {Number(userData.withdrawal).toFixed(2)}
                           </Link>
-                        </li>
+                        </li> */}
                         <li>
                           <Link href={"/"}>
                             Bonus: +{" "}
@@ -553,6 +560,7 @@ const Header = () => {
                     </li>
                   </ul>
                 )}
+
 
                 <div className="header-timer">
                   <Clock />
@@ -695,11 +703,15 @@ const Header = () => {
                         <li>
                           <Link href={"/user/tramcards"}>Tramcard</Link>
                         </li>
-                        <li>
-                          <Link href={"/user/affiliate/applications-list"}>
-                            Apply for Affiliate
-                          </Link>
-                        </li>
+                        {userData?.is_affiliate != "1" ? (
+                          <li>
+                            <Link href={"/user/affiliate/applications-list"}>
+                              Apply for Affiliate
+                            </Link>
+                          </li>
+                        ) : (
+                          ""
+                        )}
                         <li>
                           <Link
                             href="#"

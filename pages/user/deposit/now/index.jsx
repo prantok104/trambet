@@ -21,6 +21,7 @@ const MakeDepositPage = () => {
   const [provider, setProvider] = useState({});
   const [user, setUser] = useState({});
   const router = useRouter();
+  const {query: {bonus}} = router;
   useEffect(() => {
     const userData = JSON.parse(window.localStorage.getItem("userDetails"));
     setUser(userData);
@@ -53,15 +54,16 @@ const MakeDepositPage = () => {
 
   const handleSubmit = async (values) => {
     const payload = {
-      agent : provider?.admin_id,
-      provider : data?.provider?.id,
-      payment_gateway : "local",
-      amount : values?.amount,
-      payment_number : values?.wallet_number,
-      depositor_name : user?.firstname + " " + user?.lastname,
-      transaction_id : values?.trx_id,
-      samount : values?.amount,
-      method_id : data?.provider?.id,
+      agent: provider?.admin_id,
+      provider: data?.provider?.id,
+      payment_gateway: "local",
+      amount: values?.amount,
+      payment_number: values?.wallet_number,
+      depositor_name: user?.firstname + " " + user?.lastname,
+      transaction_id: values?.trx_id,
+      samount: values?.amount,
+      method_id: data?.provider?.id,
+      bonus: bonus ? bonus : 0,
     };
 
     await makeDeposit(payload).then((res) => {

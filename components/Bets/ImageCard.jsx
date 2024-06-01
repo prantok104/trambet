@@ -6,22 +6,26 @@ import { HttpClientCall } from "../HTTPClient";
 const ImageCard = ({
   imagePath = "https://placehold.co/60x60",
   team,
-  imagelist,
+  category,
 }) => {
   const [image, setImage] = useState("https://placehold.co/60x60");
-  const teamImage = (teamId, imagelists) => {
-    console.log(imagelists, teamId);
-    //Filter iamge from imageList 
-    const base64Data = imagelists
-        .filter(image => image.id == teamId).map(image => image.base64);
+  const teamImage = async (teamId, cat) => {
+    if (teamId && cat) {
+      const res = await HttpClientCall({
+        method: "GET",
+        endpoint: "leaugeLogo/" + cat + "/" + teamId,
+        includeAuth: false,
+        data: [],
+      });
 
-    if (base64Data.length > 0) {
-      let imgUrl = `data:image/png;base64,${base64Data[0]}`;
-
-      setImage(imgUrl);
+      if (res.status) {
+        let base64Data = res?.data[0]?.base64;
+        // Create a data URL
+        let imageUrl = `data:image/jpeg;base64,${base64Data}`;
+        setImage(imageUrl);
+      }
     }
   };
-  
   useEffect(() => {
     teamImage(team?.id, imagelist || []);
   }, []);

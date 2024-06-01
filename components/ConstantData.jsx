@@ -7,4 +7,5 @@ export default {
   IMAGE_BASE_URL: BASE_URL + "/assets/images/",
   USER_IMAGE_URL: BASE_URL + "/assets/profile/user/",
   TICKET_IMAGE_URL: BASE_URL + "/assets/support/",
+  DEPOSIT_BONUS_IMAGE_URL: BASE_URL + "/core/public/storage/bonus/",
 };
