@@ -220,7 +220,7 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
 
                   {item?.bookmaker.hasOwnProperty("odd") ? (
                     <div className="d-flex align-items-center flex-wrap">
-                      {item?.bookmaker?.odd?.map((_item, index) => (
+                      {Array.isArray(item?.bookmaker?.odd) ? item?.bookmaker?.odd?.map((_item, index) => (
                         <OddsButton
                           key={`odds_item_${index}`}
                           odds={{
@@ -245,7 +245,7 @@ const OddsBookmark = ({category,league, odds, isLive }) => {
                                 : false,
                           }}
                         />
-                      ))}
+                      )) : ''}
                     </div>
                   ) : (
                     ""
