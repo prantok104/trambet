@@ -46,3 +46,18 @@ export async function getCasinoHistory(page, perpageData) {
             return [];
         });
 }
+
+export async function getCasinoSession(session) {
+    return await HttpClientCall({
+      endpoint: `casino/session/${session}`,
+      method: "GET",
+      includeAuth: true,
+      data: [],
+    })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return [];
+      });
+}
