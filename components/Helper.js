@@ -2,10 +2,10 @@ import dayjs from "dayjs";
 import { toast } from "react-toastify";
 
 export const API_HOST =
-  "https://www.goalserve.com/getfeed/ef2762546f6a447cc37608dc6b5e7b62";
+  "https://www.goalserve.com/getfeed/89b86665dc8348f5605008dc3da97a57";
 export const SEASON = dayjs().year();
 
-export const API_KEY = 'ef2762546f6a447cc37608dc6b5e7b62';
+export const API_KEY = "89b86665dc8348f5605008dc3da97a57";
 export const DATA_SERVER = 'http://data2.goalserve.com:8084/api/v1/logotips'
 
 // Set local storage

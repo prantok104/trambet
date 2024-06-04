@@ -1768,6 +1768,10 @@ button.slip-close-btn {
     overflow: hidden;
     border-radius: 6px;
 }
+
+.single-slide-images .slick-slide{
+  padding: 0 25px;
+}
 /* Mobile site css */
 
 

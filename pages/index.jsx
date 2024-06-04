@@ -1,16 +1,13 @@
 "use client";
 import Slider from "@/components/Slider";
-import FirstSlider from "@/public/sliders/first.png";
-import SecondSlider from "@/public/sliders/second.png";
-import ThreeSlider from "@/public/sliders/three.png";
-import FourSlider from "@/public/sliders/four.png";
+import PromotionSliders from "@/components/PromotionSliders";
 import PromoOne from "@/public/promo/1.png";
 import PromoTwo from "@/public/promo/2.png";
 import PromoThree from "@/public/promo/3.png";
 import PromoFour from "@/public/promo/4.png";
 import Link from "next/link";
 import PromoCard from "@/components/PromoCard";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { HttpClientCall } from "@/components/HTTPClient";
 import { Modal } from "react-bootstrap";
 import { useUserData } from "@/components/Context/UserDataProvider/UserProvider";
@@ -21,12 +18,8 @@ const Home = () => {
   const { user } = useSelector((state) => state.AuthReducer);
   const buttonRef = useRef(null);
   const { setShowOneClickModal, showOneClickModal, userData } = useUserData();
-  const images = [
-    { name: "Slide one", src: FirstSlider },
-    { name: "Slide two", src: SecondSlider },
-    { name: "Slide three", src: ThreeSlider },
-    { name: "Slide four", src: FourSlider },
-  ];
+  const [sliders, setSliders] = useState([]);
+  const [promotions, setPromotions] = useState([]);
 
   const promoCards = [
     {
@@ -60,7 +53,6 @@ const Home = () => {
       image: PromoThree,
     },
   ];
-  const [sliders, setSliders] = useState([]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("oneTimeUserData"));
@@ -102,6 +94,31 @@ const Home = () => {
         });
     }
   };
+
+  // Promotions slider area 
+  
+  const effect = useCallback(async () => {
+    await fetchPromotions();
+  }, []);
+
+  const fetchPromotions = async () => {
+    const responseData = await HttpClientCall({
+      method: "GET",
+      endpoint: "front/promotions",
+      includeAuth: false,
+      data: [],
+    });
+    console.log(responseData);
+    if(responseData?.code) {
+      setPromotions(responseData?.data)
+    }
+  };
+
+
+  useEffect(() => {
+    effect();
+  }, [effect]);
+
 
   return (
     <>
@@ -157,6 +174,12 @@ const Home = () => {
           </div>
         </div>
         {/* Promo card area end */}
+
+        {/* Homepage Slider for promotions area start */}
+        <div className="promotions-slider-area my-2">
+          <PromotionSliders images={promotions} />
+        </div>
+        {/* Homepage Slider for promotions area end */}
 
         {/* Sports area start */}
         <div className="mt-2">
