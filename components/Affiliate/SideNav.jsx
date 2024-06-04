@@ -111,7 +111,7 @@ const menu = [
       },
       {
         name: "2FA Security",
-        link: "/",
+        link: "/user/2fa",
       },
     ],
   },

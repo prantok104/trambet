@@ -31,6 +31,7 @@ function TwoFA() {
   };
 
   const handleSubmit = async () => {
+    console.log("Hi");
     HttpClientCall({
       endpoint: "twofactor/enable",
       method: "POST",
@@ -69,9 +70,9 @@ function TwoFA() {
                   <div>
                     <input
                       type="text"
-                      className="form-control mt-4"
+                      className="form-control mt-4 readonly"
                       value={data?.secret}
-                      readOnly
+                      onChange={(e) => setSecret(e.target.value)}
                     />
                     <div className="form-text text-white">
                       If you have any problem with scanning the QR code enter
