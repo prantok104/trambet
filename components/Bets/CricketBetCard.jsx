@@ -67,7 +67,7 @@ const CricketBetCard = (props) => {
               </strong>
             </div>
 
-            {Array.isArray(props.data.match?.odds?.type) ? (
+            {Array.isArray(props?.data?.match?.odds?.type) ? (
               <div className="bet-card-odds-area px-3 mt-2">
                 <Slider {...defaultSettings}>
                   {props.data.match?.odds?.type[0].bookmaker?.odd?.map(

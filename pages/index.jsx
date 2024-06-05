@@ -108,7 +108,6 @@ const Home = () => {
       includeAuth: false,
       data: [],
     });
-    console.log(responseData);
     if(responseData?.code) {
       setPromotions(responseData?.data)
     }
@@ -125,15 +124,15 @@ const Home = () => {
       <div className="container-fluid">
         {/* Slider area start */}
         <div className="row">
-          <div className="col-md-7">
+          <div className="col-md-8">
             <div className="main-slider-area-start">
               <Slider images={sliders} />
             </div>
           </div>
 
-          <div className="col-md-5">
+          <div className="col-md-4">
             <div className=" mobile-promo d-flex align-items-center justify-content-between gap-4">
-              <div
+              {/* <div
                 className="single-goal-section"
                 style={{
                   background:
@@ -142,7 +141,7 @@ const Home = () => {
               >
                 <h1>Cashback up to 30% on casinos</h1>
                 <Link href="/casino/live">Go to Casino</Link>
-              </div>
+              </div> */}
               <div
                 className="single-goal-section"
                 style={{
@@ -175,24 +174,31 @@ const Home = () => {
         </div>
         {/* Promo card area end */}
 
-        {/* Homepage Slider for promotions area start */}
-        <div className="promotions-slider-area my-2">
-          <PromotionSliders images={promotions} />
-        </div>
-        {/* Homepage Slider for promotions area end */}
-
         {/* Sports area start */}
         <div className="mt-2">
           <HomePageSports />
         </div>
         {/* Sports area end */}
 
-        {/* Live Casino area start */}
-        <div className="col-md-6 mt-2">
-          <HomePageCasino />
+        {/* Homepage Slider for promotions area start */}
+        <div className="promotions-slider-area mt-2">
+          <PromotionSliders images={promotions} />
         </div>
-        {/* Live Casino area end */}
+        {/* Homepage Slider for promotions area end */}
 
+        <div className="row">
+          {/* Live Casino area start */}
+          <div className="col-md-6">
+            <HomePageCasino />
+          </div>
+          {/* Live Casino area end */}
+
+          {/* Live Game area start */}
+          <div className="col-md-6 mt-3">
+            <HomePageSports withMatch={true} />
+          </div>
+          {/* Live Game area end */}
+        </div>
         {/* one click registration page area start */}
         <Modal
           show={showOneClickModal}

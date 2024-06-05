@@ -49,7 +49,7 @@ const HomePageCasino = () => {
           <div className="casino-all-data">
             {casinoData?.content?.gameList?.length > 0 ? (
               <>
-                {_.sampleSize(casinoData?.content?.gameList, 20)?.map((item) => (
+                {_.sampleSize(casinoData?.content?.gameList, 16)?.map((item) => (
                   <div
                     className="casino-item-data home-page-casino"
                     style={{
