@@ -1227,8 +1227,8 @@ a.single-agent-for-deposit span {
   padding: 5px;
 }
 .home-page-casino {
-  flex: 0 1 calc(16.66% - 12px);
-  height: 160px;
+  flex: 0 1 calc(24.4% - 12px);
+  height: 95px;
 }
 
 .casino-item-data:hover:after {
@@ -1772,6 +1772,17 @@ button.slip-close-btn {
 .single-slide-images .slick-slide{
   padding: 0 25px;
 }
+
+
+
+
+
+
+
+
+
+
+
 /* Mobile site css */
 
 

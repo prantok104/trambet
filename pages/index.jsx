@@ -188,7 +188,7 @@ const Home = () => {
         {/* Sports area end */}
 
         {/* Live Casino area start */}
-        <div className=" mt-2">
+        <div className="col-md-6 mt-2">
           <HomePageCasino />
         </div>
         {/* Live Casino area end */}
