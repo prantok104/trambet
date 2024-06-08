@@ -1887,6 +1887,8 @@ button.slip-close-btn {
   align-items: center;
   background-color: #253044;
   justify-content: center;
+  overflow: hidden;
+  overflow-x: auto;
 }
 .single-header-option{
   flex:1;

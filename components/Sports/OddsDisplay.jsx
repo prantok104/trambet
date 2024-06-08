@@ -87,6 +87,9 @@ const OddsDisplay = ({ details, cat, league='' }) => {
                 oddsName: `${oddsItem.name}`,
                 disable: oddsItem?.stop == "True" ? true : false,
                 isHtFt,
+                overUnder:
+                  markerItem?.odds[oddsIndex]?.type== 'total' ? markerItem?.odds[oddsIndex]
+                    ?.name : '',
               }}
             />
           </div>

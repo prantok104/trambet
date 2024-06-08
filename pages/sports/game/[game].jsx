@@ -20,6 +20,8 @@ import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
 import { Spinner, Tab, Tabs } from "react-bootstrap";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { FaRegStar } from "react-icons/fa6";
+import FeatureOddButton from "../../../components/Bets/FeatureOddButton";
 
 const GameDetails = () => {
   const route = useRouter();
@@ -38,6 +40,7 @@ const GameDetails = () => {
   const [categoryLoader, setCategoryLoader] = useState(true);
   const [leagueImage, setLeagueImage] = useState({});
   const [showSubMenu, setShowSubMenu] = useState(true);
+  const [allData, setAllData] = useState([]);
 
   const effect = useCallback(async () => {
     if (cat == "cricket") {
@@ -45,7 +48,6 @@ const GameDetails = () => {
       await fetchCricketOdds();
       await fetchCricketLive();
       await fetchTeamSquads();
-      await fetchSubcategoryData();
     }
   }, [cat]);
 
@@ -56,6 +58,7 @@ const GameDetails = () => {
       .get(endpoint)
       .then((response) => {
         if (response?.status == 200) {
+          setAllData(response?.data?.scores?.category)
           setOdds(
             response?.data?.scores?.category?.filter(
               (item) => item?.matches?.match?.id == match
@@ -126,20 +129,7 @@ const GameDetails = () => {
       });
   };
 
-  // Fetch sub category data
-  const fetchSubcategoryData = async () => {
-    const endpoint = `${API_HOST}/cricketfixtures/tours/tours?json=1&season=${SEASON}`;
-    axios
-      .get(endpoint)
-      .then((response) => {
-        setSubcategories(response?.data?.fixtures?.category);
-        setCategoryLoader(false);
-      })
-      .catch((error) => {
-        notify("error", "No league found for cricket category");
-        setCategoryLoader(false);
-      });
-  };
+
 
   useEffect(() => {
     effect();
@@ -160,38 +150,129 @@ const GameDetails = () => {
     setShowSubMenu((prevState) => !prevState);
   };
 
+
+
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-md-3">
-          <div className="game-details-left-sidebar bg-shadow df-radius">
-            <h5 className="detail-category p-3 d-flex align-items-center justify-content-between">
-              Cricket{" "}
-              {showSubMenu ? (
-                <FaAngleDown onClick={handleSubmenuView} />
-              ) : (
-                <FaAngleUp onClick={handleSubmenuView} />
-              )}
-            </h5>
-            <ul
-              className="game-page-sub-category-item"
-              style={{ height: showSubMenu ? "auto" : "0px" }}
-            >
-              {categoryLoader ? (
-                <div className="d-flex align-items-center justify-content-center">
-                  <Spinner />
-                </div>
-              ) : (
-                subcategories?.map((item, index) => (
-                  <li className="game-page-item" key={index}>
-                    {item?.name}
-                  </li>
-                ))
-              )}
-            </ul>
+        <div className="col-md-4">
+          <div className="game-details-left-sidebar">
+            {oddsLoader ? (
+              <div className="spinner d-flex align-items-center justify-content-center">
+                <Spinner />
+              </div>
+            ) : (
+              <>
+                {allData?.length > 0 && (
+                  <>
+                    <div
+                      className="cricket-tabs-area mb-2"
+                      style={{ background: `#25365F` }}
+                    >
+                      <Card header={`Category : Cricket`} bg="transparent">
+                        Choose and play the game.
+                      </Card>
+                    </div>
+
+                    <div className="related-games-show">
+                      {allData?.map((c, cIndex) => (
+                        <div key={cIndex} className="single-game-item mb-2">
+                          <h5 className="df-font leagues-header">
+                            <FaRegStar style={{ marginTop: "-5px" }} />{" "}
+                            {`${c?.matches?.match?.localteam?.name} VS ${c?.matches?.match?.visitorteam?.name}`}
+                          </h5>
+
+                          <div className="d-flex align-items-center jsutify-content-between details-league-data">
+                            {Array.isArray(
+                              c?.matches?.match?.odds?.type[0]?.bookmaker
+                            )
+                              ? c?.matches?.match?.odds?.type[0]?.bookmaker[0]?.odd?.map(
+                                  (_i, _iIndex) => (
+                                    <FeatureOddButton
+                                      key={_iIndex}
+                                      odds={{
+                                        category: "Cricket",
+                                        league: c?.name,
+                                        matchId: c?.matches?.match?.id,
+                                        id: `rand_${
+                                          c?.matches?.match?.id
+                                        }_${Math.random(1, 9)}`,
+                                        bookmarkId:
+                                          c?.matches?.match?.odds?.type[0]
+                                            ?.bookmaker[0]?.id,
+                                        odd_details:
+                                          c?.matches?.match?.odds?.type[0]
+                                            ?.bookmaker[0]?.odd,
+                                        title: _i.name,
+                                        value: _i.value,
+                                        toName:
+                                          c?.matches?.match?.localteam?.name,
+                                        twName:
+                                          c?.matches?.match?.visitorteam?.name,
+                                        isLive:
+                                          c?.matches?.match?.matchinfo?.info[0]
+                                            ?.value !== ""
+                                            ? "LIVE"
+                                            : "Upcoming",
+                                        market:
+                                          c?.matches?.match?.odds?.type[0]
+                                            ?.bookmaker[0]?.name,
+                                        oddsName: _i.name,
+                                        disable:
+                                          _i?.stop == "True" ? true : false,
+                                      }}
+                                    />
+                                  )
+                                )
+                              : c?.matches?.match?.odds?.type[0]?.bookmaker?.odd?.map(
+                                  (_i, Index) => (
+                                    <FeatureOddButton
+                                      key={Index}
+                                      odds={{
+                                        category: "Cricket",
+                                        league: c?.name,
+                                        matchId: c?.matches?.match?.id,
+                                        id: `rand_${
+                                          c?.matches?.match?.id
+                                        }_${Math.random(1, 9)}`,
+                                        bookmarkId:
+                                          c?.matches?.match?.odds?.type[0]
+                                            ?.bookmaker?.id,
+                                        odd_details:
+                                          c?.matches?.match?.odds?.type[0]
+                                            ?.bookmaker?.odd,
+                                        title: _i.name,
+                                        value: _i.value,
+                                        toName:
+                                          c?.matches?.match?.localteam?.name,
+                                        twName:
+                                          c?.matches?.match?.visitorteam?.name,
+                                        isLive:
+                                          c?.matches?.match?.matchinfo?.info[0]
+                                            ?.value !== ""
+                                            ? "LIVE"
+                                            : "Upcoming",
+                                        market:
+                                          c?.matches?.match?.odds?.type[0]
+                                            ?.bookmaker?.name,
+                                        oddsName: _i.name,
+                                        disable:
+                                          _i?.stop == "True" ? true : false,
+                                      }}
+                                    />
+                                  )
+                                )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
-        <div className="col-md-6 ">
+        <div className="col-md-5">
           <div
             className="cricket-details-area mb-2"
             // style={{ backgroundImage: `url('https://placehold.co/600x400')` }}
@@ -243,7 +324,9 @@ const GameDetails = () => {
             ) : (
               <OddsBookmark
                 odds={odds?.matches?.match ?? []}
-                isLive={details?.match?.status == "In Progress" ? 'LIVE' : 'Upcoming'}
+                isLive={
+                  details?.match?.status == "In Progress" ? "LIVE" : "Upcoming"
+                }
                 category={cat}
                 league={odds?.name}
               />

@@ -169,7 +169,7 @@ const HomePageSports = ({ withMatch = false }) => {
                 >
                   {odds?.map((odd, oddIndex) => {
                     return (
-                      !odd?.match?.matchinfo?.info[0]?.value && (
+                      odd?.match?.matchinfo?.info[0]?.value && (
                         <div className="col-md-3" key={`bet_card_${oddIndex}`}>
                           <div style={{ margin: "0 5px" }}>
                             <FeaturedCard

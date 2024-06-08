@@ -32,13 +32,16 @@ const DetailsOddsButton = ({ odds }) => {
   return (
     <div className={`single-odds-btn `}>
       <button
-        className={`bet-odds-button ${isClicked ? "active-odds-button" : ""} ${
+        className={`bet-odds-button d-flex align-items-center justify-content-${
+          odds?.overUnder ? "between" : "center"
+        } ${isClicked ? "active-odds-button" : ""} ${
           odds?.disable ? "disable-odd" : ""
         }`}
         onClick={handleAddToBetSlip}
         disabled={odds?.disable}
       >
-        {odds?.value}
+        <span>{odds?.overUnder}</span>
+        <span style={{ color: "#FDBD02" }}>{odds?.value}</span>
       </button>
       {odds?.isHtFt && (
         <div className={`odds-btn-title ${isClicked ? "active" : ""}`}>
