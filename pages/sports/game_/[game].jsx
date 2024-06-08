@@ -3,12 +3,14 @@ import BetSlip from "@/components/Bets/BetSlip";
 import Card from "@/components/Card";
 import { API_HOST } from "@/components/Helper";
 import OddsDisplay from "@/components/Sports/OddsDisplay";
+import HeatMap from "@/components/Sports/HeatMap";
 import FeatureOddButton from "@/components/Bets/FeatureOddButton";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
 import { Spinner, Tab, Tabs, Col, Nav, Row } from "react-bootstrap";
 import oddsData from "@/public/odds.json";
+import heatmapData from "@/public/heatmapData.json";
 import { FaRegStar } from "react-icons/fa6";
 const GameDetails = () => {
   const route = useRouter();
@@ -57,7 +59,7 @@ const GameDetails = () => {
     if (cat && league && match) {
       const interValId = setInterval(() => {
         fetchGameDetails();
-      }, 32000);
+      }, 60000);
       return () => clearInterval(interValId);
     }
   }, [cat, league, match]);
@@ -99,7 +101,10 @@ const GameDetails = () => {
                                     key={oddIndex}
                                     odds={{
                                       category: cat,
-                                      league: leagues?.length > 0 ?  leagues[0]?.name : 'Unknown',
+                                      league:
+                                        leagues?.length > 0
+                                          ? leagues[0]?.name
+                                          : "Unknown",
                                       matchId: le?.id,
                                       id: `rand_${le?.id}_${Math.random(1, 9)}`,
                                       bookmarkId:
@@ -184,7 +189,7 @@ const GameDetails = () => {
                   <OddsDisplay
                     details={details}
                     cat={cat}
-                    league={leagues?.length  > 0 ? leagues[0]?.name : 'unknown'}
+                    league={leagues?.length > 0 ? leagues[0]?.name : "unknown"}
                   />
                 </div>
               </>
@@ -192,6 +197,13 @@ const GameDetails = () => {
           </div>
         </div>
         <div className="col-md-3">
+          {/* <div className="make-heatmap-for-live">
+            <HeatMap
+              playerName="Ramona Bachmann"
+              playerPosition={"center Forward"}
+              data={heatmapData}
+            />
+          </div> */}
           <div className="game-details-right-sidebar bg-shadow df-radius p-2">
             <BetSlip />
           </div>

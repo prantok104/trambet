@@ -1917,6 +1917,16 @@ button.slip-close-btn {
   padding: 9px 10px;
   background-color: #253044;
 }
+
+.heatmap {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center
+}
+
+
+
+
 /* Mobile site css */
 
 
