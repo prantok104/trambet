@@ -86,7 +86,7 @@ const Heatmap = (props) => {
   const renderScatterChart = (data, heatSectors, scale) => (
     <div className="pitch">
       <ScatterChart width={315 * scale} height={180 * scale} background="#fff">
-        <CartesianGrid strokeDasharray="3 3" fill="#fff" />
+        <CartesianGrid strokeDasharray="3 3" fill="#28B663" />
         <ReferenceDot
           x={12}
           y={40}
@@ -113,7 +113,7 @@ const Heatmap = (props) => {
           x2={18}
           y1={18}
           y2={80 - 18}
-          fill="white"
+          fill="#1d8f4c"
           fillOpacity={1}
           stroke="black"
         />
@@ -122,7 +122,7 @@ const Heatmap = (props) => {
           x2={120}
           y1={18}
           y2={80 - 18}
-          fill="white"
+          fill="#1d8f4c"
           fillOpacity={1}
           stroke="black"
         />
@@ -131,7 +131,7 @@ const Heatmap = (props) => {
           x2={6}
           y1={30}
           y2={80 - 30}
-          fill="white"
+          fill="#1d8f4c"
           fillOpacity={1}
           stroke="black"
         />
@@ -140,7 +140,7 @@ const Heatmap = (props) => {
           x2={120}
           y1={30}
           y2={80 - 30}
-          fill="white"
+          fill="#1d8f4c"
           fillOpacity={1}
           stroke="black"
         />
@@ -178,7 +178,7 @@ const Heatmap = (props) => {
             strokeOpacity={0}
           />
         ))}
-        <CartesianGrid />
+        <CartesianGrid fill="#28B663" />
         <ReferenceLine x={60} stroke="black" />
         <ReferenceArea
           x1={0}

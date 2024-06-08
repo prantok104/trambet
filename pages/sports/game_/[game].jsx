@@ -197,13 +197,15 @@ const GameDetails = () => {
           </div>
         </div>
         <div className="col-md-3">
-          {/* <div className="make-heatmap-for-live">
-            <HeatMap
-              playerName="Ramona Bachmann"
-              playerPosition={"center Forward"}
-              data={heatmapData}
-            />
-          </div> */}
+          <div className="make-heatmap-for-live">
+            {!loading && (
+              <HeatMap
+                playerName=""
+                playerPosition={`${details?.localteam?.name} VS ${details?.awayteam?.name}`}
+                data={heatmapData}
+              />
+            )}
+          </div>
           <div className="game-details-right-sidebar bg-shadow df-radius p-2">
             <BetSlip />
           </div>
