@@ -181,23 +181,24 @@ const Home = () => {
         {/* Sports area end */}
 
         {/* Homepage Slider for promotions area start */}
-        <div className="promotions-slider-area mt-2">
+        <div className="promotions-slider-area mt-4">
           <PromotionSliders images={promotions} />
         </div>
         {/* Homepage Slider for promotions area end */}
 
         <div className="row">
+          {/* Live Game area start */}
+          <div className="col-md-6 mt-3">
+            <HomePageSports withMatch={true} />
+          </div>
+          {/* Live Game area end */}
+
           {/* Live Casino area start */}
           <div className="col-md-6">
             <HomePageCasino />
           </div>
           {/* Live Casino area end */}
 
-          {/* Live Game area start */}
-          <div className="col-md-6 mt-3">
-            <HomePageSports withMatch={true} />
-          </div>
-          {/* Live Game area end */}
         </div>
         {/* one click registration page area start */}
         <Modal

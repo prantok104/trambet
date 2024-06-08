@@ -70,7 +70,7 @@ const CricketBetCard = (props) => {
             {Array.isArray(props?.data?.match?.odds?.type) ? (
               <div className="bet-card-odds-area px-3 mt-2">
                 <Slider {...defaultSettings}>
-                  {props.data.match?.odds?.type[0].bookmaker?.odd?.map(
+                  {props?.data?.match?.odds?.type[0].bookmaker?.odd?.map(
                     (odd, index) => (
                       <OddsButton
                         key={index}
@@ -80,18 +80,18 @@ const CricketBetCard = (props) => {
                           matchId: props?.data?.match?.id,
                           id: odd?.id,
                           bookmarkId:
-                            props.data.match?.odds?.type[0].bookmaker?.id,
+                            props?.data?.match?.odds?.type[0].bookmaker?.id,
                           odd_details:
-                            props.data.match?.odds?.type[0].bookmaker?.odd,
+                            props?.data.match?.odds?.type[0].bookmaker?.odd,
                           title: odd.name,
                           value: odd.value,
-                          toName: props.data.match?.localteam?.name,
-                          twName: props.data.match?.visitorteam?.name,
+                          toName: props?.data?.match?.localteam?.name,
+                          twName: props?.data?.match?.visitorteam?.name,
                           isLive: odd?.match?.matchinfo?.info[0]?.value
                             ? "LIVE"
                             : "Upcoming",
                           market:
-                            props.data.match?.odds?.type[0].bookmaker?.name,
+                            props?.data?.match?.odds?.type[0].bookmaker?.name,
                           oddsName: odd.name,
                           disable: odd?.stop == "True" ? true : false,
                         }}

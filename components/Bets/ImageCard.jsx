@@ -11,7 +11,6 @@ const ImageCard = ({
   const [image, setImage] = useState("https://placehold.co/60x60");
   const teamImage = (teamId, imagelists) => {
     //Filter iamge from imageList 
-    console.log(imagelists);
     const base64Data = imagelists
         .filter(image => image.id == teamId).map(image => image.base64);
 
@@ -33,7 +32,7 @@ const ImageCard = ({
         height={30}
         alt="Team name"
         unoptimized
-        style={{ borderRadius: "50%", padding: "2px", background: "#090F1E" }}
+        style={{ borderRadius: "50%", padding: "2px", background: "#090F1E", margin: 'auto' }}
       />
       <h6 className="df-font mt-2">{team?.name}</h6>
     </div>

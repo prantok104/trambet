@@ -1228,7 +1228,7 @@ a.single-agent-for-deposit span {
 }
 .home-page-casino {
   flex: 0 1 calc(25% - 12px);
-  height: 102px;
+  height: 95px;
 }
 
 .casino-item-data:hover:after {
@@ -1580,8 +1580,8 @@ ul.game-page-sub-category-item .game-page-item:active {
 .odds-btn-title.active {
   color: #a38bff;
 }
-button.bet-odds-button.active-odds-button,
-button.bet-odds-button:hover {
+button.bet-odds-button.active-odds-button,.single-odds-btn.fea-odd-single button.active-odds-button,
+button.bet-odds-button:hover, .single-odds-btn.fea-odd-single button:hover {
   background: linear-gradient(
     326deg,
     rgb(40, 54, 184) 0%,
@@ -1773,16 +1773,150 @@ button.slip-close-btn {
   padding: 0 25px;
 }
 
+.fea-card-header {
+    padding: 10px;
+    border-bottom: 2px solid #000;
+}
 
+.fea-single-bet-card {background-color: #1e263da6;border-radius: 7px;}
 
+.fea-card-header {
+    color: #b7c3e1;
+}
 
+.fea-single-bet-card a {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.fea-card-body .group-name{
+  color: #8897bb;
+  font-size: 12px;
+}
+.fea-single-bet-card .bet-card-header {
+    color: #ccc;
+}
+.fea-card-odds .single-odds-btn {
+    width: 100%;
+    color: #fff;
+}
+.fea-card-odds .single-odds-btn {
+    width: 100%;
+    margin: 4px 2px;
+    color: #fff;
+}
 
+.single-odds-btn.fea-odd-single .odds-btn-title {
+    margin: 0;
+    font-size: 9px;
+}
 
+.single-odds-btn.fea-odd-single {
+    margin: 0;
+}
 
+.single-odds-btn.fea-odd-single button {
+    padding: 11px;
+    background: #323D4F;
+    border: 0;
+    border-right: 1px solid #000;
+}
 
+.single-odds-btn.fea-odd-single:last-child button {
+    border: 0;
+}
 
+.fea-single-bet-card.overlap {
+    position: relative;
+    z-index: 1;
+}
 
+.fea-single-bet-card.overlap:after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    background: #090F1E;
+    z-index: -1;
+    opacity: 0.8;
+}
 
+.arrow-insider, .casino-arrow-insider {
+    position: relative;
+    z-index: 1
+}
+.arrow-insider .slick-arrow {
+    position: absolute;
+    left: 6px;
+    z-index: 99;
+}
+.casino-arrow-insider .slick-arrow {
+    position: absolute;
+    left: -8px;
+    z-index: 99;
+}
+
+.arrow-insider .slick-arrow:before, .casino-arrow-insider .slick-arrow:before {
+    font-size: 30px;
+    color: #8694be;
+}
+.arrow-insider .slick-arrow.slick-next {
+    position: absolute;
+    left: auto;
+    z-index: 99;
+    right: 14px;
+}
+.casino-arrow-insider .slick-arrow.slick-next{
+  position: absolute;
+    left: auto;
+    z-index: 99;
+    right: 0px;
+}
+.details-odds-bookmakers{
+  margin-bottom: 15px;
+}
+.details-odds-bookmakers h5{
+  font-size: 10px;
+  padding: 7px;
+}
+.odds-option-header{
+  display: flex;
+  align-items: center;
+  background-color: #253044;
+  justify-content: center;
+}
+.single-header-option{
+  flex:1;
+  text-align: center;
+  padding: 10px;
+}
+.options-odd{
+  flex: 1;
+}
+.column3 .options-odd{
+  flex: 1;
+}
+.column2 .options-odd{
+  flex: 1 1 50%;
+}
+.details-item-odd .single-odds-btn{
+  margin: 0;
+  background-color: #323D4F;
+}
+.details-item-odd .single-odds-btn .bet-odds-button{
+  border: 1px solid #000;
+  border-radius: 0;
+  padding: 8px;
+}
+.details-league-data .single-odds-btn {flex: 1}
+.details-league-data .single-odds-btn .bet-odds-button{border-radius: 0}
+.single-game-item .leagues-header{
+  padding: 9px 10px;
+  background-color: #253044;
+}
 /* Mobile site css */
 
 
